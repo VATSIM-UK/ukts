@@ -30,9 +30,3 @@ type Position {
     created_at: DateTime!
     updated_at: DateTime!
 }
-
-type CreatePositionResponse {
-    position: Position!
-    success: Boolean
-}
-
