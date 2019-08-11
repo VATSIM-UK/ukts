@@ -10,6 +10,14 @@ type Mutation {
         frequency: String! @rules(apply: ["required", "min:7"]),
         type: Int! @rules(apply: ["required"])
     ): Position! @create
+
+    updatePosition(
+        id: ID!
+        name: String,
+        callsign: String @rules(apply: ["min:4", "unique:positions,callsign"]),
+        frequency: String @rules(apply: ["min:7"]),
+        type: Int
+    ): Position @update
 }
 
 type Position {

@@ -138,4 +138,37 @@ class PositionTest extends TestCase
                 ]
             ]]);
     }
+
+    /** @test */
+    public function testItCanUpdateAPositon()
+    {
+        factory(Position::class)->create([
+            'id' => 1,
+            'name' => 'Bristol Tower',
+            'callsign' => 'EGGD_TWR',
+            'frequency' => '133.850'
+        ]);
+
+        $this->graphQL('
+            mutation { 
+                updatePosition(id: 1, name: "Slough Tower", callsign: "EGLL_TWR") {
+                    id
+                    name
+                }
+            }')->assertJson([
+                'data' => [
+                    'updatePosition' => [
+                        'id' => 1,
+                        'name' => 'Slough Tower'
+                    ]
+                ]
+        ]);
+
+        $this->assertDatabaseHas('positions', [
+            'id' => 1,
+            'name' => 'Slough Tower',
+            'callsign' => 'EGLL_TWR',
+            'frequency' => '133.850'
+        ]);
+    }
 }
