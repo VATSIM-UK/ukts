@@ -6,6 +6,7 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
 type Query {
     positions: [Position!]! @all
+    position(id: ID @eq, callsign: String @eq): Position @find
 }
 
 type Position {
@@ -13,14 +14,8 @@ type Position {
     callsign: String!
     name: String!
     frequency: String!
-    type: PositionType!
+    type: String!
+    type_human: String!
     created_at: DateTime!
     updated_at: DateTime!
-}
-
-enum PositionType {
-    DEL @enum(value: 0)
-    GND @enum(value: 1)
-    TWR @enum(value: 2)
-    FSS @enum(value: 3)
 }
