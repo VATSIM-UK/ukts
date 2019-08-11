@@ -4,18 +4,4 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 "A date string with format `Y-m-d`, e.g. `2011-05-23`."
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
-type Query {
-    positions: [Position!]! @all
-    position(id: ID @eq, callsign: String @eq): Position @find
-}
-
-type Position {
-    id: ID!
-    callsign: String!
-    name: String!
-    frequency: String!
-    type: String!
-    type_human: String!
-    created_at: DateTime!
-    updated_at: DateTime!
-}
+#import position.graphql

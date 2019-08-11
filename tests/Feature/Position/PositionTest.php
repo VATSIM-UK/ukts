@@ -91,4 +91,51 @@ class PositionTest extends TestCase
             ]
         ]);
     }
+
+    /** @test */
+    public function testValidPositionCanBeCreated()
+    {
+        $this->graphQL('
+          mutation { 
+            createPosition(name: "Bristol Tower", callsign: "EGGD_TWR", frequency: "133.850", type: 4) {
+                id
+                name
+            }
+          }')->assertJsonStructure([
+            'data' => [
+                'createPosition' => [
+                    'id',
+                    'name'
+                ]
+            ]
+        ]);
+
+        $this->assertDatabaseHas('positions', [
+            'name' => 'Bristol Tower',
+            'callsign' => 'EGGD_TWR',
+            'frequency' => '133.850'
+        ]);
+    }
+
+    /** @test */
+    public function testDuplicatePositionCannotBeCreated()
+    {
+        factory(Position::class)->create([
+            'name' => 'Bristol Tower',
+            'callsign' => 'EGGD_TWR',
+            'frequency' => '133.850'
+        ]);
+
+        $this->graphQL('
+            mutation { 
+                createPosition(name: "Bristol Tower", callsign: "EGGD_TWR", frequency: "133.850", type: 4) {
+                    id
+                    name
+                }
+            }')->assertJsonFragment(["validation" => [
+                "callsign" => [
+                    "The callsign has already been taken."
+                ]
+            ]]);
+    }
 }
