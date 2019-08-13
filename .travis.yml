@@ -10,8 +10,7 @@ addons:
   
 before_install:
 - sudo apt-get update
-- composer self-update
-- composer install --no-interaction
+- composer install --prefer-dist --no-interaction --optimize-autoloader --no-suggest
 - cp .env.example .env
 - php artisan key:generate
 - php artisan migrate -vvv -n
