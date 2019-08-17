@@ -7,8 +7,9 @@ php:
 
 addons:
   mariadb: '10.2'
-  
+
 before_install:
+- mysql -e 'create database IF NOT EXISTS ukts_core;' -uroot
 - sudo apt-get update
 - composer install --prefer-dist --no-interaction --optimize-autoloader --no-suggest
 - cp .env.example .env
@@ -19,6 +20,6 @@ before_script:
 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
   ./cc-test-reporter before-build;
   fi
-  
+
 script:
 - vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
