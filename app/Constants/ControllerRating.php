@@ -23,10 +23,12 @@ final class ControllerRating
     ];
 
     private const SUFFIX_REQUIREMENTS = [
+        'DEL' => 1,
         'GND' => 1,
         'TWR' => 2,
         'APP' => 3,
-        'CTR' => 4
+        'CTR' => 4,
+        'FSS' => 4
     ];
 
     /**
