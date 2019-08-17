@@ -1,0 +1,32 @@
+type Query {
+    positions: [Position!]! @all
+    position(id: ID @eq, callsign: String @eq): Position @find
+}
+
+type Mutation {
+    createPosition(
+        name: String! @rules(apply: ["required"]),
+        callsign: String! @rules(apply: ["required", "min:4", "unique:positions,callsign"]),
+        frequency: String! @rules(apply: ["required", "min:7"]),
+        type: Int! @rules(apply: ["required"])
+    ): Position! @create
+
+    updatePosition(
+        id: ID!
+        name: String,
+        callsign: String @rules(apply: ["min:4", "unique:positions,callsign"]),
+        frequency: String @rules(apply: ["min:7"]),
+        type: Int
+    ): Position @update
+}
+
+type Position {
+    id: ID!
+    callsign: String!
+    name: String!
+    frequency: String!
+    type: String!
+    type_human: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
