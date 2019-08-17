@@ -42,7 +42,7 @@ class Position extends Model
     {
         static $GROUP_1 = 1;
         $matches = [];
-        preg_match("/_([A-Z]*)/", $this->attributes['callsign'], $matches);
+        preg_match("/_([A-Z]*+$)/", $this->attributes['callsign'], $matches);
 
         return $matches[$GROUP_1];
     }

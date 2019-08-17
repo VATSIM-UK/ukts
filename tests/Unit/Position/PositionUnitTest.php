@@ -16,12 +16,20 @@ class PositionUnitTest extends TestCase
     {
         parent::setUp();
 
-        $this->position = factory(Position::class)->create(['callsign' => 'EGGD_APP']);
+        $this->position = factory(Position::class)->make(['callsign' => 'EGGD_APP']);
     }
 
     /** @test */
     public function itReturnsTheCorrectSuffixAttribute()
     {
         $this->assertEquals('APP', $this->position->suffix);
+    }
+
+    /** @test */
+    public function itReturnsTheCorrectSuffixWithSubPositions()
+    {
+        $subPosition = factory(Position::class)->make(['callsign' => 'EGGD_R_APP']);
+
+        $this->assertEquals('APP', $subPosition->suffix);
     }
 }
