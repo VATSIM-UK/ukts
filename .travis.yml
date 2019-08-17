@@ -12,6 +12,8 @@ before_install:
 - mysql -e 'create database IF NOT EXISTS ukts_core;' -uroot
 - sudo apt-get update
 - composer install --prefer-dist --no-interaction --optimize-autoloader --no-suggest
+
+install:
 - cp .env.example .env
 - php artisan key:generate
 - php artisan migrate -vvv -n
