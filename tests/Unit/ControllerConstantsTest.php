@@ -21,7 +21,7 @@ class ControllerConstantsTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_the_human_readable_format_based_on_code()
+    public function itReturnsHumanReadableFormatBasedOnCode()
     {
         $this->assertEquals('Observer', ControllerRating::getHumanReadableRatingByCode('OBS'));
         $this->assertEquals('Student 1', ControllerRating::getHumanReadableRatingByCode('S1'));
@@ -32,34 +32,34 @@ class ControllerConstantsTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_true_when_minimum_rating_is_the_same_as_given()
+    public function itReturnsTrueWhenMinimumRatingIsTheSameAsGiven()
     {
         // TWR suffix requires a rating of 2 or higher
         $this->assertTrue(ControllerRating::isValidRatingForSuffix('TWR', 2));
     }
 
     /** @test */
-    public function it_returns_true_when_minimum_rating_higher_than_required()
+    public function itReturnsTrueWhenMinimumRatingHigherThanRequired()
     {
         // TWR suffix requires a rating of two or higher.
         $this->assertTrue(ControllerRating::isValidRatingForSuffix('TWR', 3));
     }
 
     /** @test */
-    public function it_returns_false_when_minimum_rating_is_higher()
+    public function itReturnsFalseWhenMinimumRatingIsHigher()
     {
         // CTR suffix requires a rating of 4 or higher
         $this->assertFalse(ControllerRating::isValidRatingForSuffix('CTR', 1));
     }
 
     /** @test */
-    public function it_fails_gracefully_when_invalid_suffix_is_provided()
+    public function itFailsGracefullyWhenInvalidSuffixIsProvided()
     {
         $this->assertNull(ControllerRating::isValidRatingForSuffix('BLEH', 2));
     }
 
     /** @test */
-    public function it_handles_lowercase_suffix_correctly()
+    public function itHandlesLowercaseSuffixCorrectly()
     {
         $this->assertFalse(ControllerRating::isValidRatingForSuffix('ctr', 1));
         $this->assertTrue(ControllerRating::isValidRatingForSuffix('ctr', 4));

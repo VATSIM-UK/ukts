@@ -20,7 +20,7 @@ class PositionUnitTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_the_correct_suffix_attribute()
+    public function itReturnsTheCorrectSuffixAttribute()
     {
         $this->assertEquals('APP', $this->position->suffix);
     }
