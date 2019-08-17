@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Position extends Model
 {
-
-    protected $guarded = [];
+    protected $fillable = ['callsign', 'name', 'frequency', 'type'];
 
     const TYPE_ATIS = 1;
     const TYPE_DELIVERY = 2;
