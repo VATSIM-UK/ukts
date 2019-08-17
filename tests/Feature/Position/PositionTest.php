@@ -170,5 +170,12 @@ class PositionTest extends TestCase
             'callsign' => 'EGLL_TWR',
             'frequency' => '133.850'
         ]);
+
+        $this->assertDatabaseMissing('positions', [
+            'id' => 1,
+            'name' => 'Bristol Tower',
+            'callsign' => 'EGGD_TWR',
+            'frequency' => '133.850'
+        ]);
     }
 }
