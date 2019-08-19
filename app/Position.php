@@ -17,7 +17,7 @@ class Position extends Model
     const TYPE_TERMINAL = 7;
     const TYPE_FSS = 8;
 
-    const types = [
+    const TYPES = [
         self::TYPE_ATIS => ['ATIS', 'ATIS'],
         self::TYPE_DELIVERY => ['DEL', 'Delivery'],
         self::TYPE_GROUND => ['GND', 'Ground'],
@@ -30,11 +30,20 @@ class Position extends Model
 
     public function getTypeAttribute()
     {
-        return self::types[$this->attributes['type']][0];
+        return self::TYPES[$this->attributes['type']][0];
     }
 
     public function getTypeHumanAttribute()
     {
-        return self::types[$this->attributes['type']][1];
+        return self::TYPES[$this->attributes['type']][1];
+    }
+
+    public function getSuffixAttribute()
+    {
+        static $GROUP_1 = 1;
+        $matches = [];
+        preg_match("/_([A-Z]*+$)/", $this->attributes['callsign'], $matches);
+
+        return $matches[$GROUP_1];
     }
 }
