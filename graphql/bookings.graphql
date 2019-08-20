@@ -1,0 +1,30 @@
+type Query {
+    bookings: [Booking!]! @paginate
+    booking(id: ID @eq): Booking @find
+}
+
+type Mutation {
+    createBooking(
+        user_id: ID! @rules(apply: ["required", "App\\Rules\\UserExistsRule"]),
+        position: PositionRelation!,
+        from: DateTime!,
+        to: DateTime!,
+    ): Booking! @create
+
+    updateBooking(
+        id: ID!
+        position: PositionRelation,
+        from: DateTime,
+        to: DateTime,
+    ): Booking @update
+}
+
+type Booking {
+    id: ID!
+    user_id: ID!
+    position: Position! @belongsTo
+    from: DateTime!
+    to: DateTime!
+    created_at: DateTime!
+    updated_at: DateTime!
+}

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Position extends Model
 {
@@ -27,6 +28,11 @@ class Position extends Model
         self::TYPE_TERMINAL => ['TMA', 'Terminal'],
         self::TYPE_FSS => ['FSS', 'Flight Service Station'],
     ];
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
 
     public function getTypeAttribute()
     {

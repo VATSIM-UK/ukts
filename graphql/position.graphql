@@ -20,6 +20,10 @@ type Mutation {
     ): Position @update
 }
 
+input PositionRelation {
+    connect: ID @rules(apply: ["exists:positions,id"])
+}
+
 type Position {
     id: ID!
     callsign: String!
