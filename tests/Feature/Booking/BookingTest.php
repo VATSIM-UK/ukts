@@ -87,7 +87,7 @@ class BookingTest extends TestCase
         factory(Position::class)->create();
 
         $data = $this->graphQL('
-          mutation { 
+          mutation {
             createBooking(user_id: 1300001, position: {
                 connect: 1
             }, from:"2019-08-20 15:00:00", to:"2019-08-20 16:30:00") {
@@ -110,7 +110,7 @@ class BookingTest extends TestCase
         factory(Position::class)->create();
 
         $this->graphQL('
-          mutation { 
+          mutation {
             createBooking(user_id: 1300001, position: {
                 connect: 1
             }, from:"Blah", to:"2019-08-20 16:30:00") {
@@ -140,7 +140,7 @@ class BookingTest extends TestCase
         ]);
 
         $this->graphQL('
-            mutation { 
+            mutation {
                 updateBooking(id: 1, to: "2019-08-20 17:00:00") {
                     id
                 }
