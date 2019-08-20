@@ -1,9 +1,9 @@
-type Query {
+extend type Query {
     bookings: [Booking!]! @paginate
     booking(id: ID @eq): Booking @find
 }
 
-type Mutation {
+extend type Mutation {
     createBooking(
         user_id: ID! @rules(apply: ["required", "App\\Rules\\UserExistsRule"]),
         position: PositionRelation!,

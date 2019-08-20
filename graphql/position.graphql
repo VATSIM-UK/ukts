@@ -1,9 +1,9 @@
-type Query {
+extend type Query {
     positions: [Position!]! @all
     position(id: ID @eq, callsign: String @eq): Position @find
 }
 
-type Mutation {
+extend type Mutation {
     createPosition(
         name: String! @rules(apply: ["required"]),
         callsign: String! @rules(apply: ["required", "min:4", "unique:positions,callsign"]),
