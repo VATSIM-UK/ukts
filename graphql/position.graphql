@@ -1,9 +1,9 @@
-type Query {
+extend type Query {
     positions: [Position!]! @all
     position(id: ID @eq, callsign: String @eq): Position @find
 }
 
-type Mutation {
+extend type Mutation {
     createPosition(
         name: String! @rules(apply: ["required"]),
         callsign: String! @rules(apply: ["required", "min:4", "unique:positions,callsign"]),
@@ -18,6 +18,10 @@ type Mutation {
         frequency: String @rules(apply: ["min:7"]),
         type: Int
     ): Position @update
+}
+
+input PositionRelation {
+    connect: ID @rules(apply: ["exists:positions,id"])
 }
 
 type Position {
