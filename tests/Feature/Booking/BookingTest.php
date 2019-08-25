@@ -112,7 +112,7 @@ class BookingTest extends TestCase
         {
             bookingsBetweenDates (from: {
                 from: "2019-08-05"
-                to: "2019-08-09"         
+                to: "2019-08-09"
             }) {
                 id
             }
@@ -198,6 +198,24 @@ class BookingTest extends TestCase
                 ]
             ]
         );
+
+        $this->graphQL('
+          mutation {
+            createBooking(user_id: 1300001, position: {
+                connect: 2
+            }, from:"Blah", to:"2019-08-20 16:30:00") {
+                id
+            }
+          }')->assertJsonStructure([
+                "errors" => [
+                    [
+                        "message",
+                        "extensions",
+                        "locations"
+                    ]
+                ]
+            ]
+        );
     }
 
     /** @test */
@@ -228,5 +246,28 @@ class BookingTest extends TestCase
             'id' => 1,
             'to' => new Carbon("2019-08-20 17:00:00")
         ]);
+    }
+
+    /** @test */
+    public function testItCanDeleteABooking()
+    {
+        factory(Booking::class)->create();
+
+        $this->assertEquals(1, Booking::count());
+
+        $this->graphQL('
+            mutation {
+                deleteBooking(id: 1) {
+                    id
+                }
+            }')->assertJson([
+            'data' => [
+                'deleteBooking' => [
+                    'id' => 1
+                ]
+            ]
+        ]);
+
+        $this->assertEquals(0, Booking::count());
     }
 }

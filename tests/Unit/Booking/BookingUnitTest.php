@@ -35,9 +35,21 @@ class BookingUnitTest extends TestCase
         $this->booking->to = new Carbon('10th January 2018 16:00:00');
         $this->booking->save();
 
-        $this->assertTrue(Booking::canBeMade($this->booking->position_id, new Carbon('10th January 2018 14:00:00'), new Carbon('10th January 2018 15:00:00')));
-        $this->assertFalse(Booking::canBeMade($this->booking->position_id, new Carbon('10th January 2018 14:00:00'), new Carbon('10th January 2018 15:30:00')));
-        $this->assertFalse(Booking::canBeMade($this->booking->position_id, new Carbon('10th January 2018 15:59:00'), new Carbon('10th January 2018 18:00:00')));
+        $this->assertTrue(Booking::canBeMade(
+            $this->booking->position_id,
+            new Carbon('10th January 2018 14:00:00'),
+            new Carbon('10th January 2018 15:00:00'))
+        );
+        $this->assertFalse(Booking::canBeMade(
+            $this->booking->position_id,
+            new Carbon('10th January 2018 14:00:00'),
+            new Carbon('10th January 2018 15:30:00'))
+        );
+        $this->assertFalse(Booking::canBeMade(
+            $this->booking->position_id,
+            new Carbon('10th January 2018 15:59:00'),
+            new Carbon('10th January 2018 18:00:00'))
+        );
     }
 
     /** @test */

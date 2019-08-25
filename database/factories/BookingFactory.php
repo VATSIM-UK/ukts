@@ -10,9 +10,7 @@ $factory->define(Booking::class, function (Faker $faker) {
     $to = $faker->dateTimeInInterval($from, '+1 day');
     return [
         'user_id' => $faker->numberBetween(1000000, 9999999),
-        'position_id' => function () {
-            return factory(\App\Position::class)->create()->id;
-        },
+        'position_id' => factory(\App\Position::class),
         'from' => $from,
         'to' => $to,
     ];

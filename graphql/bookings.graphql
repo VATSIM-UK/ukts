@@ -19,6 +19,10 @@ extend type Mutation {
         from: DateTime,
         to: DateTime,
     ): Booking @update
+
+    deleteBooking(
+        id: ID!
+    ): Booking @delete
 }
 
 type Booking {

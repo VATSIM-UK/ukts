@@ -2,10 +2,9 @@
 
 namespace App\GraphQL\Directives;
 
-use Nuwave\Lighthouse\Schema\Directives\BaseDirective;
-use Nuwave\Lighthouse\Support\Contracts\ArgBuilderDirective;
+use Nuwave\Lighthouse\Between\WhereBetweenDirective;
 
-class WhereBetweenDateDirective extends BaseDirective implements ArgBuilderDirective
+class WhereBetweenDateDirective extends WhereBetweenDirective
 {
     /**
      * Name of the directive.
@@ -27,9 +26,6 @@ class WhereBetweenDateDirective extends BaseDirective implements ArgBuilderDirec
     public function handleBuilder($builder, $values)
     {
         $values['to'] = $values['to']->endOfDay();
-        return $builder->whereBetween(
-            $this->directiveArgValue('key', $this->definitionNode->name->value),
-            $values
-        );
+        return parent::handleBuilder($builder, $values);
     }
 }
