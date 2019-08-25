@@ -181,6 +181,7 @@ class BookingTest extends TestCase
     {
         factory(Position::class)->create();
 
+        // Invalid "from" date
         $this->graphQL('
           mutation {
             createBooking(user_id: 1300001, position: {
@@ -199,11 +200,50 @@ class BookingTest extends TestCase
             ]
         );
 
+        // Invalid Position
         $this->graphQL('
           mutation {
             createBooking(user_id: 1300001, position: {
                 connect: 2
-            }, from:"Blah", to:"2019-08-20 16:30:00") {
+            }, from:"2019-08-20 15:00:00", to:"2019-08-20 16:30:00") {
+                id
+            }
+          }')->assertJsonStructure([
+                "errors" => [
+                    [
+                        "message",
+                        "extensions",
+                        "locations"
+                    ]
+                ]
+            ]
+        );
+
+        // "From" and "To" the same
+        $this->graphQL('
+          mutation {
+            createBooking(user_id: 1300001, position: {
+                connect: 1
+            }, from:"2019-08-20 15:00:00", to:"2019-08-20 15:00:00") {
+                id
+            }
+          }')->assertJsonStructure([
+                "errors" => [
+                    [
+                        "message",
+                        "extensions",
+                        "locations"
+                    ]
+                ]
+            ]
+        );
+
+        // "From" after "To"
+        $this->graphQL('
+          mutation {
+            createBooking(user_id: 1300001, position: {
+                connect: 1
+            }, from:"2019-08-20 15:30:00", to:"2019-08-20 15:00:00") {
                 id
             }
           }')->assertJsonStructure([
