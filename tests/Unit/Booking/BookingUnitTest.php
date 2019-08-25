@@ -6,8 +6,8 @@ use App\Booking;
 use App\Exceptions\OverlappingBookingException;
 use App\Position;
 use Carbon\Carbon;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class BookingUnitTest extends TestCase
 {
@@ -49,6 +49,11 @@ class BookingUnitTest extends TestCase
             $this->booking->position_id,
             new Carbon('10th January 2018 15:59:00'),
             new Carbon('10th January 2018 18:00:00'))
+        );
+        $this->assertFalse(Booking::canBeMade(
+            $this->booking->position_id,
+            new Carbon('10th January 2018 15:00:00'),
+            new Carbon('10th January 2018 16:00:00'))
         );
     }
 

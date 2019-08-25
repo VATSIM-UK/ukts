@@ -26,7 +26,9 @@ class Booking extends Model
                     $query->where('to', '>', $from)
                         ->where('to', '<', $to);
                 });
-            })->exists();
+            })
+            ->orWhere(['from' => $from, 'to' => $to])
+            ->exists();
     }
 
     public static function boot()
