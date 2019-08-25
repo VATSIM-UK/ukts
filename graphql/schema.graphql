@@ -7,6 +7,11 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 type Query
 type Mutation
 
+input DateRange {
+    from: Date!
+    to: Date!
+}
+
 #import position.graphql
 #import bookings.graphql
 

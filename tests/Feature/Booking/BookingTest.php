@@ -89,6 +89,45 @@ class BookingTest extends TestCase
     }
 
     /* @test */
+    public function testItReturnsBookingsBetweenDates()
+    {
+        factory(Booking::class)->create([
+            'from' => '2019-08-06 14:00:00',
+            'to' => '2019-08-06 15:00:00'
+        ]);
+        factory(Booking::class)->create([
+            'from' => '2019-08-09 20:00:00',
+            'to' => '2019-08-09 22:30:00'
+        ]);
+        factory(Booking::class)->create([
+            'from' => '2019-08-04 14:00:00',
+            'to' => '2019-08-04 15:00:00'
+        ]);
+        factory(Booking::class)->create([
+            'from' => '2019-08-10 14:00:00',
+            'to' => '2019-08-10 15:00:00'
+        ]);
+
+        $data = $this->graphQL('
+        {
+            bookingsBetweenDates (from: {
+                from: "2019-08-05"
+                to: "2019-08-09"         
+            }) {
+                id
+            }
+        }
+        ')->assertJson([
+            'data' => [
+                'bookingsBetweenDates' => [
+                    ['id' => 1],
+                    ['id' => 2],
+                ]
+            ]
+        ]);
+    }
+
+    /* @test */
     public function testItReturnsBookingById()
     {
         $bookings = factory(Booking::class, 3)->create();

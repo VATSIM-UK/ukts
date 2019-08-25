@@ -230,7 +230,7 @@ return [
     |
     */
 
-    'new_between_directives' => false,
+    'new_between_directives' => true,
 
     /*
     |--------------------------------------------------------------------------
