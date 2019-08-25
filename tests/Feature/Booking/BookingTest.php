@@ -56,6 +56,39 @@ class BookingTest extends TestCase
     }
 
     /* @test */
+    public function testItReturnsBookingsForDate()
+    {
+
+        factory(Booking::class)->create([
+                'from' => '2019-08-10 14:00:00',
+                'to' => '2019-08-10 15:00:00'
+            ]);
+        factory(Booking::class)->create([
+                'from' => '2019-08-09 14:00:00',
+                'to' => '2019-08-09 15:00:00'
+            ]);
+        factory(Booking::class)->create([
+                'from' => '2019-08-09 20:00:00',
+                'to' => '2019-08-09 22:30:00'
+            ]);
+
+        $data = $this->graphQL('
+        {
+            bookingsByDate (from: "2019-08-09") {
+                id
+            }
+        }
+        ')->assertJson([
+            'data' => [
+                'bookingsByDate' => [
+                    ['id' => 2],
+                    ['id' => 3],
+                ]
+            ]
+        ]);
+    }
+
+    /* @test */
     public function testItReturnsBookingById()
     {
         $bookings = factory(Booking::class, 3)->create();

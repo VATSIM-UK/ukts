@@ -1,5 +1,6 @@
 extend type Query {
     bookings: [Booking!]! @paginate
+    bookingsByDate(from: Date! @where(clause: "whereDate")): [Booking!]! @all
     booking(id: ID @eq): Booking @find
 }
 
