@@ -5,7 +5,6 @@ namespace App;
 use App\Exceptions\OverlappingBookingException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\DB;
 
 class Booking extends Model
 {
