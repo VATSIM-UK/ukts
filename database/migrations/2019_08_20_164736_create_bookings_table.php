@@ -17,8 +17,8 @@ class CreateBookingsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('position_id');
-            $table->time('from');
-            $table->time('to');
+            $table->timestamp('from')->nullable();
+            $table->timestamp('to')->nullable();
             $table->timestamps();
         });
     }
