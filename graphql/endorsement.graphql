@@ -1,11 +1,17 @@
 extend type Query {
     specialEndorsements: [SpecialEndorsement!]! @all
+    specialEndorsement(id: ID @eq): SpecialEndorsement @find
 }
 
 extend type Mutation {
     createSpecialEndorsement(
         name: String! @rules(apply: ["min:3"])
     ): SpecialEndorsement! @create
+
+    updateSpecialEndorsement(
+        id: ID!
+        name: String @rules(apply: ["min:3"])
+    ): SpecialEndorsement @update
 
     deleteSpecialEndorsement(
         id: ID!

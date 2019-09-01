@@ -36,6 +36,29 @@ class SpecialEndorsementTest extends TestCase
     }
 
     /** @test */
+    public function testAllEndorsementCanBeRetrievedByID()
+    {
+        $endorsement = factory(SpecialEndorsement::class)->create([
+            'name' => 'FISO Operator'
+        ]);
+
+        $this->graphQL("
+        query {
+          specialEndorsement(id: \"{$endorsement->id}\") {
+            id
+            name
+          }
+        }")->assertJson([
+            'data' => [
+                'specialEndorsement' => [
+                        'id' => $endorsement->id,
+                        'name' => $endorsement->name
+                    ]
+            ]
+        ]);
+    }
+
+    /** @test */
     public function testEndorsementCanBeCreated()
     {
         $this->graphQL('
@@ -56,11 +79,48 @@ class SpecialEndorsementTest extends TestCase
     }
 
     /** @test */
+    public function testEndorsementCanBeUpdated()
+    {
+        $endorsement = factory(SpecialEndorsement::class)->create([
+            'name' => 'FISO Operator'
+        ]);
+
+        $this->assertDatabaseHas('special_endorsements', [
+            'id' => $endorsement->id,
+            'name' => 'FISO Operator'
+        ]);
+
+        $this->graphQL("
+            mutation { 
+                updateSpecialEndorsement(
+                    id: \"{$endorsement->id}\"
+                    name: \"Heathrow Director\"
+                )
+                {
+                    id
+                    name
+                }                    
+            }
+        ");
+
+        $this->assertDatabaseHas('special_endorsements', [
+            'id' => $endorsement->id,
+            'name' => 'Heathrow Director'
+        ]);
+    }
+
+    /** @test */
     public function testEndorsementCanBeSoftDeleted()
     {
         Carbon::setTestNow(Carbon::now());
 
         $endorsement = factory(SpecialEndorsement::class)->create();
+
+        $this->assertDatabaseHas('special_endorsements', [
+            'id' => $endorsement->id,
+            'name' => $endorsement->name,
+            'deleted_at' => null
+        ]);
 
         $this->graphQL("
             mutation {
