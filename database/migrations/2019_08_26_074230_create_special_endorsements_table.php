@@ -19,6 +19,15 @@ class CreateSpecialEndorsementsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::create('special_endorsement_assignments', function (Blueprint $table) {
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('endorsement_id');
+            $table->primary(['user_id', 'endorsement_id']);
+
+            $table->unsignedInteger('granted_by');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -29,5 +38,6 @@ class CreateSpecialEndorsementsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('special_endorsements');
+        Schema::dropIfExists('special_endorsement_assignments');
     }
 }

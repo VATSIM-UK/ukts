@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Endorsement;
 
-use App\SpecialEndorsement;
+use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
