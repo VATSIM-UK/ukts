@@ -2,9 +2,10 @@
 
 namespace Tests\Unit\Position;
 
+use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Position;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class PositionUnitTest extends TestCase
 {
@@ -16,7 +17,7 @@ class PositionUnitTest extends TestCase
     {
         parent::setUp();
 
-        $this->position = factory(Position::class)->make(['callsign' => 'EGGD_APP']);
+        $this->position = factory(Position::class)->create(['callsign' => 'EGGD_APP']);
     }
 
     /** @test */
@@ -31,5 +32,18 @@ class PositionUnitTest extends TestCase
         $subPosition = factory(Position::class)->make(['callsign' => 'EGGD_R_APP']);
 
         $this->assertEquals('APP', $subPosition->suffix);
+    }
+
+    /** @test */
+    public function itCanBeRelatedToSpecialEndorsements()
+    {
+        $endorsements = factory(SpecialEndorsement::class, 2)->create();
+
+        $this->assertEquals(0, $this->position->specialEndorsements()->count());
+
+        $this->position->specialEndorsements()->attach($endorsements->last());
+
+        $this->assertEquals(1, $this->position->specialEndorsements()->count());
+        $this->assertEquals($endorsements->last()->name, $this->position->specialEndorsements()->first()->name);
     }
 }

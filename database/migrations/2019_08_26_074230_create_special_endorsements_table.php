@@ -28,6 +28,13 @@ class CreateSpecialEndorsementsTable extends Migration
             $table->unsignedInteger('granted_by');
             $table->timestamps();
         });
+
+        Schema::create('special_endorsement_positions', function (Blueprint $table) {
+            $table->unsignedInteger('endorsement_id');
+            $table->unsignedInteger('position_id');
+            $table->primary(['endorsement_id', 'position_id']);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -39,5 +46,6 @@ class CreateSpecialEndorsementsTable extends Migration
     {
         Schema::dropIfExists('special_endorsements');
         Schema::dropIfExists('special_endorsement_assignments');
+        Schema::dropIfExists('special_endorsement_positions');
     }
 }
