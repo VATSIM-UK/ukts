@@ -1,0 +1,21 @@
+extend type Query {
+    specialEndorsements: [SpecialEndorsement!]! @all
+}
+
+extend type Mutation {
+    createSpecialEndorsement(
+        name: String! @rules(apply: ["min:3"])
+    ): SpecialEndorsement! @create
+
+    deleteSpecialEndorsement(
+        id: ID!
+    ): SpecialEndorsement! @delete
+}
+
+type SpecialEndorsement {
+    id: ID!
+    name: String!
+    deleted_at: DateTime
+    created_at: DateTime!
+    updated_at: DateTime!
+}
