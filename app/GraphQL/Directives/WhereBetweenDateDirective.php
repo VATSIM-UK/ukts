@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Directives;
 
-use Nuwave\Lighthouse\Between\WhereBetweenDirective;
+use Nuwave\Lighthouse\Schema\Directives\WhereBetweenDirective;
 
 class WhereBetweenDateDirective extends WhereBetweenDirective
 {
