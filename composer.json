@@ -10,12 +10,12 @@
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
-        "laravel/framework": "5.8.*",
+        "laravel/framework": "^6.0",
         "laravel/horizon": "^3.2",
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
         "mll-lab/laravel-graphql-playground": "^1.1",
-        "nuwave/lighthouse": "^3.7"
+        "nuwave/lighthouse": "^4.2"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
