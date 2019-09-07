@@ -2,6 +2,7 @@
 
 namespace App\Modules\Endorsement\Special;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Assignment extends Pivot
@@ -13,4 +14,9 @@ class Assignment extends Pivot
         'endorsement_id',
         'granted_by'
     ];
+
+    public function endorsement(): BelongsTo
+    {
+        return $this->belongsTo(SpecialEndorsement::class);
+    }
 }

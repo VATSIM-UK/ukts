@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Endorsement;
 
+use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -51,9 +52,9 @@ class SpecialEndorsementTest extends TestCase
         }")->assertJson([
             'data' => [
                 'specialEndorsement' => [
-                        'id' => $endorsement->id,
-                        'name' => $endorsement->name
-                    ]
+                    'id' => $endorsement->id,
+                    'name' => $endorsement->name
+                ]
             ]
         ]);
     }
@@ -135,6 +136,38 @@ class SpecialEndorsementTest extends TestCase
             'id' => $endorsement->id,
             'name' => $endorsement->name,
             'deleted_at' => now()
+        ]);
+    }
+
+    /** @test */
+    public function testEndorsementsCanBeRetrievedByUser()
+    {
+        $endorsement = factory(SpecialEndorsement::class)->create();
+        $assignment = Assignment::create([
+            'user_id' => 1300005,
+            'granted_by' => 1300005,
+            'endorsement_id' => $endorsement->id
+        ]);
+        $this->graphQL("
+        query {
+            specialEndorsementsByUser(user_id: 1300005) {
+                user_id
+                endorsement_id
+                endorsement {
+                    name
+                }
+            }
+        }
+        ")->assertJson([
+            'data' => [
+                'specialEndorsementsByUser' => [
+                    'user_id' => 1300005,
+                    'endorsement_id' => $endorsement->id,
+                    'endorsement' => [
+                        'name' => $endorsement->name
+                    ]
+                ]
+            ]
         ]);
     }
 }
