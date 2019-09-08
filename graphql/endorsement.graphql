@@ -17,6 +17,12 @@ extend type Mutation {
     deleteSpecialEndorsement(
         id: ID!
     ): SpecialEndorsement! @delete
+
+    grantSpecialEndorsement(
+        user_id: ID!
+        endorsement_id: Int!
+        granted_by: Int!): Assignment!
+    @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\AssignSpecialEndorsement")
 }
 
 type SpecialEndorsement {
