@@ -50,11 +50,22 @@ class User extends Model
      * Backend API Functions
      */
 
+    /**
+     * Generates a list of fields to get for the user model, using defaults or supplied list of fields
+     *
+     * @param $fields
+     * @return string
+     */
     private static function generateParams($fields)
     {
         return implode(",", array_merge(['id'], $fields ? $fields : self::$defaultFields));
     }
 
+    /**
+     * Sends a POST request to the authentication API with the given query
+     * @param $query
+     * @return \stdClass|null
+     */
     private static function makeApiCall($query)
     {
         $token = self::getAuthAccessToken();
@@ -79,7 +90,6 @@ class User extends Model
     private static function getAuthAccessToken()
     {
         $token = Cache::get('AUTH_API_TOKEN');
-        $token = null;
         if (!$token) {
             $guzzle = new Client;
 
