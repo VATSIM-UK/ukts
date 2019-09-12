@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^6.0",
         "laravel/horizon": "^3.2",
         "laravel/telescope": "^2.0",

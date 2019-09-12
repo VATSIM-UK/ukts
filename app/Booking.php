@@ -15,6 +15,22 @@ class Booking extends Model
         return $this->belongsTo(Position::class);
     }
 
+    public function getUserAttribute($id)
+    {
+        return User::find($id);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($booking) {
+            if (!self::canBeMade($booking->position_id, $booking->from, $booking->to)) {
+                throw new OverlappingBookingException();
+            }
+        });
+    }
+
     public static function canBeMade($position_id, $from, $to)
     {
         return !self::where('position_id', $position_id)
@@ -29,17 +45,6 @@ class Booking extends Model
             })
             ->orWhere(['from' => $from, 'to' => $to])
             ->exists();
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-
-        self::creating(function ($booking) {
-            if (!self::canBeMade($booking->position_id, $booking->from, $booking->to)) {
-                throw new OverlappingBookingException();
-            }
-        });
     }
 
 }
