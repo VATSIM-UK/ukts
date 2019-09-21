@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\AuthPackage\User;
 use App\Exceptions\OverlappingBookingException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,9 +16,9 @@ class Booking extends Model
         return $this->belongsTo(Position::class);
     }
 
-    public function getUserAttribute($id)
+    public function user()
     {
-        return User::find($id);
+        return $this->belongsTo(User::class);
     }
 
     public static function boot()

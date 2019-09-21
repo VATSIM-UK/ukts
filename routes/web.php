@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
+    $b = \App\Booking::first();
+    //$u = \App\AuthPackage\User::find(1300001);
+
+    dd($b->user()->get(['name_first', 'email']));
     return view('welcome');
 });

@@ -13,7 +13,8 @@ class User extends Model
 {
 
     protected static $unguarded = true;
-
+    protected static $singleMethod = "user";
+    protected static $multipleMethod = "users";
     private static $defaultFields = [
         "name_first",
         "name_last",
@@ -43,12 +44,59 @@ class User extends Model
             ";
         $response = self::makeApiCall($query);
         return isset($response->data->user) ? self::initModelWithData($response->data->user) : null;
-
     }
 
-    /*
-     * Backend API Functions
-     */
+    public static function findMany(array $ids, $fields)
+    {
+        $ids = json_encode($ids);
+
+        $query =
+            "{
+                    users(ids:$ids){
+                        " . self::generateParams($fields) . "
+                    }
+                }
+            ";
+        $response = self::makeApiCall($query);
+        if (!isset($response->data->users)) {
+            return null;
+        }
+
+        $collection = collect();
+        foreach ($response->data->users as $user) {
+            $collection->push(self::initModelWithData($user));
+        }
+        return $collection;
+    }
+
+    // Example remote where
+    public static function where($filters, $fields = null)
+    {
+        $query =
+            "{
+                    users($filters){
+                        " . self::generateParams($fields) . "
+                    }
+                }
+            ";
+        $response = self::makeApiCall($query);
+
+        if (!isset($response->data->users)) {
+            return null;
+        }
+
+        $collection = collect();
+        foreach ($response->data->users as $user) {
+            $collection->push(self::initModelWithData($response->data->user));
+        }
+        return $collection;
+    }
+
+    public function newEloquentBuilder($query)
+    {
+        return new RemoteBuilder($query);
+    }
+
 
     /**
      * Generates a list of fields to get for the user model, using defaults or supplied list of fields
@@ -58,8 +106,17 @@ class User extends Model
      */
     private static function generateParams($fields)
     {
+        if ($fields == ['*']) {
+            $fields = null;
+        }
         return implode(",", array_merge(['id'], $fields ? $fields : self::$defaultFields));
     }
+
+
+
+    /*
+     * Backend API Functions
+     */
 
     /**
      * Sends a POST request to the authentication API with the given query
@@ -119,5 +176,4 @@ class User extends Model
 
         return $model->fill((array)$data);
     }
-
 }
