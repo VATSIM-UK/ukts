@@ -6,6 +6,7 @@ namespace App\AuthPackage;
 
 use App\Booking;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
@@ -62,7 +63,7 @@ class User extends Model
             return null;
         }
 
-        $collection = collect();
+        $collection = new Collection();
         foreach ($response->data->users as $user) {
             $collection->push(self::initModelWithData($user));
         }

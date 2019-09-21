@@ -16,8 +16,18 @@ class RemoteBuilder extends Builder
             if ($this->getColumnNameWithoutTable($where['column']) != "id") {
                 continue;
             }
-            $ids[] = $where['value'];
+
+            if (isset($where['values'])) {
+                $ids = array_merge($ids, $where['values']);
+            } else {
+                $ids[] = $where['value'];
+            }
         }
+
+        if ($this->query->columns) {
+            $columns = $this->query->columns;
+        }
+
         return $this->model::findMany($ids, $columns);
     }
 
