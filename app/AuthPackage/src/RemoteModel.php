@@ -8,14 +8,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use VATSIMUK\Auth\Remote\GraphQL\Builder;
 
-class RemoteUser extends Model
+abstract class RemoteModel extends Model
 {
-    protected static $unguarded = true;
-
-    private static $defaultFields = [
-        "name_first",
-        "name_last",
-    ];
+    protected static $singleMethod;
+    protected static $manyMethod;
+    protected static $defaultFields = [];
+    public $exists = true;
 
     /*
      * Default Function Overrides
@@ -23,15 +21,15 @@ class RemoteUser extends Model
 
     public static function find($id, $fields = null)
     {
-        $query = new Builder('user', self::generateParams($fields), "id:$id");
+        $query = new Builder(static::$singleMethod, static::generateParams($fields), "id:$id");
         $response = $query->execute();
-        return !$response->isEmpty() ? self::initModelWithData($response->getResults()) : null;
+        return !$response->isEmpty() ? static::initModelWithData($response->getResults()) : null;
     }
 
     public static function findMany(array $ids, $fields = null)
     {
         $argument = "ids:" . json_encode($ids);
-        $query = new Builder('users', self::generateParams($fields), $argument);
+        $query = new Builder(static::$manyMethod, static::generateParams($fields), $argument);
         $response = $query->execute();
 
         if (!$response->isEmpty()) {
@@ -40,7 +38,7 @@ class RemoteUser extends Model
 
         $collection = new Collection();
         foreach ($response->getResults() as $user) {
-            $collection->push(self::initModelWithData($user));
+            $collection->push(static::initModelWithData($user));
         }
         return $collection;
     }
@@ -68,19 +66,18 @@ class RemoteUser extends Model
         if ($fields == ['*']) {
             $fields = null;
         }
-        return array_merge(['id'], $fields ? $fields : self::$defaultFields);
+        return array_merge(['id'], $fields ? $fields : static::$defaultFields);
     }
-
 
     /**
      * Creates an instance of the model with the given data filled
      *
      * @param $data
-     * @return RemoteUser
+     * @return RemoteModel
      */
     private static function initModelWithData($data)
     {
-        $model = new self();
+        $model = new static();
 
         return $model->fill((array)$data);
     }

@@ -2,7 +2,7 @@
 
 namespace App;
 
-use VATSIMUK\Auth\Remote\RemoteUser;
+use VATSIMUK\Auth\Remote\Models\RemoteUser;
 
 class User extends RemoteUser
 {
