@@ -12,9 +12,15 @@
 */
 
 Route::get('/', function () {
-    $b = \App\Booking::first();
+
+    dd(\App\User::find(1300001));
+
+
+    $b = \App\Booking::with('user:id,name_first')->get();
+    dd($b);
     //$u = \App\AuthPackage\User::find(1300001);
 
+//    dd(\App\AuthPackage\User::whereIn('email', ['1@g.com', '2@g.com']));
     dd($b->user()->get(['name_first', 'email']));
     return view('welcome');
 });

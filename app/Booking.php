@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\AuthPackage\User;
+use App\AuthPackage\RemoteUser;
 use App\Exceptions\OverlappingBookingException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +18,7 @@ class Booking extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(RemoteUser::class);
     }
 
     public static function boot()
