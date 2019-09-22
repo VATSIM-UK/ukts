@@ -29,6 +29,10 @@ class Builder
      * Action Functions
      */
 
+    /**
+     * Executes the query
+     * @return Response|null
+     */
     public function execute()
     {
         // Get / generate machine-machine authentication token
@@ -45,7 +49,6 @@ class Builder
         ]);
 
         // Execute query
-
         $this->executedQuery = $this->getGraphQLQuery();
 
         try {
@@ -65,7 +68,6 @@ class Builder
 
     /**
      * Generates or fetches Auth service token
-     *
      * @return string|null
      */
     private function getAuthAccessToken()
@@ -99,6 +101,10 @@ class Builder
      * Computed Functions
      */
 
+    /**
+     * Generate the complete GraphQL query
+     * @return string
+     */
     public function getGraphQLQuery()
     {
         $query = $this->action . "{\n";
@@ -108,6 +114,10 @@ class Builder
         return $query;
     }
 
+    /*
+     * Generates the body of the GraphQL request
+     * @return string
+     */
     public function getColumns()
     {
         return $this->buildColumns($this->columns);
@@ -117,6 +127,11 @@ class Builder
      * Helper Functions
      */
 
+    /**
+     * Iterates through array of columns supplied, and converts into GraphQL query format
+     * @param array $rawColumns
+     * @return string
+     */
     private function buildColumns(array $rawColumns)
     {
         $columnString = '';
@@ -136,6 +151,10 @@ class Builder
      * Getters
      */
 
+    /**
+     * Gets the GraphQL method
+     * @return string
+     */
     public function getMethod()
     {
         return $this->method;
