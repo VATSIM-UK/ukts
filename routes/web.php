@@ -24,3 +24,7 @@ Route::get('/', function () {
     dd($b->user()->get(['name_first', 'email']));
     return view('welcome');
 });
+
+Route::middleware(['authjwt'])->get('/secretroute', function () {
+    return "Success!";
+});

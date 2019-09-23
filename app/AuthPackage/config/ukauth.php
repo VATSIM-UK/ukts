@@ -41,13 +41,23 @@ return [
     */
 
     /*
-     * The OAuth Client ID for machine-machine API calls.
+     * The OAuth Client ID for User Auth API calls.
      */
     'client_id' => env('AUTH_CLIENT_ID'),
 
     /*
-     * The OAuth Client secret for machine-machine API calls.
+     * The OAuth Client secret for User Auth API calls.
      */
     'client_secret' => env('AUTH_CLIENT_SECRET'),
+
+    /*
+     * The OAuth Client ID for machine-machine API calls.
+     */
+    'machine_client_id' => env('AUTH_MACHINE_CLIENT_ID'),
+
+    /*
+     * The OAuth Client secret for machine-machine API calls.
+     */
+    'machine_client_secret' => env('AUTH_MACHINE_CLIENT_SECRET'),
 
 ];

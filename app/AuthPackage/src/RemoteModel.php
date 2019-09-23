@@ -7,6 +7,7 @@ namespace VATSIMUK\Auth\Remote;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use VATSIMUK\Auth\Remote\GraphQL\Builder;
+use VATSIMUK\Auth\Remote\RemoteEloquent\RemoteBuilder;
 
 abstract class RemoteModel extends Model
 {
@@ -59,9 +60,9 @@ abstract class RemoteModel extends Model
      * Generates a list of fields to get for the user model, using defaults or supplied list of fields
      *
      * @param $fields
-     * @return string
+     * @return array
      */
-    private static function generateParams($fields)
+    public static function generateParams($fields)
     {
         if ($fields == ['*']) {
             $fields = null;
@@ -75,7 +76,7 @@ abstract class RemoteModel extends Model
      * @param $data
      * @return RemoteModel
      */
-    private static function initModelWithData($data)
+    public static function initModelWithData($data)
     {
         $model = new static();
 

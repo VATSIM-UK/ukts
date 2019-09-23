@@ -26,6 +26,8 @@ class UKAuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadRoutesFrom(__DIR__ . '/routes.php');
+
         /*
          * Note: It is preferred that the config is not published. If changed are required to the default,
          * publish the config and then delete any value you are not overriding.

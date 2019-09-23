@@ -1,7 +1,7 @@
 <?php
 
 
-namespace VATSIMUK\Auth\Remote;
+namespace VATSIMUK\Auth\Remote\RemoteEloquent;
 
 
 use Illuminate\Database\Eloquent\Builder;

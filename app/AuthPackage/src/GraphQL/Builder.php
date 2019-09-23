@@ -33,12 +33,14 @@ class Builder
      * Executes the query
      * @return Response|null
      */
-    public function execute()
+    public function execute($token = null)
     {
         // Get / generate machine-machine authentication token
-        $token = $this->getAuthAccessToken();
         if (!$token) {
-            return null;
+            $token = $this->getAuthAccessToken();
+            if (!$token) {
+                return null;
+            }
         }
 
         // Create client
@@ -80,8 +82,8 @@ class Builder
             $response = $guzzle->post(config('ukauth.root_url') . config('ukauth.oauth_path') . '/token', [
                 'form_params' => [
                     'grant_type' => 'client_credentials',
-                    'client_id' => config('ukauth.client_id'),
-                    'client_secret' => config('ukauth.client_secret'),
+                    'client_id' => config('ukauth.machine_client_id'),
+                    'client_secret' => config('ukauth.machine_client_secret'),
                     'scope' => '*'
                 ]
             ]);
