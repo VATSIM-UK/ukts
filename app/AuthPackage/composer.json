@@ -8,11 +8,17 @@
         "php": "^7.2",
         "illuminate/support": "6.0.*",
         "guzzlehttp/guzzle": "^6.3",
-        "ext-json": "*"
+        "ext-json": "*",
+        "orchestra/testbench": "^4.0"
     },
     "autoload": {
         "psr-4": {
             "VATSIMUK\\Auth\\Remote\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "VATSIMUK\\Auth\\Tests\\": "tests/"
         }
     },
     "extra": {
