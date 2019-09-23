@@ -30,5 +30,4 @@ before_script:
     fi
 
 script:
-  - vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
-  - (cd app/AuthPackage && vendor/bin/phpunit)
+  - composer test
