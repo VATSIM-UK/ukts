@@ -4,11 +4,13 @@
     "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": "^7.2",
         "illuminate/support": "6.0.*",
         "guzzlehttp/guzzle": "^6.3",
         "ext-json": "*",
+        "phpunit/phpunit": "^8.0",
         "orchestra/testbench": "^4.0"
     },
     "autoload": {
