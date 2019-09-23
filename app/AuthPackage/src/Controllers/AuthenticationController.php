@@ -51,6 +51,7 @@ class AuthenticationController extends Controller
             ->issuedAt(time())
             ->expiresAt($expires)
             ->withClaim('uid', $user->id)
+            ->withClaim('access_token', $response['access_token'])
             ->getToken(new Sha256(), new Key(config('app.secret')));
 
 
