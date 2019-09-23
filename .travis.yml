@@ -2,31 +2,33 @@ os:
   - linux
 
 php:
- - 7.2
- - 7.3
+  - 7.2
+  - 7.3
 
 addons:
   mariadb: '10.2'
 
 before_install:
-- mysql -e 'create database IF NOT EXISTS ukts_core;' -uroot
-- sudo apt-get update
-- composer self-update
-- composer install --prefer-dist --no-interaction --optimize-autoloader --no-suggest
+  - mysql -e 'create database IF NOT EXISTS ukts_core;' -uroot
+  - sudo apt-get update
+  - composer self-update
+  - composer install --prefer-dist --no-interaction --optimize-autoloader --no-suggest
+  - (cd app/AuthPackage && composer install --prefer-dist --no-interaction --optimize-autoloader --no-suggest)
 
 install:
-- cp .env.example .env
-- php artisan key:generate
-- php artisan migrate -vvv -n
+  - cp .env.example .env
+  - php artisan key:generate
+  - php artisan migrate -vvv -n
 
 before_script:
-- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi
-- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
     chmod +x ./cc-test-reporter;
-  fi
-- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-  ./cc-test-reporter before-build;
-  fi
+    fi
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    ./cc-test-reporter before-build;
+    fi
 
 script:
-- vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
+  - vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
+  - (cd app/AuthPackage vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml)
