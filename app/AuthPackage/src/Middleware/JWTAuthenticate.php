@@ -16,11 +16,13 @@ class JWTAuthenticate
             abort('401');
         }
 
-        $token = (new Parser())->parse((string)$request->bearerToken());
+        $token = (new Parser())->parse((string) $request->bearerToken());
 
         if (!$token->verify(new Sha256(), new Key(config('app.secret')))) {
             abort('401');
         }
+
+
 
         return $next($request);
     }

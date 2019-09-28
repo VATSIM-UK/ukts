@@ -2,7 +2,6 @@
 
 namespace App;
 
-use VATSIMUK\Auth\Remote\Models\RemoteUser;
 use App\Exceptions\OverlappingBookingException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +17,7 @@ class Booking extends Model
 
     public function user()
     {
-        return $this->belongsTo(RemoteUser::class);
+        return $this->belongsTo(User::class);
     }
 
     public static function boot()
