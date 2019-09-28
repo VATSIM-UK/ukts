@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\AuthPackage\RemoteUser;
+use VATSIMUK\Auth\Remote\Models\RemoteUser;
 use App\Exceptions\OverlappingBookingException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
