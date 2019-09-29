@@ -42,7 +42,7 @@ class AuthenticationController extends Controller
         $response = json_decode((string)$response->getBody(), true);
 
         // Create JWT for service auth
-        $user = User::findWithAccessToken($response['access_token']);
+        $user = User::findWithAccessToken($response['access_token'], ['name_first', 'name_last']);
 
         $expires = Carbon::now()->addSeconds($response['expires_in'])->getTimestamp();
 
@@ -51,6 +51,8 @@ class AuthenticationController extends Controller
             ->issuedAt(time())
             ->expiresAt($expires)
             ->withClaim('uid', $user->id)
+            ->withClaim('name_first', $user->name_first)
+            ->withClaim('name_last', $user->name_last)
             ->withClaim('access_token', $response['access_token'])
             ->getToken(new Sha256(), new Key(config('app.secret')));
 

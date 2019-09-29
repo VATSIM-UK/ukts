@@ -5,9 +5,17 @@ namespace VATSIMUK\Auth\Remote\RemoteEloquent;
 
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class RemoteBuilder extends Builder
 {
+    private $token;
+    public function __construct(QueryBuilder $query, $token = null)
+    {
+        $this->token = $token;
+        parent::__construct($query);
+    }
+
     public function get($columns = ['*'])
     {
         // Only support IDs for now
@@ -28,7 +36,7 @@ class RemoteBuilder extends Builder
             $columns = $this->query->columns;
         }
 
-        return $this->model::findMany($ids, $columns);
+        return $this->model::findMany($ids, $columns, $this->token);
     }
 
     /**
@@ -43,7 +51,7 @@ class RemoteBuilder extends Builder
         if ($this->getColumnNameWithoutTable($this->query->wheres[0]['column']) != "id") {
             return null;
         }
-        return $this->model::find($this->query->wheres[0]['value'], $columns);
+        return $this->model::find($this->query->wheres[0]['value'], $columns, $this->token);
     }
 
     private function getColumnNameWithoutTable($column)

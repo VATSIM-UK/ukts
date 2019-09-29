@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/', function () {
 
     dd(\App\User::find(1300001));
@@ -25,6 +27,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['authjwt'])->get('/secretroute', function () {
-    return "Success!";
+Route::middleware(['auth'])->get('/secretroute', function () {
+    dd(Auth::user()->fresh(['email']));
 });

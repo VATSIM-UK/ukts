@@ -2,7 +2,10 @@
 
 namespace VATSIMUK\Auth\Remote;
 
+use VATSIMUK\Auth\Remote\Auth\UKAuthGuard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use VATSIMUK\Auth\Remote\Auth\UKAuthUserProvider;
 
 class UKAuthServiceProvider extends ServiceProvider
 {
@@ -17,6 +20,14 @@ class UKAuthServiceProvider extends ServiceProvider
             __DIR__ . '/../config/ukauth.php',
             'ukauth'
         );
+
+        // add custom guard provider
+        Auth::provider('ukauth', function ($app, array $config) {
+            return new UKAuthUserProvider($app->make(config('ukauth.auth_user_model')));
+        });
+        Auth::extend('jwt', function ($app, $name, array $config) {
+            return new UKAuthGuard(Auth::createUserProvider($config['provider']), $app->make('request'));
+        });
     }
 
     /**

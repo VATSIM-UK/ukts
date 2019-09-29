@@ -4,6 +4,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Auth User Model
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the class instance that is returned for authenticated
+    | users.
+    |
+    */
+
+    'auth_user_model' => VATSIMUK\Auth\Remote\Models\RemoteUser::class,
+
+    /*
+    |--------------------------------------------------------------------------
     | Auth Service URL
     |--------------------------------------------------------------------------
     |

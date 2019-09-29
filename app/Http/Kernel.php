@@ -2,8 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Authenticate;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use VATSIMUK\Auth\Remote\Middleware\JWTAuthenticate;
+use VATSIMUK\Auth\Remote\Middleware\UKAuthAuthenticate;
 
 class Kernel extends HttpKernel
 {
@@ -52,7 +53,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'authjwt' => JWTAuthenticate::class,
+        'authuk' => UKAuthAuthenticate::class,
+        'auth' => Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

@@ -20,18 +20,18 @@ abstract class RemoteModel extends Model
      * Default Function Overrides
      */
 
-    public static function find($id, $fields = null)
+    public static function find($id, $columns = null, $token = null)
     {
-        $query = new Builder(static::$singleMethod, static::generateParams($fields), "id:$id");
-        $response = $query->execute();
+        $query = new Builder(static::$singleMethod, static::generateParams($columns), "id:$id");
+        $response = $query->execute($token);
         return !$response->isEmpty() ? static::initModelWithData($response->getResults()) : null;
     }
 
-    public static function findMany(array $ids, $fields = null)
+    public static function findMany(array $ids, $columns = null, $token = null)
     {
         $argument = "ids:" . json_encode($ids);
-        $query = new Builder(static::$manyMethod, static::generateParams($fields), $argument);
-        $response = $query->execute();
+        $query = new Builder(static::$manyMethod, static::generateParams($columns), $argument);
+        $response = $query->execute($token);
 
         if (!$response->isEmpty()) {
             return null;
@@ -44,6 +44,11 @@ abstract class RemoteModel extends Model
         return $collection;
     }
 
+    public function fresh($columns = null)
+    {
+        return static::find($this->id, $columns);
+    }
+
     /**
      * Sets the Builder class to use
      *
@@ -52,6 +57,9 @@ abstract class RemoteModel extends Model
      */
     public function newEloquentBuilder($query)
     {
+        if($this->auth_token){
+            return new RemoteBuilder($query, $this->auth_token);
+        }
         return new RemoteBuilder($query);
     }
 
@@ -59,15 +67,15 @@ abstract class RemoteModel extends Model
     /**
      * Generates a list of fields to get for the user model, using defaults or supplied list of fields
      *
-     * @param $fields
+     * @param $columns
      * @return array
      */
-    public static function generateParams($fields)
+    public static function generateParams($columns)
     {
-        if ($fields == ['*']) {
-            $fields = null;
+        if ($columns == ['*']) {
+            $columns = null;
         }
-        return array_merge(['id'], $fields ? $fields : static::$defaultFields);
+        return array_merge(['id'], $columns ? $columns : static::$defaultFields);
     }
 
     /**
