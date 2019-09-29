@@ -75,7 +75,14 @@ abstract class RemoteModel extends Model
         if ($columns == ['*']) {
             $columns = null;
         }
-        return array_merge(['id'], $columns ? $columns : static::$defaultFields);
+
+        if ($columns) {
+            $columns = array_filter($columns, function ($item){
+                return !is_null($item) && $item != '';
+            });
+        }
+
+        return array_unique(array_merge(['id'], $columns ? $columns : static::$defaultFields));
     }
 
     /**

@@ -26,7 +26,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "VATSIMUK\\Auth\\Tests\\": "tests/"
+            "VATSIMUK\\Auth\\Remote\\Tests\\": "tests/"
         }
     },
     "extra": {

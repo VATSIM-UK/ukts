@@ -39,12 +39,7 @@ After login via the SSO as above, the user is returned to `/auth/login/complete`
     ],
     ```
    
-It's as simple as that! If you don't want to use the standard `Authenticate` middleware via `auth`, you can use our custom middleware in `Kernel.php`.
-```php
-protected $routeMiddleware = [
-        'authuk' => VATSIMUK\Auth\Remote\Middleware\UKAuthAuthenticate::class,
-...
-```
+It's as simple as that! You can use the standard `auth` route middleware to protect routes.
 
 Note that by default, the `Auth` facade will return instances of `VATSIMUK\Auth\Remote\Models\RemoteUser`. If you want to leverage your own extension of the RemoteUser model with relationships and such, create a `ukauth.php` config file like so:
 ```php

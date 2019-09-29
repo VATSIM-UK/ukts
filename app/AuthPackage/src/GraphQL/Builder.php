@@ -79,20 +79,20 @@ class Builder
         if (!$token) {
             $guzzle = new Client;
 
-            $response = $guzzle->post(config('ukauth.root_url') . config('ukauth.oauth_path') . '/token', [
-                'form_params' => [
-                    'grant_type' => 'client_credentials',
-                    'client_id' => config('ukauth.machine_client_id'),
-                    'client_secret' => config('ukauth.machine_client_secret'),
-                    'scope' => '*'
-                ]
-            ]);
-
             try {
+                $response = $guzzle->post(config('ukauth.root_url') . config('ukauth.oauth_path') . '/token', [
+                    'form_params' => [
+                        'grant_type' => 'client_credentials',
+                        'client_id' => config('ukauth.machine_client_id'),
+                        'client_secret' => config('ukauth.machine_client_secret'),
+                        'scope' => '*'
+                    ]
+                ]);
+
                 $token = json_decode((string)$response->getBody(), true)['access_token'];
                 Cache::put('AUTH_API_TOKEN', $token, \DateInterval::createFromDateString("1 day"));
             } catch (\Exception $e) {
-                // TODO: Log Exception
+                // TODO: Log Exception. Likely either connection issue or output issue
                 return null;
             }
         }
@@ -109,8 +109,8 @@ class Builder
      */
     public function getGraphQLQuery()
     {
-        $query = $this->action . "{\n";
-        $query .= $this->method . ($this->arguments ? "($this->arguments){\n" : "{\n");
+        $query = $this->action . " {\n";
+        $query .= $this->method . ($this->arguments ? " ($this->arguments){\n" : " {\n");
         $query .= $this->getColumns();
         $query .= "}\n}";
         return $query;
