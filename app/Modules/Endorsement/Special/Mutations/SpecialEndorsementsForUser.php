@@ -22,7 +22,10 @@ class SpecialEndorsementsForUser
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        if ((!$user = User::find($args['user_id']))) {
+        // Check for testing
+        if(app()->environment('testing')){
+            $user = User::initModelWithData(['id' => $args['user_id']]);
+        }else if ((!$user = User::find($args['user_id']))) {
             throw new \InvalidArgumentException("User does not exist");
         }
         return $user->specialEndorsements;

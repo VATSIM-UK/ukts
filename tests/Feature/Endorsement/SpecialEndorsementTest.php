@@ -180,7 +180,7 @@ class SpecialEndorsementTest extends TestCase
                         'name' => $this->endorsement->name,
                         'pivot' => [
                             'user_id' => $assignment->user_id,
-                            'created_at' => $this->endorsement->created_at
+                            'created_at' => $assignment->created_at
                         ]
                     ]
                 ]
