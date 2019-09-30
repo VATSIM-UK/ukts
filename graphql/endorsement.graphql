@@ -31,9 +31,10 @@ type SpecialEndorsement {
     deleted_at: DateTime
     created_at: DateTime!
     updated_at: DateTime!
+    pivot: Assignment!
 }
 type Assignment {
     user_id: Int!
     endorsement_id: Int!
-    endorsement: SpecialEndorsement!
+    created_at: DateTime!
 }

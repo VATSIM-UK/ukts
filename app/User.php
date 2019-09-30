@@ -17,6 +17,6 @@ class User extends RemoteUser
             'special_endorsement_assignments',
             'user_id',
             'endorsement_id'
-            )->using(Assignment::class);
+        )->using(Assignment::class)->withTimestamps();
     }
 }

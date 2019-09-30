@@ -4,6 +4,7 @@ namespace Tests\Feature\Endorsement;
 
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
@@ -13,6 +14,8 @@ class SpecialEndorsementTest extends TestCase
 {
     use RefreshDatabase, MakesGraphQLRequests;
 
+    protected $user;
+
     protected $endorsement;
 
     protected function setUp(): void
@@ -20,6 +23,8 @@ class SpecialEndorsementTest extends TestCase
         parent::setUp();
 
         $this->endorsement = factory(SpecialEndorsement::class)->create();
+
+        $this->user = factory(User::class)->make();
     }
 
     /** @test */
@@ -158,21 +163,25 @@ class SpecialEndorsementTest extends TestCase
         ]);
         $this->graphQL("
         query {
-            specialEndorsementsByUser(user_id: 1300005) {
-                user_id
-                endorsement_id
-                endorsement {
-                    name
+            specialEndorsementsForUser(user_id: 1300005) {
+                id
+                name
+                pivot {
+                    user_id
+                    created_at
                 }
             }
         }
         ")->assertJson([
             'data' => [
-                'specialEndorsementsByUser' => [
-                    'user_id' => 1300005,
-                    'endorsement_id' => $this->endorsement->id,
-                    'endorsement' => [
-                        'name' => $this->endorsement->name
+                'specialEndorsementsForUser' => [
+                    [
+                        'id' => $this->endorsement->id,
+                        'name' => $this->endorsement->name,
+                        'pivot' => [
+                            'user_id' => $assignment->user_id,
+                            'created_at' => $this->endorsement->created_at
+                        ]
                     ]
                 ]
             ]

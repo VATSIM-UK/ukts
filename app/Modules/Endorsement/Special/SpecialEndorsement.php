@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use VATSIMUK\Auth\Remote\RemoteEloquent\HasRemoteRelationships;
-use VATSIMUK\Auth\Remote\RemoteEloquent\RemoteBelongsToMany;
 
 class SpecialEndorsement extends Model
 {
