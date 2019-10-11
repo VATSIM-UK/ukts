@@ -10,6 +10,15 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class SpecialEndorsementsForUser
 {
+
+    private $userInstance;
+
+    public function __construct(User $user)
+    {
+        // Inject user through service container
+        $this->userInstance = $user;
+    }
+
     /**
      * Return a value for the field.
      *
@@ -23,9 +32,7 @@ class SpecialEndorsementsForUser
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // Check for testing
-        if(app()->environment('testing')){
-            $user = User::initModelWithData(['id' => $args['user_id']]);
-        }else if ((!$user = User::find($args['user_id']))) {
+        if ((!$user = $this->userInstance::find($args['user_id']))) {
             throw new \InvalidArgumentException("User does not exist");
         }
         return $user->specialEndorsements;

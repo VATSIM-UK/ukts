@@ -161,6 +161,14 @@ class SpecialEndorsementTest extends TestCase
             'granted_by' => 1300005,
             'endorsement_id' => $this->endorsement->id
         ]);
+
+        $this->mock(User::class, function ($mock){
+            $mock
+                ->shouldReceive('find')
+                ->andReturn(
+                    User::initModelWithData(['id' => 1300005]));
+        });
+
         $this->graphQL("
         query {
             specialEndorsementsForUser(user_id: 1300005) {
