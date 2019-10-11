@@ -31,8 +31,7 @@ class SpecialEndorsementsForUser
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // Check for testing
-        if ((!$user = $this->userInstance::find($args['user_id']))) {
+        if (!$user = $this->userInstance::find($args['user_id'])) {
             throw new \InvalidArgumentException("User does not exist");
         }
         return $user->specialEndorsements;
