@@ -1,0 +1,40 @@
+extend type Query {
+    specialEndorsements: [SpecialEndorsement!]! @all
+    specialEndorsement(id: ID @eq): SpecialEndorsement @find
+    specialEndorsementsForUser(user_id: ID): [SpecialEndorsement]! @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\SpecialEndorsementsForUser")
+}
+
+extend type Mutation {
+    createSpecialEndorsement(
+        name: String! @rules(apply: ["min:3"])
+    ): SpecialEndorsement! @create
+
+    updateSpecialEndorsement(
+        id: ID!
+        name: String @rules(apply: ["min:3"])
+    ): SpecialEndorsement @update
+
+    deleteSpecialEndorsement(
+        id: ID!
+    ): SpecialEndorsement! @delete
+
+    grantSpecialEndorsement(
+        user_id: ID!
+        endorsement_id: Int!
+        granted_by: Int!): Assignment!
+    @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\AssignSpecialEndorsement")
+}
+
+type SpecialEndorsement {
+    id: ID!
+    name: String!
+    deleted_at: DateTime
+    created_at: DateTime!
+    updated_at: DateTime!
+    pivot: Assignment!
+}
+type Assignment {
+    user_id: Int!
+    endorsement_id: Int!
+    created_at: DateTime!
+}

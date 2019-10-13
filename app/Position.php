@@ -2,13 +2,13 @@
 
 namespace App;
 
+use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Position extends Model
 {
-    protected $fillable = ['callsign', 'name', 'frequency', 'type'];
-
     const TYPE_ATIS = 1;
     const TYPE_DELIVERY = 2;
     const TYPE_GROUND = 3;
@@ -17,7 +17,6 @@ class Position extends Model
     const TYPE_ENROUTE = 6;
     const TYPE_TERMINAL = 7;
     const TYPE_FSS = 8;
-
     const TYPES = [
         self::TYPE_ATIS => ['ATIS', 'ATIS'],
         self::TYPE_DELIVERY => ['DEL', 'Delivery'],
@@ -28,10 +27,21 @@ class Position extends Model
         self::TYPE_TERMINAL => ['TMA', 'Terminal'],
         self::TYPE_FSS => ['FSS', 'Flight Service Station'],
     ];
+    protected $fillable = ['callsign', 'name', 'frequency', 'type'];
 
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function specialEndorsements(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            SpecialEndorsement::class,
+            'special_endorsement_positions',
+            'position_id',
+            'endorsement_id'
+        );
     }
 
     public function getTypeAttribute()

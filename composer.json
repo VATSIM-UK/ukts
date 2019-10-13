@@ -15,6 +15,7 @@
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
         "mll-lab/laravel-graphql-playground": "^1.1",
+        "vatsimuk/auth-package": "dev-master",
         "nuwave/lighthouse": "^4.2"
     },
     "require-dev": {
@@ -62,5 +63,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/VATSIM-UK/auth-package"
+        }
+    ]
 }
