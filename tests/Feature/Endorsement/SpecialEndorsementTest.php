@@ -7,7 +7,6 @@ use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mockery\Mock;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;
 
@@ -225,7 +224,12 @@ class SpecialEndorsementTest extends TestCase
     {
         $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('findMany')
-                ->andReturn(collect([User::initModelWithData(['id' => $this->user->id, 'name_first' => 'Boaty'])]));
+                ->andReturn(collect([
+                    User::initModelWithData([
+                        'id' => $this->user->id,
+                        'name_first' => $this->user->name_first
+                    ])
+                ]));
         })->makePartial();
 
         $assignment = Assignment::create([
@@ -243,7 +247,6 @@ class SpecialEndorsementTest extends TestCase
             }
           }
         }")->assertJsonPath('data.specialEndorsement.name', $this->endorsement->name)
-        ->assertJsonPath('data.specialEndorsement.users.0.name_first', 'Boaty');
+            ->assertJsonPath('data.specialEndorsement.users.0.name_first', $this->user->name);
     }
-
 }
