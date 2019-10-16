@@ -1,6 +1,6 @@
 extend type Query {
     specialEndorsements: [SpecialEndorsement!]! @all
-    specialEndorsement(id: ID @eq): SpecialEndorsement @find
+    specialEndorsement(id: ID @eq): SpecialEndorsement @field(resolver: "App\\Modules\\Endorsement\\Special\\Queries\\EndorsementSummary")
     specialEndorsementsForUser(user_id: ID): [SpecialEndorsement]! @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\SpecialEndorsementsForUser")
 }
 
@@ -32,9 +32,11 @@ type SpecialEndorsement {
     created_at: DateTime!
     updated_at: DateTime!
     pivot: Assignment!
+    users: [User!]
 }
 type Assignment {
     user_id: Int!
     endorsement_id: Int!
     created_at: DateTime!
+    user: User!
 }
