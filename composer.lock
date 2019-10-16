@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "7051fa3be4c9e8050daf66f5f04f9869",
@@ -3599,12 +3599,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VATSIM-UK/auth-package.git",
-                "reference": "076def3811e6c272b13a15a747bb6da3c4a72f87"
+                "reference": "c80d2aac7392be4bed260a03860fe69e7a57ebde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VATSIM-UK/auth-package/zipball/076def3811e6c272b13a15a747bb6da3c4a72f87",
-                "reference": "076def3811e6c272b13a15a747bb6da3c4a72f87",
+                "url": "https://api.github.com/repos/VATSIM-UK/auth-package/zipball/c80d2aac7392be4bed260a03860fe69e7a57ebde",
+                "reference": "c80d2aac7392be4bed260a03860fe69e7a57ebde",
                 "shasum": ""
             },
             "require": {
@@ -3647,7 +3647,7 @@
                 "source": "https://github.com/VATSIM-UK/auth-package/tree/master",
                 "issues": "https://github.com/VATSIM-UK/auth-package/issues"
             },
-            "time": "2019-10-12T13:18:29+00:00"
+            "time": "2019-10-16T20:21:13+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
