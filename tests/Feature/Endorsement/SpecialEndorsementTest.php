@@ -247,6 +247,6 @@ class SpecialEndorsementTest extends TestCase
             }
           }
         }")->assertJsonPath('data.specialEndorsement.name', $this->endorsement->name)
-            ->assertJsonPath('data.specialEndorsement.users.0.name_first', $this->user->name);
+            ->assertJsonPath('data.specialEndorsement.users.0.name_first', $this->user->name_first);
     }
 }
