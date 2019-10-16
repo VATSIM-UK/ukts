@@ -162,7 +162,7 @@ class SpecialEndorsementTest extends TestCase
             'endorsement_id' => $this->endorsement->id
         ]);
 
-        $this->mock(User::class, function ($mock){
+        $this->mock(User::class, function ($mock) {
             $mock
                 ->shouldReceive('find')
                 ->andReturn(User::initModelWithData(['id' => 1300005]));
@@ -218,5 +218,35 @@ class SpecialEndorsementTest extends TestCase
         ")->assertJson(['data' => ['grantSpecialEndorsement' => $expected]]);
 
         $this->assertDatabaseHas('special_endorsement_assignments', $expected);
+    }
+
+    public function testListOfEndorsedUsersCanBeRetrieved()
+    {
+        $this->mock(User::class, function ($mock) {
+            $mock->shouldReceive('findMany')
+                ->andReturn(collect([
+                    User::initModelWithData([
+                        'id' => $this->user->id,
+                        'name_first' => $this->user->name_first
+                    ])
+                ]));
+        })->makePartial();
+
+        $assignment = Assignment::create([
+            'user_id' => $this->user->id,
+            'granted_by' => $this->user->id,
+            'endorsement_id' => $this->endorsement->id
+        ]);
+
+        $this->graphQL("
+        query {
+          specialEndorsement(id: {$this->endorsement->id}) {
+            name
+            users {
+                name_first
+            }
+          }
+        }")->assertJsonPath('data.specialEndorsement.name', $this->endorsement->name)
+            ->assertJsonPath('data.specialEndorsement.users.0.name_first', $this->user->name_first);
     }
 }

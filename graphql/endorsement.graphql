@@ -32,9 +32,11 @@ type SpecialEndorsement {
     created_at: DateTime!
     updated_at: DateTime!
     pivot: Assignment!
+    users: [User!]
 }
 type Assignment {
     user_id: Int!
     endorsement_id: Int!
     created_at: DateTime!
+    user: User!
 }

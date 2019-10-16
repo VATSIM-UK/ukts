@@ -12,6 +12,17 @@ input DateRange {
     to: Date!
 }
 
+type User {
+    name_first: String!
+    name_last: String!
+    id: ID
+    atcRating: Rating!
+}
+
+type Rating {
+    code: String!
+}
+
 #import position.graphql
 #import bookings.graphql
 #import endorsement.graphql

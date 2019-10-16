@@ -7,7 +7,11 @@ use Faker\Generator as Faker;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
+        'id' => $faker->numberBetween(800000, 99999999),
         'name_first' => $faker->firstName,
-        'name_last' => $faker->lastName
+        'name_last' => $faker->lastName,
+        'atcRating' => [
+            'code' => 'C1'
+        ]
     ];
 });
