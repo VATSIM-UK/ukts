@@ -1,6 +1,6 @@
 extend type Query {
     specialEndorsements: [SpecialEndorsement!]! @all
-    specialEndorsement(id: ID @eq): SpecialEndorsement @field(resolver: "App\\Modules\\Endorsement\\Special\\Queries\\EndorsementSummary")
+    specialEndorsement(id: ID @eq): SpecialEndorsement @find
     specialEndorsementsForUser(user_id: ID): [SpecialEndorsement]! @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\SpecialEndorsementsForUser")
 }
 

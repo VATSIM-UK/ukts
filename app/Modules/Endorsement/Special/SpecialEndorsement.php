@@ -14,6 +14,14 @@ class SpecialEndorsement extends Model
     use SoftDeletes, HasRemoteRelationships;
 
     protected $fillable = ['name'];
+    private $userInstance;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->userInstance = resolve(User::class);
+    }
 
     public function positions(): BelongsToMany
     {
@@ -28,9 +36,10 @@ class SpecialEndorsement extends Model
     public function users(): BelongsToMany
     {
         return $this->remoteBelongsToMany(
-            User::class,
+            $this->userInstance,
             'special_endorsement_assignments',
-            'endorsement_id'
+            'endorsement_id',
+            'user_id'
         )->using(Assignment::class);
     }
 }

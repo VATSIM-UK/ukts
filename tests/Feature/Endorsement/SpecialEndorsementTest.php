@@ -7,6 +7,7 @@ use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery\Mock;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;
 
@@ -220,47 +221,29 @@ class SpecialEndorsementTest extends TestCase
         $this->assertDatabaseHas('special_endorsement_assignments', $expected);
     }
 
-    /** @test */
     public function testListOfEndorsedUsersCanBeRetrieved()
     {
+        $this->mock(User::class, function ($mock) {
+            $mock->shouldReceive('findMany')
+                ->andReturn(collect([User::initModelWithData(['id' => $this->user->id, 'name_first' => 'Boaty'])]));
+        })->makePartial();
+
         $assignment = Assignment::create([
             'user_id' => $this->user->id,
             'granted_by' => $this->user->id,
             'endorsement_id' => $this->endorsement->id
         ]);
-
-        $this->mock(User::class, function ($mock) {
-            $mock
-                ->shouldReceive('findMany')
-                ->andReturn([User::initModelWithData(['id' => $this->user->id, 'name_first' => 'Boaty'])]);
-        });
-
-//        $this->mock(SpecialEndorsement::class, function ($mock) {
-//            $mock
-//                ->shouldReceive('users')
-//                ->andReturn(User::initModelWithData([
-//                    'id' => $this->user->id,
-//                    'name_first' => $this->user->name_first
-//                ]));
-//        });
 
         $this->graphQL("
         query {
           specialEndorsement(id: {$this->endorsement->id}) {
             name
+            users {
+                name_first
+            }
           }
-        }")->dump()->assertJsonPath('data.specialEndorsement.name', $this->endorsement->name);
+        }")->assertJsonPath('data.specialEndorsement.name', $this->endorsement->name)
+        ->assertJsonPath('data.specialEndorsement.users.0.name_first', 'Boaty');
     }
 
-    /** @test */
-    public function testTest()
-    {
-        $assignment = Assignment::create([
-            'user_id' => $this->user->id,
-            'granted_by' => $this->user->id,
-            'endorsement_id' => $this->endorsement->id
-        ]);
-
-        dd($this->endorsement->load('users'));
-    }
 }
