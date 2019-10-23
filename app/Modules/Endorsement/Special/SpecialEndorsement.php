@@ -42,4 +42,9 @@ class SpecialEndorsement extends Model
             'user_id'
         )->using(Assignment::class);
     }
+
+    public function requests()
+    {
+        return $this->morphMany(EndorsementRequest::class, 'endorsement');
+    }
 }

@@ -23,9 +23,20 @@ extend type Mutation {
         endorsement_id: Int!
         granted_by: Int!): Assignment!
     @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\AssignSpecialEndorsement")
-}
 
-type SpecialEndorsement {
+    requestSpecialEndorsement(
+        user_id: ID!
+        endorsement_id: Int!
+        requested_by: Int!
+    ): EndorsementRequest!
+    @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\RequestSpecialEndorsementHandler")
+}
+interface Endorsement {
+    id: ID!
+    name: String!
+    users: [User!]
+}
+type SpecialEndorsement implements Endorsement{
     id: ID!
     name: String!
     deleted_at: DateTime
@@ -34,6 +45,16 @@ type SpecialEndorsement {
     pivot: Assignment!
     users: [User!]
 }
+
+type EndorsementRequest {
+    user: User!
+    endorsement: Endorsement!
+    endorsement_type: String!
+    approved_at: DateTime
+    denied_at: DateTime
+    actioned_by: User!
+}
+
 type Assignment {
     user_id: Int!
     endorsement_id: Int!
