@@ -25,21 +25,20 @@ class SpecialEndorsementGrant
 
     public function handle()
     {
-        if ($this->specialEndorsement->users()->find($this->user) == null) {
+        if ($this->specialEndorsement->users()->hasByID($this->user)) {
             throw new EndorsementAlreadyGrantedException();
         }
 
-        dd('here');
 
         // check if a request already exists for the given user / endorsement combination
-        tap($this->specialEndorsement->requests()->get()->where(
+        tap($this->specialEndorsement->requests()->where(
             [
                 'user_id' => $this->user->id,
                 'endorsement_id' => $this->specialEndorsement->id
             ]
-        ),
-            function ($request) {
-                if ($request != null) {
+        )->count() > 0,
+            function ($requestExists) {
+                if ($requestExists) {
                     throw new EndorsementRequestAlreadyExistsException();
                 }
             }

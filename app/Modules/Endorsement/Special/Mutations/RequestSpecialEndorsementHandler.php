@@ -4,6 +4,7 @@ namespace App\Modules\Endorsement\Special\Mutations;
 
 use App\Modules\Endorsement\Special\Exceptions\EndorsementAlreadyGrantedException;
 use App\Modules\Endorsement\Special\Exceptions\EndorsementRequestAlreadyExistsException;
+use App\Modules\Endorsement\Special\Service\SpecialEndorsementGrant;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
