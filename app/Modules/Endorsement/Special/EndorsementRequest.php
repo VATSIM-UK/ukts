@@ -2,9 +2,9 @@
 
 namespace App\Modules\Endorsement\Special;
 
-use App\Concerns\HasCustomInstanceCreation;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use VATSIMUK\Auth\Remote\RemoteEloquent\HasCustomInstanceCreation;
 
 class EndorsementRequest extends Model
 {
