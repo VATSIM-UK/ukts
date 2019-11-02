@@ -2,12 +2,13 @@
 
 namespace App\Modules\Endorsement\Special\Services;
 
+use App\Contracts\BaseService;
 use App\Modules\Endorsement\Special\Exceptions\EndorsementAlreadyGrantedException;
 use App\Modules\Endorsement\Special\Exceptions\EndorsementRequestAlreadyExistsException;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\User;
 
-class SpecialEndorsementRequest
+class SpecialEndorsementRequest implements BaseService
 {
     private $specialEndorsement;
     private $requester;
@@ -29,11 +30,11 @@ class SpecialEndorsementRequest
 
         // check if a request already exists for the given user / endorsement combination
         if ($this->specialEndorsement->requests()->where(
-                [
-                    'user_id' => $this->user->id,
-                    'endorsement_id' => $this->specialEndorsement->id
-                ]
-            )->count() > 0) {
+            [
+                'user_id' => $this->user->id,
+                'endorsement_id' => $this->specialEndorsement->id
+            ]
+        )->get()->isNotEmpty()) {
             throw new EndorsementRequestAlreadyExistsException();
         }
 

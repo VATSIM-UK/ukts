@@ -40,7 +40,7 @@ class SpecialEndorsement extends Model
             'special_endorsement_assignments',
             'endorsement_id',
             'user_id'
-        )->withPivot('granted_by')->using(Assignment::class);
+        )->using(Assignment::class);
     }
 
     public function requests()

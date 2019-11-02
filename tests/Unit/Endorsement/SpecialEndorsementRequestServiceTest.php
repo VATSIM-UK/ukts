@@ -3,8 +3,10 @@
 namespace Tests\Feature\Unit\Endorsement;
 
 use App\Modules\Endorsement\Special\Assignment;
+use App\Modules\Endorsement\Special\EndorsementRequest;
 use App\Modules\Endorsement\Special\Exceptions\EndorsementAlreadyGrantedException;
 use App\Modules\Endorsement\Special\Exceptions\EndorsementRequestAlreadyExistsException;
+use App\Modules\Endorsement\Special\Services\SpecialEndorsementAssignment;
 use App\Modules\Endorsement\Special\Services\SpecialEndorsementRequest;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\User;
@@ -76,6 +78,46 @@ class SpecialEndorsementRequestServiceTest extends TestCase
             'endorsement_id' => $this->specialEndorsement->id,
             'user_id' => $this->user->id,
             'requested_by' => $this->user->id
+        ]);
+    }
+
+    /** @test */
+    public function itCanActionRequestsForSpecialEndorsements()
+    {
+        $this->mock(Assignment::class, function ($mock) {
+            $mock->shouldReceive('users')
+                ->andReturn(User::initModelWithData(['id' => 1300005, 'name_first' => 'Callum']));
+        });
+
+        $this->mock(EndorsementRequest::class, function ($mock) {
+            $mock->shouldReceive('find')
+                ->andReturn(
+                    User::initModelWithData([
+                        'id' => 1300005,
+                        'name_first' => 'Callum'
+                    ])
+                );
+
+            $mock->shouldReceive('user')
+                ->andReturn(
+                    User::initModelWithData([
+                        'id' => 1300005,
+                        'name_first' => 'Callum'
+                    ])
+                );
+        })->makePartial();
+
+        $request = $this->specialEndorsement->requests()->create([
+            'user_id' => 1300005,
+            'requested_by' => 1300002
+        ]);
+
+        (new SpecialEndorsementAssignment($request, $this->user))->handle();
+
+        $this->assertDatabaseHas('special_endorsement_assignments', [
+            'user_id' => $this->user->id,
+            'endorsement_id' => $this->specialEndorsement->id,
+            'granted_by' => $this->user->id
         ]);
     }
 }

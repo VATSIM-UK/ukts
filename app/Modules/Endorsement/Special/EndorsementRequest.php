@@ -10,7 +10,8 @@ class EndorsementRequest extends Model
 {
     use HasCustomInstanceCreation;
 
-    protected $fillable = ['user_id', 'endorsement_id', 'requested_by'];
+    protected $fillable = ['user_id', 'endorsement_id', 'endorsement_type', 'requested_by', 'approved_at', 'denied_at'];
+    public $timestamps = ['created_at', 'updated_at', 'approved_at', 'denied_at'];
 
     public function endorsement()
     {

@@ -10,6 +10,8 @@ class Assignment extends Pivot
 {
     protected $table = "special_endorsement_assignments";
 
+    public $timestamps = true;
+
     protected $fillable = [
         'user_id',
         'endorsement_id',

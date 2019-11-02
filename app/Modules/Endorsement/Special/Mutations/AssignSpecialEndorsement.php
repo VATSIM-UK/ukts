@@ -2,8 +2,10 @@
 
 namespace App\Modules\Endorsement\Special\Mutations;
 
-use App\Modules\Endorsement\Special\Assignment;
+use App\Modules\Endorsement\Special\EndorsementRequest;
 use App\Modules\Endorsement\Special\Exceptions\EndorsementAlreadyGrantedException;
+use App\Modules\Endorsement\Special\Services\SpecialEndorsementAssignment;
+use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
@@ -21,16 +23,9 @@ class AssignSpecialEndorsement
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        if (Assignment::where([
-                'user_id' => $args['user_id'],
-                'endorsement_id' => $args['endorsement_id']
-            ])->first() !== null) {
-            throw new EndorsementAlreadyGrantedException();
-        }
-        return Assignment::create([
-            'user_id' => $args['user_id'],
-            'endorsement_id' => $args['endorsement_id'],
-            'granted_by' => $args['granted_by']
-        ]);
+        $request = EndorsementRequest::findOrFail($args['request_id']);
+        $actioner = User::findOrFail($args['actioner_id']);
+
+        return (new SpecialEndorsementAssignment($request, $actioner))->handle();
     }
 }
