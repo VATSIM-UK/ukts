@@ -34,8 +34,8 @@ class RequestSpecialEndorsementHandler
     {
         /** @var SpecialEndorsement $endorsement */
         $endorsement = SpecialEndorsement::findOrFail($args['endorsement_id']);
-        $user = User::find($args['user_id']);
-        $requester = User::find($args['requested_by']);
+        $user = $this->userInstance::find($args['user_id']);
+        $requester = $this->userInstance::find($args['requested_by']);
 
         return (new SpecialEndorsementRequest($endorsement, $user, $requester))->handle();
     }

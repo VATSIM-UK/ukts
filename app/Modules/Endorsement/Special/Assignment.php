@@ -5,9 +5,12 @@ namespace App\Modules\Endorsement\Special;
 use App\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use VATSIMUK\Auth\Remote\RemoteEloquent\HasCustomInstanceCreation;
 
 class Assignment extends Pivot
 {
+    use HasCustomInstanceCreation;
+
     protected $table = "special_endorsement_assignments";
 
     public $timestamps = true;
@@ -25,11 +28,11 @@ class Assignment extends Pivot
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(resolve(User::class));
     }
 
     public function granter(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'granted_by');
+        return $this->belongsTo(resolve(User::class), 'granted_by');
     }
 }

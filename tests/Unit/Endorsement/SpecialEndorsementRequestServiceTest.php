@@ -84,12 +84,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
     /** @test */
     public function itCanActionRequestsForSpecialEndorsements()
     {
-        $this->mock(Assignment::class, function ($mock) {
-            $mock->shouldReceive('users')
-                ->andReturn(User::initModelWithData(['id' => 1300005, 'name_first' => 'Callum']));
-        });
-
-        $this->mock(EndorsementRequest::class, function ($mock) {
+        $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('find')
                 ->andReturn(
                     User::initModelWithData([
@@ -98,14 +93,15 @@ class SpecialEndorsementRequestServiceTest extends TestCase
                     ])
                 );
 
-            $mock->shouldReceive('user')
+            $mock->shouldReceive('findMany')
                 ->andReturn(
-                    User::initModelWithData([
+                    collect([User::initModelWithData([
                         'id' => 1300005,
                         'name_first' => 'Callum'
-                    ])
+                    ])])
                 );
         })->makePartial();
+
 
         $request = $this->specialEndorsement->requests()->create([
             'user_id' => 1300005,
@@ -115,7 +111,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
         (new SpecialEndorsementAssignment($request, $this->user))->handle();
 
         $this->assertDatabaseHas('special_endorsement_assignments', [
-            'user_id' => $this->user->id,
+            'user_id' => 1300005,
             'endorsement_id' => $this->specialEndorsement->id,
             'granted_by' => $this->user->id
         ]);

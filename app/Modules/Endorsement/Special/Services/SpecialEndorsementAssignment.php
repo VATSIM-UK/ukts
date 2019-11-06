@@ -25,7 +25,6 @@ class SpecialEndorsementAssignment implements BaseService
         if ($this->endorsementRequest->endorsement->users->contains($this->endorsementRequest->user)) {
             throw new EndorsementAlreadyGrantedException();
         }
-
         // add the user to the endorsement relating to the request
         $this->endorsementRequest->endorsement->users()->attach($this->endorsementRequest->user,
             [

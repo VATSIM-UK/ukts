@@ -24,7 +24,7 @@ class AssignSpecialEndorsement
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $request = EndorsementRequest::findOrFail($args['request_id']);
-        $actioner = User::findOrFail($args['actioner_id']);
+        $actioner = resolve(User::class)::findOrFail($args['actioner_id']);
 
         return (new SpecialEndorsementAssignment($request, $actioner))->handle();
     }

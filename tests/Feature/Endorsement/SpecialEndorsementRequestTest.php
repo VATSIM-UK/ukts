@@ -32,29 +32,19 @@ class SpecialEndorsementRequestTest extends TestCase
             $mock->shouldReceive('find')
                 ->andReturn(
                     User::initModelWithData([
-                        'id' => 1300002,
-                        'name_first' => 'Callum'
-                    ])
-                );
-        });
-
-        $this->mock(EndorsementRequest::class, function ($mock) {
-            $mock->shouldReceive('find')
-                ->andReturn(
-                    User::initModelWithData([
-                        'id' => 1300002,
-                        'name_first' => 'Callum'
-                    ])
-                );
-
-            $mock->shouldReceive('users')
-                ->andReturn(
-                    User::initModelWithData([
                         'id' => 1300005,
                         'name_first' => 'Callum'
                     ])
                 );
-        });
+            $mock->shouldReceive('findMany')
+                ->andReturn(
+                    collect([User::initModelWithData([
+                        'id' => 1300005,
+                        'name_first' => 'Callum'
+                    ])])
+                );
+        })->makePartial();
+
 
         $this->graphQL("
         mutation {
@@ -77,6 +67,16 @@ class SpecialEndorsementRequestTest extends TestCase
         $this->mockUserResolvedValues();
 
         $subjectUser = factory(User::class)->make(['id' => 1300005]);
+
+        $this->mock(User::class, function ($mock) {
+            $mock->shouldReceive('find')
+                ->andReturn(
+                    User::initModelWithData([
+                        'id' => 1300005,
+                        'name_first' => 'Callum'
+                    ])
+                );
+        })->makePartial();
 
         // create existing request.
         $this->endorsement->requests()->create([
@@ -109,13 +109,28 @@ class SpecialEndorsementRequestTest extends TestCase
                         'name_first' => 'Callum'
                     ])
                 );
-        });
+
+            $mock->shouldReceive('findMany')
+                ->andReturn(
+                    collect([User::initModelWithData([
+                        'id' => 1300005,
+                        'name_first' => 'Callum'
+                    ])])
+                );
+
+            $mock->shouldReceive('findOrFail')
+                ->andReturn(
+                    User::initModelWithData([
+                        'id' => 1300005,
+                        'name_first' => 'Callum'
+                    ])
+                );
+        })->makePartial();
 
         $request = $this->endorsement->requests()->create([
             'user_id' => 1300005,
             'requested_by' => 1300005
         ]);
-//        dd($request->endorsement->users);
 
         $this->graphQL("
         mutation {
