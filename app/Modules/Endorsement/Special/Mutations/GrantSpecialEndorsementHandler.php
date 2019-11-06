@@ -9,7 +9,7 @@ use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class AssignSpecialEndorsement
+class GrantSpecialEndorsementHandler
 {
     /**
      * Return a value for the field.

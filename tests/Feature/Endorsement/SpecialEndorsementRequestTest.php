@@ -64,8 +64,6 @@ class SpecialEndorsementRequestTest extends TestCase
     /** @test */
     public function testRequestNotGeneratedIfAlreadyPresent()
     {
-        $this->mockUserResolvedValues();
-
         $subjectUser = factory(User::class)->make(['id' => 1300005]);
 
         $this->mock(User::class, function ($mock) {
@@ -142,34 +140,5 @@ class SpecialEndorsementRequestTest extends TestCase
             }
         }
         ")->assertJsonPath('data.grantSpecialEndorsement.user.name_first', 'Callum');
-    }
-
-    private function mockUserResolvedValues()
-    {
-        $this->mock(User::class, function ($mock) {
-            $mock->shouldReceive('find')
-                ->andReturn(
-                    User::initModelWithData([
-                        'id' => 1300005,
-                        'name_first' => 'Callum'
-                    ])
-                );
-
-            $mock->shouldReceive('find')
-                ->andReturn(
-                    User::initModelWithData([
-                        'id' => 1300002,
-                        'name_first' => 'Alex'
-                    ])
-                );
-
-            $mock->shouldReceive('find')
-                ->andReturn(
-                    User::initModelWithData([
-                        'id' => 1300005,
-                        'name_first' => 'Callum'
-                    ])
-                );
-        })->makePartial();
     }
 }

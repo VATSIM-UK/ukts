@@ -21,7 +21,7 @@ extend type Mutation {
     grantSpecialEndorsement(
         request_id: ID!
         actioner_id: Int!): Assignment!
-    @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\AssignSpecialEndorsement")
+    @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\GrantSpecialEndorsementHandler")
 
     requestSpecialEndorsement(
         user_id: ID!
