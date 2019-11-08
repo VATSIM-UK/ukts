@@ -2,8 +2,6 @@
 
 namespace App\Modules\Endorsement\Special\Mutations;
 
-use App\Modules\Endorsement\Special\Assignment;
-use App\Modules\Endorsement\Special\Exceptions\EndorsementAlreadyGrantedException;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;

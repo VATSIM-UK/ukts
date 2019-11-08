@@ -196,30 +196,6 @@ class SpecialEndorsementTest extends TestCase
     }
 
     /** @test */
-    public function testAnEndorsementCanBeGranted()
-    {
-        $expected = [
-            'user_id' => 1300005,
-            'endorsement_id' => $this->endorsement->id,
-        ];
-
-        $this->graphQL("
-            mutation {
-                grantSpecialEndorsement(
-                    user_id: 1300005
-                    endorsement_id: {$this->endorsement->id}
-                    granted_by: 1300004
-                )
-                {
-                    endorsement_id
-                    user_id
-                }
-            }
-        ")->assertJson(['data' => ['grantSpecialEndorsement' => $expected]]);
-
-        $this->assertDatabaseHas('special_endorsement_assignments', $expected);
-    }
-
     public function testListOfEndorsedUsersCanBeRetrieved()
     {
         $this->mock(User::class, function ($mock) {
