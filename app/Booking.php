@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Exceptions\OverlappingBookingException;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -16,9 +17,10 @@ class Booking extends Model
         return $this->belongsTo(Position::class);
     }
 
-    public static function canBeMade($position_id, $from, $to, $excludeID = null)
+    public static function canBeMade($position_id, Carbon $from, Carbon $to, $excludeID = null)
     {
-        $query = self::where('position_id', $position_id);
+        $query = self::where('position_id', $position_id)
+            ->whereBetween('from', [$from->startOfDay(), $to->endOfDay()]);
 
         if ($excludeID) {
             $query->where('id', '!=', $excludeID);
