@@ -19,8 +19,7 @@ class Booking extends Model
 
     public static function canBeMade($position_id, Carbon $from, Carbon $to, $excludeID = null)
     {
-        $query = self::where('position_id', $position_id)
-            ->whereBetween('from', [$from->startOfDay(), $to->endOfDay()]);
+        $query = self::where('position_id', $position_id);
 
         if ($excludeID) {
             $query->where('id', '!=', $excludeID);
