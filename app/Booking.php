@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Booking extends Model
 {
     protected $fillable = ['user_id', 'position_id', 'from', 'to'];
+    protected $dates = ['from', 'to'];
 
     public function position(): BelongsTo
     {
@@ -17,23 +18,26 @@ class Booking extends Model
 
     public static function canBeMade($position_id, $from, $to, $excludeID = null)
     {
-        $query = self::where('position_id', $position_id)
-            ->where(function ($query) use ($from, $to) {
-                $query->where(function ($query) use ($from, $to) {
-                    $query->where('from', '>', $from)
-                        ->where('from', '<', $to);
-                })->orWhere(function ($query) use ($from, $to) {
-                    $query->where('to', '>', $from)
-                        ->where('to', '<', $to);
-                });
-            })
-            ->orWhere(['from' => $from, 'to' => $to]);
+        $query = self::where('position_id', $position_id);
 
-        if($excludeID){
+        if ($excludeID) {
             $query->where('id', '!=', $excludeID);
         }
 
-        return !$query->exists();
+        // Find between the times being booked for
+        $query->where(function ($query) use ($from, $to) {
+                // Where the start date is inside the booked time
+                $query->where(function ($query) use ($from, $to) {
+                    $query->where('from', '>', $from)
+                        ->where('from', '<', $to);
+                // Or where the end date is inside the booked time
+                })->orWhere(function ($query) use ($from, $to) {
+                    $query->where('to', '>', $from)
+                        ->where('to', '<', $to);
+                // Or where the times are the same
+                })->orWhere(['from' => $from, 'to' => $to]);
+            });
+        return $query->doesntExist();
     }
 
     public static function boot()
