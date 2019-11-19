@@ -176,12 +176,29 @@ class BookingTest extends TestCase
             'from' => new Carbon("2019-08-20 15:00:00"),
             'to' => new Carbon("2019-08-20 16:30:00"),
         ]);
+
+        $data = $this->graphQL('
+          mutation {
+            createBooking(user_id: 1300001, position: {
+                connect: 1
+            }, from:"2019-08-20 16:30:00", to:"2019-08-20 17:30:00") {
+                id
+            }
+          }');
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $data->json('data.createBooking.id'),
+            'user_id' => 1300001,
+            'position_id' => 1,
+            'from' => new Carbon("2019-08-20 16:30:00"),
+            'to' => new Carbon("2019-08-20 17:30:00"),
+        ]);
     }
 
     /** @test */
     public function testInvalidBookingCantBeCreated()
     {
-        factory(Position::class)->create();
+        $pos = factory(Position::class)->create();
 
         // Invalid "from" date
         $this->graphQL('
@@ -258,6 +275,89 @@ class BookingTest extends TestCase
                 ]
             ]
         );
+    }
+
+    /** @test */
+    public function testOverlappingBookings()
+    {
+        $position = factory(Position::class)->create()->id;
+        $position2 = factory(Position::class)->create()->id;
+
+        // Create two bookings for position 1
+        factory(Booking::class)->create([
+            'position_id' => $position,
+            'from' => '2019-08-10 14:00:00',
+            'to' => '2019-08-10 15:00:00'
+        ]);
+
+        $booking2 = factory(Booking::class)->create([
+            'position_id' => $position,
+            'from' => '2019-08-10 19:00:00',
+            'to' => '2019-08-10 20:00:00'
+        ]);
+
+        // Test 1: Doesn't allow to book inside of booking
+        $this->graphQL("
+          mutation {
+            createBooking(user_id: 1300001, position: {
+                connect: {$position}
+            }, from:\"2019-08-10 14:30:00\", to:\"2019-08-10 15:30:00\") {
+                id
+            }
+          }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
+
+        $this->graphQL("
+          mutation {
+            updateBooking(id: {$booking2->id}, from:\"2019-08-10 14:30:00\", to:\"2019-08-10 15:30:00\") {
+                id
+            }
+          }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
+
+
+        // Test 2: Doesn't allow to book over booking
+        $this->graphQL("
+          mutation {
+            createBooking(user_id: 1300001, position: {
+                connect: {$position}
+            }, from:\"2019-08-10 14:00:00\", to:\"2019-08-10 15:00:00\") {
+                id
+            }
+          }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
+
+        $this->graphQL("
+          mutation {
+            updateBooking(id: {$booking2->id}, from:\"2019-08-10 14:00:00\", to:\"2019-08-10 15:00:00\") {
+                id
+            }
+          }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
+
+        // Test 3: Allows if not on same position as other booking
+        $this->graphQL("
+          mutation {
+            createBooking(user_id: 1300001, position: {
+                connect: {$position2}
+            }, from:\"2019-08-10 14:30:00\", to:\"2019-08-10 15:30:00\") {
+                id
+            }
+          }")->assertJsonPath('data.createBooking.id', 3);
+        $this->graphQL("
+          mutation {
+            updateBooking(id: {$booking2->id}, position: {
+                connect: {$position2}
+            } from:\"2019-08-10 15:30:00\", to:\"2019-08-10 16:30:00\") {
+                id
+            }
+          }")->assertJsonPath('data.updateBooking.id', $booking2->id);
+
+        // Test 4: Can create booking in empty space
+        $this->graphQL("
+          mutation {
+            createBooking(user_id: 1300001, position: {
+                connect: {$position}
+            }, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:00:00\") {
+                id
+            }
+          }")->assertJsonPath('data.createBooking.id', 4);
     }
 
     /** @test */

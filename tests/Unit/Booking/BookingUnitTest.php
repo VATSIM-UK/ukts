@@ -19,7 +19,7 @@ class BookingUnitTest extends TestCase
     {
         parent::setUp();
 
-        $this->booking = factory(Booking::class)->make();
+        $this->booking = factory(Booking::class)->create();
     }
 
     /** @test */
@@ -40,6 +40,11 @@ class BookingUnitTest extends TestCase
             new Carbon('10th January 2018 14:00:00'),
             new Carbon('10th January 2018 15:00:00'))
         );
+        $this->assertTrue(Booking::canBeMade(
+            $this->booking->position_id,
+            new Carbon('10th January 2018 16:00:00'),
+            new Carbon('10th January 2018 17:00:00'))
+        );
         $this->assertFalse(Booking::canBeMade(
             $this->booking->position_id,
             new Carbon('10th January 2018 14:00:00'),
@@ -54,6 +59,12 @@ class BookingUnitTest extends TestCase
             $this->booking->position_id,
             new Carbon('10th January 2018 15:00:00'),
             new Carbon('10th January 2018 16:00:00'))
+        );
+        $this->assertTrue(Booking::canBeMade(
+            $this->booking->position_id,
+            new Carbon('10th January 2018 15:00:00'),
+            new Carbon('10th January 2018 16:00:00'),
+            $this->booking->id)
         );
     }
 
