@@ -8,7 +8,6 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class SpecialEndorsementsForUser
 {
-
     private $userInstance;
 
     public function __construct(User $user)
@@ -29,9 +28,10 @@ class SpecialEndorsementsForUser
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        if (!$user = $this->userInstance::find($args['user_id'])) {
-            throw new \InvalidArgumentException("User does not exist");
+        if (! $user = $this->userInstance::find($args['user_id'])) {
+            throw new \InvalidArgumentException('User does not exist');
         }
+
         return $user->specialEndorsements;
     }
 }

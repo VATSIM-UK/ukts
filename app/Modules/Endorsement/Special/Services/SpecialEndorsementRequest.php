@@ -32,7 +32,7 @@ class SpecialEndorsementRequest implements BaseService
         if ($this->specialEndorsement->requests()->where(
             [
                 'user_id' => $this->user->id,
-                'endorsement_id' => $this->specialEndorsement->id
+                'endorsement_id' => $this->specialEndorsement->id,
             ]
         )->get()->isNotEmpty()) {
             throw new EndorsementRequestAlreadyExistsException();
@@ -41,7 +41,7 @@ class SpecialEndorsementRequest implements BaseService
         // file new pending request for a special endorsement
         return $this->specialEndorsement->requests()->create([
             'user_id' => $this->user->id,
-            'requested_by' => $this->requester->id
+            'requested_by' => $this->requester->id,
         ]);
     }
 }

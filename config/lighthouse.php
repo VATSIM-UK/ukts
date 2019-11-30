@@ -31,7 +31,7 @@ return [
          * To apply middleware on a field level, use the @middleware directive.
          */
         'middleware' => [
-            \Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson::class
+            \Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson::class,
         ],
     ],
 
@@ -231,7 +231,7 @@ return [
             ],
             'pusher' => [
                 'driver' => 'pusher',
-                'routes' => \Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@pusher',
+                'routes' => \Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class.'@pusher',
                 'connection' => 'pusher',
             ],
         ],

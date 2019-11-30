@@ -28,7 +28,7 @@ class SpecialEndorsementAssignment implements BaseService
         // add the user to the endorsement relating to the request
         $this->endorsementRequest->endorsement->users()->attach($this->endorsementRequest->user,
             [
-                'granted_by' => $this->actioner->id
+                'granted_by' => $this->actioner->id,
             ]
         );
 

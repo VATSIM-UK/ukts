@@ -8,7 +8,6 @@ use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 class EndorsementAlreadyGrantedException extends Exception implements RendersErrorsExtensions
 {
     protected $message = 'The given endorsement is already assigned to that user';
-    
 
     /**
      * Returns true when exception message is safe to be displayed to a client.
@@ -45,7 +44,7 @@ class EndorsementAlreadyGrantedException extends Exception implements RendersErr
     public function extensionsContent(): array
     {
         return [
-            'code' => 422
+            'code' => 422,
         ];
     }
 }

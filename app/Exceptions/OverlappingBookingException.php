@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
-use Throwable;
 
 class OverlappingBookingException extends Exception implements RendersErrorsExtensions
 {
@@ -33,7 +32,7 @@ class OverlappingBookingException extends Exception implements RendersErrorsExte
      */
     public function getCategory()
     {
-        return "bookings";
+        return 'bookings';
     }
 
     /**
@@ -45,7 +44,7 @@ class OverlappingBookingException extends Exception implements RendersErrorsExte
     public function extensionsContent(): array
     {
         return [
-            'code' => 422
+            'code' => 422,
         ];
     }
 }
