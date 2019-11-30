@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature\Position;
-
 
 use App\Booking;
 use App\Position;
@@ -44,34 +42,33 @@ class BookingTest extends TestCase
                             'id',
                             'position' => [
                                 'id',
-                                'callsign'
-                            ]
-                        ]
+                                'callsign',
+                            ],
+                        ],
                     ],
                     'paginatorInfo' => [
                         'currentPage',
-                        'lastPage'
-                    ]
-                ]
-            ]
+                        'lastPage',
+                    ],
+                ],
+            ],
         ]);
     }
 
     /* @test */
     public function testItReturnsBookingsForDate()
     {
-
         factory(Booking::class)->create([
             'from' => '2019-08-10 14:00:00',
-            'to' => '2019-08-10 15:00:00'
+            'to' => '2019-08-10 15:00:00',
         ]);
         factory(Booking::class)->create([
             'from' => '2019-08-09 14:00:00',
-            'to' => '2019-08-09 15:00:00'
+            'to' => '2019-08-09 15:00:00',
         ]);
         factory(Booking::class)->create([
             'from' => '2019-08-09 20:00:00',
-            'to' => '2019-08-09 22:30:00'
+            'to' => '2019-08-09 22:30:00',
         ]);
 
         $data = $this->graphQL('
@@ -85,8 +82,8 @@ class BookingTest extends TestCase
                 'bookingsByDate' => [
                     ['id' => 2],
                     ['id' => 3],
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -95,19 +92,19 @@ class BookingTest extends TestCase
     {
         factory(Booking::class)->create([
             'from' => '2019-08-06 14:00:00',
-            'to' => '2019-08-06 15:00:00'
+            'to' => '2019-08-06 15:00:00',
         ]);
         factory(Booking::class)->create([
             'from' => '2019-08-09 20:00:00',
-            'to' => '2019-08-09 22:30:00'
+            'to' => '2019-08-09 22:30:00',
         ]);
         factory(Booking::class)->create([
             'from' => '2019-08-04 14:00:00',
-            'to' => '2019-08-04 15:00:00'
+            'to' => '2019-08-04 15:00:00',
         ]);
         factory(Booking::class)->create([
             'from' => '2019-08-10 14:00:00',
-            'to' => '2019-08-10 15:00:00'
+            'to' => '2019-08-10 15:00:00',
         ]);
 
         $data = $this->graphQL('
@@ -124,8 +121,8 @@ class BookingTest extends TestCase
                 'bookingsBetweenDates' => [
                     ['id' => 1],
                     ['id' => 2],
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -148,10 +145,10 @@ class BookingTest extends TestCase
                 'booking' => [
                     'id' => $bookings->get(1)->id,
                     'position' => [
-                        'callsign' => $bookings->get(1)->position->callsign
-                    ]
-                ]
-            ]
+                        'callsign' => $bookings->get(1)->position->callsign,
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -173,8 +170,8 @@ class BookingTest extends TestCase
             'id' => $data->json('data.createBooking.id'),
             'user_id' => 1300001,
             'position_id' => 1,
-            'from' => new Carbon("2019-08-20 15:00:00"),
-            'to' => new Carbon("2019-08-20 16:30:00"),
+            'from' => new Carbon('2019-08-20 15:00:00'),
+            'to' => new Carbon('2019-08-20 16:30:00'),
         ]);
 
         $data = $this->graphQL('
@@ -190,8 +187,8 @@ class BookingTest extends TestCase
             'id' => $data->json('data.createBooking.id'),
             'user_id' => 1300001,
             'position_id' => 1,
-            'from' => new Carbon("2019-08-20 16:30:00"),
-            'to' => new Carbon("2019-08-20 17:30:00"),
+            'from' => new Carbon('2019-08-20 16:30:00'),
+            'to' => new Carbon('2019-08-20 17:30:00'),
         ]);
     }
 
@@ -209,13 +206,13 @@ class BookingTest extends TestCase
                 id
             }
           }')->assertJsonStructure([
-                "errors" => [
+                'errors' => [
                     [
-                        "message",
-                        "extensions",
-                        "locations"
-                    ]
-                ]
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
+                ],
             ]
         );
 
@@ -228,13 +225,13 @@ class BookingTest extends TestCase
                 id
             }
           }')->assertJsonStructure([
-                "errors" => [
+                'errors' => [
                     [
-                        "message",
-                        "extensions",
-                        "locations"
-                    ]
-                ]
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
+                ],
             ]
         );
 
@@ -247,13 +244,13 @@ class BookingTest extends TestCase
                 id
             }
           }')->assertJsonStructure([
-                "errors" => [
+                'errors' => [
                     [
-                        "message",
-                        "extensions",
-                        "locations"
-                    ]
-                ]
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
+                ],
             ]
         );
 
@@ -266,13 +263,13 @@ class BookingTest extends TestCase
                 id
             }
           }')->assertJsonStructure([
-                "errors" => [
+                'errors' => [
                     [
-                        "message",
-                        "extensions",
-                        "locations"
-                    ]
-                ]
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
+                ],
             ]
         );
     }
@@ -287,13 +284,13 @@ class BookingTest extends TestCase
         factory(Booking::class)->create([
             'position_id' => $position,
             'from' => '2019-08-10 14:00:00',
-            'to' => '2019-08-10 15:00:00'
+            'to' => '2019-08-10 15:00:00',
         ]);
 
         $booking2 = factory(Booking::class)->create([
             'position_id' => $position,
             'from' => '2019-08-10 19:00:00',
-            'to' => '2019-08-10 20:00:00'
+            'to' => '2019-08-10 20:00:00',
         ]);
 
         // Test 1: Doesn't allow to book inside of booking
@@ -312,7 +309,6 @@ class BookingTest extends TestCase
                 id
             }
           }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
-
 
         // Test 2: Doesn't allow to book over booking
         $this->graphQL("
@@ -367,8 +363,8 @@ class BookingTest extends TestCase
             'id' => 1,
             'user_id' => 1300001,
             'position_id' => 1,
-            'from' => new Carbon("2019-08-20 15:00:00"),
-            'to' => new Carbon("2019-08-20 16:30:00"),
+            'from' => new Carbon('2019-08-20 15:00:00'),
+            'to' => new Carbon('2019-08-20 16:30:00'),
         ]);
 
         $this->graphQL('
@@ -379,14 +375,14 @@ class BookingTest extends TestCase
             }')->assertJson([
             'data' => [
                 'updateBooking' => [
-                    'id' => 1
-                ]
-            ]
+                    'id' => 1,
+                ],
+            ],
         ]);
 
         $this->assertDatabaseHas('bookings', [
             'id' => 1,
-            'to' => new Carbon("2019-08-20 17:00:00")
+            'to' => new Carbon('2019-08-20 17:00:00'),
         ]);
     }
 
@@ -405,9 +401,9 @@ class BookingTest extends TestCase
             }')->assertJson([
             'data' => [
                 'deleteBooking' => [
-                    'id' => 1
-                ]
-            ]
+                    'id' => 1,
+                ],
+            ],
         ]);
 
         $this->assertEquals(0, Booking::count());

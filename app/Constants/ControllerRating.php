@@ -10,7 +10,7 @@ final class ControllerRating
         'S2' => 'Student 2',
         'S3' => 'Senior Student',
         'C1' => 'Controller 1',
-        'C3' => 'Controller 3'
+        'C3' => 'Controller 3',
     ];
 
     private const NUMERIC_RATINGS = [
@@ -19,7 +19,7 @@ final class ControllerRating
         2 => 'S2',
         3 => 'S3',
         4 => 'C1',
-        5 => 'C3'
+        5 => 'C3',
     ];
 
     private const SUFFIX_REQUIREMENTS = [
@@ -28,7 +28,7 @@ final class ControllerRating
         'TWR' => 2,
         'APP' => 3,
         'CTR' => 4,
-        'FSS' => 4
+        'FSS' => 4,
     ];
 
     /**
@@ -63,8 +63,8 @@ final class ControllerRating
     {
         $parsedSuffix = strtoupper($suffix);
 
-        if (!self::isValidSuffix($parsedSuffix)) {
-            return null;
+        if (! self::isValidSuffix($parsedSuffix)) {
+            return;
         }
 
         return $rating >= self::SUFFIX_REQUIREMENTS[$parsedSuffix];

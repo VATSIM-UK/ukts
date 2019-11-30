@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App;
-
 
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;

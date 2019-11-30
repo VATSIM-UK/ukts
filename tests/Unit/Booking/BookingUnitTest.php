@@ -80,7 +80,7 @@ class BookingUnitTest extends TestCase
             'user_id' => $this->booking->user_id,
             'position_id' => $this->booking->position_id,
             'from' => new Carbon('10th January 2018 14:00:00'),
-            'to' => new Carbon('10th January 2018 15:30:00')
+            'to' => new Carbon('10th January 2018 15:30:00'),
         ]);
     }
 
@@ -96,7 +96,7 @@ class BookingUnitTest extends TestCase
             'user_id' => $this->booking->user_id,
             'position_id' => $this->booking->position_id,
             'from' => new Carbon('10th January 2018 14:00:00'),
-            'to' => new Carbon('10th January 2018 15:00:00')
+            'to' => new Carbon('10th January 2018 15:00:00'),
         ]);
     }
 }

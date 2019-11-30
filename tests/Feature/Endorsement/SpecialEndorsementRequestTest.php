@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Endorsement;
 
-use App\Modules\Endorsement\Special\EndorsementRequest;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,18 +32,17 @@ class SpecialEndorsementRequestTest extends TestCase
                 ->andReturn(
                     User::initModelWithData([
                         'id' => 1300005,
-                        'name_first' => 'Callum'
+                        'name_first' => 'Callum',
                     ])
                 );
             $mock->shouldReceive('findMany')
                 ->andReturn(
                     collect([User::initModelWithData([
                         'id' => 1300005,
-                        'name_first' => 'Callum'
+                        'name_first' => 'Callum',
                     ])])
                 );
         })->makePartial();
-
 
         $this->graphQL("
         mutation {
@@ -71,7 +69,7 @@ class SpecialEndorsementRequestTest extends TestCase
                 ->andReturn(
                     User::initModelWithData([
                         'id' => 1300005,
-                        'name_first' => 'Callum'
+                        'name_first' => 'Callum',
                     ])
                 );
         })->makePartial();
@@ -79,7 +77,7 @@ class SpecialEndorsementRequestTest extends TestCase
         // create existing request.
         $this->endorsement->requests()->create([
             'user_id' => $subjectUser->id,
-            'requested_by' => $subjectUser->id
+            'requested_by' => $subjectUser->id,
         ]);
 
         $this->graphQL("
@@ -92,7 +90,7 @@ class SpecialEndorsementRequestTest extends TestCase
                 }
             }
         }
-        ")->assertJsonPath('errors.0.message', "A request is already present for that user on the given endorsement")
+        ")->assertJsonPath('errors.0.message', 'A request is already present for that user on the given endorsement')
             ->assertJsonPath('errors.0.extensions.code', 422);
     }
 
@@ -104,7 +102,7 @@ class SpecialEndorsementRequestTest extends TestCase
                 ->andReturn(
                     User::initModelWithData([
                         'id' => 1300005,
-                        'name_first' => 'Callum'
+                        'name_first' => 'Callum',
                     ])
                 );
 
@@ -112,7 +110,7 @@ class SpecialEndorsementRequestTest extends TestCase
                 ->andReturn(
                     collect([User::initModelWithData([
                         'id' => 1300005,
-                        'name_first' => 'Callum'
+                        'name_first' => 'Callum',
                     ])])
                 );
 
@@ -120,14 +118,14 @@ class SpecialEndorsementRequestTest extends TestCase
                 ->andReturn(
                     User::initModelWithData([
                         'id' => 1300005,
-                        'name_first' => 'Callum'
+                        'name_first' => 'Callum',
                     ])
                 );
         })->makePartial();
 
         $request = $this->endorsement->requests()->create([
             'user_id' => 1300005,
-            'requested_by' => 1300005
+            'requested_by' => 1300005,
         ]);
 
         $this->graphQL("

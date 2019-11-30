@@ -3,7 +3,6 @@
 namespace Tests\Feature\Unit\Endorsement;
 
 use App\Modules\Endorsement\Special\Assignment;
-use App\Modules\Endorsement\Special\EndorsementRequest;
 use App\Modules\Endorsement\Special\Exceptions\EndorsementAlreadyGrantedException;
 use App\Modules\Endorsement\Special\Exceptions\EndorsementRequestAlreadyExistsException;
 use App\Modules\Endorsement\Special\Services\SpecialEndorsementAssignment;
@@ -36,7 +35,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
         $this->assertDatabaseHas('endorsement_requests', [
             'endorsement_id' => $this->specialEndorsement->id,
             'user_id' => $this->user->id,
-            'requested_by' => $this->user->id
+            'requested_by' => $this->user->id,
         ]);
     }
 
@@ -46,7 +45,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
         // create existing request.
         $this->specialEndorsement->requests()->create([
             'user_id' => $this->user->id,
-            'requested_by' => $this->user->id
+            'requested_by' => $this->user->id,
         ]);
 
         $this->expectException(EndorsementRequestAlreadyExistsException::class);
@@ -56,7 +55,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
         $this->assertDatabaseMissing('endorsement_requests', [
             'endorsement_id' => $this->specialEndorsement->id,
             'user_id' => $this->user->id,
-            'requested_by' => $this->user->id
+            'requested_by' => $this->user->id,
         ]);
     }
 
@@ -67,7 +66,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
         Assignment::create([
             'endorsement_id' => $this->specialEndorsement->id,
             'user_id' => $this->user->id,
-            'granted_by' => $this->user->id
+            'granted_by' => $this->user->id,
         ]);
 
         $this->expectException(EndorsementAlreadyGrantedException::class);
@@ -77,7 +76,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
         $this->assertDatabaseMissing('endorsement_requests', [
             'endorsement_id' => $this->specialEndorsement->id,
             'user_id' => $this->user->id,
-            'requested_by' => $this->user->id
+            'requested_by' => $this->user->id,
         ]);
     }
 
@@ -89,7 +88,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
                 ->andReturn(
                     User::initModelWithData([
                         'id' => 1300005,
-                        'name_first' => 'Callum'
+                        'name_first' => 'Callum',
                     ])
                 );
 
@@ -97,15 +96,14 @@ class SpecialEndorsementRequestServiceTest extends TestCase
                 ->andReturn(
                     collect([User::initModelWithData([
                         'id' => 1300005,
-                        'name_first' => 'Callum'
+                        'name_first' => 'Callum',
                     ])])
                 );
         })->makePartial();
 
-
         $request = $this->specialEndorsement->requests()->create([
             'user_id' => 1300005,
-            'requested_by' => 1300002
+            'requested_by' => 1300002,
         ]);
 
         (new SpecialEndorsementAssignment($request, $this->user))->handle();
@@ -113,7 +111,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
         $this->assertDatabaseHas('special_endorsement_assignments', [
             'user_id' => 1300005,
             'endorsement_id' => $this->specialEndorsement->id,
-            'granted_by' => $this->user->id
+            'granted_by' => $this->user->id,
         ]);
     }
 }
