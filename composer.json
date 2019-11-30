@@ -62,7 +62,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "test": "vendor/bin/phpunit",
+        "dev-setup": "php artisan migrate:fresh"
     },
     "repositories": [
         {
