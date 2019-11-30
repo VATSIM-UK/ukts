@@ -9,7 +9,6 @@ class EndorsementRequestAlreadyExistsException extends Exception implements Rend
 {
     protected $message = 'A request is already present for that user on the given endorsement';
 
-
     /**
      * Returns true when exception message is safe to be displayed to a client.
      *
@@ -45,7 +44,7 @@ class EndorsementRequestAlreadyExistsException extends Exception implements Rend
     public function extensionsContent(): array
     {
         return [
-            'code' => 422
+            'code' => 422,
         ];
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature\Position;
-
 
 use App\Position;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -38,9 +36,9 @@ class PositionTest extends TestCase
                         'id' => $positions->last()->id,
                         'name' => $positions->last()->name,
                         'frequency' => $positions->last()->frequency,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -63,8 +61,8 @@ class PositionTest extends TestCase
                     'id' => $positions->first()->id,
                     'name' => $positions->first()->name,
                     'frequency' => $positions->first()->frequency,
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -87,8 +85,8 @@ class PositionTest extends TestCase
                     'id' => $positions->first()->id,
                     'name' => $positions->first()->name,
                     'frequency' => $positions->first()->frequency,
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -105,15 +103,15 @@ class PositionTest extends TestCase
             'data' => [
                 'createPosition' => [
                     'id',
-                    'name'
-                ]
-            ]
+                    'name',
+                ],
+            ],
         ]);
 
         $this->assertDatabaseHas('positions', [
             'name' => 'Bristol Tower',
             'callsign' => 'EGGD_TWR',
-            'frequency' => '133.850'
+            'frequency' => '133.850',
         ]);
     }
 
@@ -123,7 +121,7 @@ class PositionTest extends TestCase
         factory(Position::class)->create([
             'name' => 'Bristol Tower',
             'callsign' => 'EGGD_TWR',
-            'frequency' => '133.850'
+            'frequency' => '133.850',
         ]);
 
         $this->graphQL('
@@ -132,10 +130,10 @@ class PositionTest extends TestCase
                     id
                     name
                 }
-            }')->assertJsonFragment(["validation" => [
-                "callsign" => [
-                    "The callsign has already been taken."
-                ]
+            }')->assertJsonFragment(['validation' => [
+                'callsign' => [
+                    'The callsign has already been taken.',
+                ],
             ]]);
 
         $this->assertCount(1, Position::all());
@@ -148,7 +146,7 @@ class PositionTest extends TestCase
             'id' => 1,
             'name' => 'Bristol Tower',
             'callsign' => 'EGGD_TWR',
-            'frequency' => '133.850'
+            'frequency' => '133.850',
         ]);
 
         $this->graphQL('
@@ -161,23 +159,23 @@ class PositionTest extends TestCase
                 'data' => [
                     'updatePosition' => [
                         'id' => 1,
-                        'name' => 'Slough Tower'
-                    ]
-                ]
+                        'name' => 'Slough Tower',
+                    ],
+                ],
         ]);
 
         $this->assertDatabaseHas('positions', [
             'id' => 1,
             'name' => 'Slough Tower',
             'callsign' => 'EGLL_TWR',
-            'frequency' => '133.850'
+            'frequency' => '133.850',
         ]);
 
         $this->assertDatabaseMissing('positions', [
             'id' => 1,
             'name' => 'Bristol Tower',
             'callsign' => 'EGGD_TWR',
-            'frequency' => '133.850'
+            'frequency' => '133.850',
         ]);
     }
 }

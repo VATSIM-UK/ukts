@@ -26,6 +26,7 @@ class WhereBetweenDateDirective extends WhereBetweenDirective
     public function handleBuilder($builder, $values)
     {
         $values['to'] = $values['to']->endOfDay();
+
         return parent::handleBuilder($builder, $values);
     }
 }

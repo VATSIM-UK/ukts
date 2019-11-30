@@ -11,14 +11,14 @@ class Assignment extends Pivot
 {
     use HasCustomInstanceCreation;
 
-    protected $table = "special_endorsement_assignments";
+    protected $table = 'special_endorsement_assignments';
 
     public $timestamps = true;
 
     protected $fillable = [
         'user_id',
         'endorsement_id',
-        'granted_by'
+        'granted_by',
     ];
 
     public function endorsement(): BelongsTo

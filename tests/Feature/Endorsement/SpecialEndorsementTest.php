@@ -43,10 +43,10 @@ class SpecialEndorsementTest extends TestCase
                 'specialEndorsements' => [
                     [
                         'id',
-                        'name'
-                    ]
-                ]
-            ]
+                        'name',
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -54,7 +54,7 @@ class SpecialEndorsementTest extends TestCase
     public function testAllEndorsementCanBeRetrievedByID()
     {
         $endorsement = factory(SpecialEndorsement::class)->create([
-            'name' => 'FISO Operator'
+            'name' => 'FISO Operator',
         ]);
 
         $this->graphQL("
@@ -67,9 +67,9 @@ class SpecialEndorsementTest extends TestCase
             'data' => [
                 'specialEndorsement' => [
                     'id' => $endorsement->id,
-                    'name' => $endorsement->name
-                ]
-            ]
+                    'name' => $endorsement->name,
+                ],
+            ],
         ]);
     }
 
@@ -89,7 +89,7 @@ class SpecialEndorsementTest extends TestCase
         ');
 
         $this->assertDatabaseHas('special_endorsements', [
-            'name' => 'Heathrow Director'
+            'name' => 'Heathrow Director',
         ]);
     }
 
@@ -97,12 +97,12 @@ class SpecialEndorsementTest extends TestCase
     public function testEndorsementCanBeUpdated()
     {
         $endorsement = factory(SpecialEndorsement::class)->create([
-            'name' => 'FISO Operator'
+            'name' => 'FISO Operator',
         ]);
 
         $this->assertDatabaseHas('special_endorsements', [
             'id' => $endorsement->id,
-            'name' => 'FISO Operator'
+            'name' => 'FISO Operator',
         ]);
 
         $this->graphQL("
@@ -120,7 +120,7 @@ class SpecialEndorsementTest extends TestCase
 
         $this->assertDatabaseHas('special_endorsements', [
             'id' => $endorsement->id,
-            'name' => 'Heathrow Director'
+            'name' => 'Heathrow Director',
         ]);
     }
 
@@ -134,7 +134,7 @@ class SpecialEndorsementTest extends TestCase
         $this->assertDatabaseHas('special_endorsements', [
             'id' => $endorsement->id,
             'name' => $endorsement->name,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
 
         $this->graphQL("
@@ -149,7 +149,7 @@ class SpecialEndorsementTest extends TestCase
         $this->assertDatabaseHas('special_endorsements', [
             'id' => $endorsement->id,
             'name' => $endorsement->name,
-            'deleted_at' => now()
+            'deleted_at' => now(),
         ]);
     }
 
@@ -159,7 +159,7 @@ class SpecialEndorsementTest extends TestCase
         $assignment = Assignment::create([
             'user_id' => 1300005,
             'granted_by' => 1300005,
-            'endorsement_id' => $this->endorsement->id
+            'endorsement_id' => $this->endorsement->id,
         ]);
 
         $this->mock(User::class, function ($mock) {
@@ -168,7 +168,7 @@ class SpecialEndorsementTest extends TestCase
                 ->andReturn(User::initModelWithData(['id' => 1300005]));
         });
 
-        $this->graphQL("
+        $this->graphQL('
         query {
             specialEndorsementsForUser(user_id: 1300005) {
                 id
@@ -179,7 +179,7 @@ class SpecialEndorsementTest extends TestCase
                 }
             }
         }
-        ")->assertJson([
+        ')->assertJson([
             'data' => [
                 'specialEndorsementsForUser' => [
                     [
@@ -187,11 +187,11 @@ class SpecialEndorsementTest extends TestCase
                         'name' => $this->endorsement->name,
                         'pivot' => [
                             'user_id' => $assignment->user_id,
-                            'created_at' => $assignment->created_at
-                        ]
-                    ]
-                ]
-            ]
+                            'created_at' => $assignment->created_at,
+                        ],
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -203,15 +203,15 @@ class SpecialEndorsementTest extends TestCase
                 ->andReturn(collect([
                     User::initModelWithData([
                         'id' => $this->user->id,
-                        'name_first' => $this->user->name_first
-                    ])
+                        'name_first' => $this->user->name_first,
+                    ]),
                 ]));
         })->makePartial();
 
         $assignment = Assignment::create([
             'user_id' => $this->user->id,
             'granted_by' => $this->user->id,
-            'endorsement_id' => $this->endorsement->id
+            'endorsement_id' => $this->endorsement->id,
         ]);
 
         $this->graphQL("
