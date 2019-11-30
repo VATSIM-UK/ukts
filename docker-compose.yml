@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   mariadb:
@@ -8,10 +8,18 @@ services:
       - MARIADB_USER=ukts
       - MARIADB_DATABASE=ukts_core
       - MARIADB_PASSWORD=secret
+    networks:
+      - app-network
+    ports:
+      - 33060:3306 # expose db to local machine on port 33060
 
   app:
     tty: true
-    image: bitnami/laravel:6-debian-9
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    ports:
+      - 9002:9000
     environment:
       - DB_HOST=mariadb
       - DB_USERNAME=ukts
@@ -19,8 +27,22 @@ services:
       - DB_PASSWORD=secret
     depends_on:
       - mariadb
-    ports:
-      - 3000:3000
     volumes:
-      - ./:/app
-    # privileged: true # Privileged mode could be required to run this container under Windows
+      - .:/srv/app
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    container_name: nginx_server
+    tty: true
+    ports:
+      - 8080:80
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
