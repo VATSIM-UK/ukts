@@ -38,6 +38,8 @@ services:
       dockerfile: docker/nginx/Dockerfile
     container_name: nginx_server
     tty: true
+    depends_on:
+      - app
     ports:
       - 8080:80
     networks:
