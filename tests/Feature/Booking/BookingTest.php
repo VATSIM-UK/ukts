@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Position;
 
-use App\Booking;
+use App\Modules\Bookings\Booking;
 use App\Position;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
