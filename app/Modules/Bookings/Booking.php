@@ -3,6 +3,8 @@
 namespace App\Modules\Bookings;
 
 use App\Constants\ControllerRating;
+use App\Position;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
