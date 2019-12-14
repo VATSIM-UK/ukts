@@ -13,11 +13,11 @@ class ControllerConstantsTest extends TestCase
     /** @test */
     public function itReturnsTheCorrectRatingByNumber()
     {
-        $this->assertEquals('OBS', ControllerRating::getRatingCodeByNumber(0));
-        $this->assertEquals('S1', ControllerRating::getRatingCodeByNumber(1));
-        $this->assertEquals('S2', ControllerRating::getRatingCodeByNumber(2));
-        $this->assertEquals('S3', ControllerRating::getRatingCodeByNumber(3));
-        $this->assertEquals('C1', ControllerRating::getRatingCodeByNumber(4));
+        $this->assertEquals('OBS', ControllerRating::getRatingCodeByNumber(1));
+        $this->assertEquals('S1', ControllerRating::getRatingCodeByNumber(2));
+        $this->assertEquals('S2', ControllerRating::getRatingCodeByNumber(3));
+        $this->assertEquals('S3', ControllerRating::getRatingCodeByNumber(4));
+        $this->assertEquals('C1', ControllerRating::getRatingCodeByNumber(5));
     }
 
     /** @test */
@@ -35,14 +35,14 @@ class ControllerConstantsTest extends TestCase
     public function itReturnsTrueWhenMinimumRatingIsTheSameAsGiven()
     {
         // TWR suffix requires a rating of 2 or higher
-        $this->assertTrue(ControllerRating::isValidRatingForSuffix('TWR', 2));
+        $this->assertTrue(ControllerRating::isValidRatingForSuffix('TWR', 3));
     }
 
     /** @test */
     public function itReturnsTrueWhenMinimumRatingHigherThanRequired()
     {
         // TWR suffix requires a rating of two or higher.
-        $this->assertTrue(ControllerRating::isValidRatingForSuffix('TWR', 3));
+        $this->assertTrue(ControllerRating::isValidRatingForSuffix('TWR', 4));
     }
 
     /** @test */
@@ -55,13 +55,13 @@ class ControllerConstantsTest extends TestCase
     /** @test */
     public function itFailsGracefullyWhenInvalidSuffixIsProvided()
     {
-        $this->assertNull(ControllerRating::isValidRatingForSuffix('BLEH', 2));
+        $this->assertFalse(ControllerRating::isValidRatingForSuffix('BLEH', 2));
     }
 
     /** @test */
     public function itHandlesLowercaseSuffixCorrectly()
     {
         $this->assertFalse(ControllerRating::isValidRatingForSuffix('ctr', 1));
-        $this->assertTrue(ControllerRating::isValidRatingForSuffix('ctr', 4));
+        $this->assertTrue(ControllerRating::isValidRatingForSuffix('ctr', 5));
     }
 }
