@@ -59,7 +59,7 @@ class BookingsService implements BookingsServiceInterface
     {
         ['from' => $from, 'to' => $to] = $bookingData;
         $position = Position::find($bookingData['position_id']);
-        $bookingUser = $this->user::find($bookingData['user_id']);
+        $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
         if (!$this->validateRatingRequirement($bookingUser, $position)) {
             throw new RatingRequirementNotMetException();

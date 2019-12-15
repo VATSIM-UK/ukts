@@ -9,12 +9,13 @@ use App\Modules\Bookings\RatingRequirementNotMetException;
 use App\Position;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BookingsServiceTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, BookingsTestHelper;
 
     protected $position;
     protected $service;
@@ -196,19 +197,22 @@ class BookingsServiceTest extends TestCase
         ]);
     }
 
-    private function mockUserFind(array $atcRatingOverrides = ['code' => 'S2', 'vatsim_id' => 3])
+    /** @test */
+    public function itThrowsModelNotFoundExceptionWhenTheUserIsntFound()
     {
-        $ratingObject = (object)$atcRatingOverrides;
-        $this->mock(User::class, function ($mock) use ($ratingObject) {
-            $mock->shouldReceive('find')
-                ->andReturn(
-                    User::initModelWithData([
-                        'id' => 1234567,
-                        'name_fist' => 'First',
-                        'name_last' => 'Last',
-                        'atcRating' => $ratingObject
-                    ])
-                );
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->mock(User::class, function ($mock) {
+            $mock->shouldReceive('findOrFail')->andThrow(ModelNotFoundException::class);
         });
+
+        $newService = $this->app->make(BookingsServiceInterface::class);
+        $newService->createBooking([
+            'position_id' => $this->position->id,
+            'user_id' => 1234587,
+            'from' => new Carbon('10th January 2019 13:00:00'),
+            'to' => new Carbon('10th January 2019 14:00:00')
+        ]);
+
     }
 }
