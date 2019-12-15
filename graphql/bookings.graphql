@@ -1,36 +1,36 @@
 extend type Query {
-    bookings: [Booking!]! @paginate
-    bookingsByDate(from: Date! @where(clause: "whereDate")): [Booking!]! @all
-    bookingsBetweenDates(from: DateRange @whereBetweenDate): [Booking!]! @all
-    booking(id: ID @eq): Booking @find
+	bookings: [Booking!]! @paginate
+	bookingsByDate(from: Date! @where(clause: "whereDate")): [Booking!]! @all
+	bookingsBetweenDates(from: DateRange @whereBetweenDate): [Booking!]! @all
+	booking(id: ID @eq): Booking @find
 }
 
 extend type Mutation {
-    createBooking(
-        user_id: ID! @rules(apply: ["required", "App\\Rules\\UserExistsRule"]),
-        position: PositionRelation!,
-        from: DateTime! @rules(apply: ["before:to"]),
-        to: DateTime! @rules(apply: ["after:from"]),
-    ): Booking! @create
+	createBooking(
+		user_id: ID! @rules(apply: ["required", "App\\Rules\\UserExistsRule"]),
+		position_id: Int!,
+		from: DateTime! @rules(apply: ["before:to"]),
+		to: DateTime! @rules(apply: ["after:from"]),
+	): Booking! @field(resolver: "App\\Modules\\Bookings\\CreateBookingHandler")
 
-    updateBooking(
-        id: ID!
-        position: PositionRelation,
-        from: DateTime @rules(apply: ["before:to"]),
-        to: DateTime @rules(apply: ["after:from"]),
-    ): Booking @update
+	updateBooking(
+		id: ID!
+		position: PositionRelation,
+		from: DateTime @rules(apply: ["before:to"]),
+		to: DateTime @rules(apply: ["after:from"]),
+	): Booking @update
 
-    deleteBooking(
-        id: ID!
-    ): Booking @delete
+	deleteBooking(
+		id: ID!
+	): Booking @delete
 }
 
 type Booking {
-    id: ID!
-    user_id: ID!
-    position: Position! @belongsTo
-    from: DateTime!
-    to: DateTime!
-    created_at: DateTime!
-    updated_at: DateTime!
+	id: ID!
+	user_id: ID!
+	position: Position! @belongsTo
+	from: DateTime!
+	to: DateTime!
+	created_at: DateTime!
+	updated_at: DateTime!
 }

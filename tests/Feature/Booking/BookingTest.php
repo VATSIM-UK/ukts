@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Feature\Position;
+namespace Tests\Feature\Booking;
 
 use App\Modules\Bookings\Booking;
+use App\Modules\Bookings\BookingsService;
 use App\Position;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -155,13 +156,17 @@ class BookingTest extends TestCase
     /** @test */
     public function testValidBookingCanBeCreated()
     {
-        factory(Position::class)->create();
+        factory(Position::class)->create(['callsign' => 'EGGD_GND']);
+
+        $this->mock(BookingsService::class, function ($mock) {
+            $mock->shouldReceive('validateRatingRequirement')->andReturn(true);
+            $mock->shouldReceive('validateBookingTimes')->andReturn(true);
+            $mock->shouldReceive('createBooking')->passthru();
+        })->makePartial();
 
         $data = $this->graphQL('
           mutation {
-            createBooking(user_id: 1300001, position: {
-                connect: 1
-            }, from:"2019-08-20 15:00:00", to:"2019-08-20 16:30:00") {
+            createBooking(user_id: 1300001, position_id: 1, from:"2019-08-20 15:00:00", to:"2019-08-20 16:30:00") {
                 id
             }
           }');
@@ -176,9 +181,7 @@ class BookingTest extends TestCase
 
         $data = $this->graphQL('
           mutation {
-            createBooking(user_id: 1300001, position: {
-                connect: 1
-            }, from:"2019-08-20 16:30:00", to:"2019-08-20 17:30:00") {
+            createBooking(user_id: 1300001, position_id: 1, from:"2019-08-20 16:30:00", to:"2019-08-20 17:30:00") {
                 id
             }
           }');
@@ -274,9 +277,64 @@ class BookingTest extends TestCase
         );
     }
 
+    private function bypassRatingCheckViaMock()
+    {
+        $this->mock(BookingsService::class, function ($mock) {
+            $mock->shouldReceive('validateRatingRequirement')->andReturn(true);
+        })->makePartial();
+    }
+
+    /** @test */
+    public function testOverlappingBookingsCannotBeCreatedIntersectingOnStart()
+    {
+        $this->bypassRatingCheckViaMock();
+
+        $position = factory(Position::class)->create()->id;
+
+        // Create two bookings for position 1
+        factory(Booking::class)->create([
+            'position_id' => $position,
+            'from' => '2019-08-10 14:00:00',
+            'to' => '2019-08-10 15:00:00',
+        ]);
+
+        // Test 1: Doesn't allow to book inside of booking
+        $this->graphQL("
+          mutation {
+            createBooking(user_id: 1300001, position_id: {$position}, from:\"2019-08-10 14:30:00\", to:\"2019-08-10 15:30:00\") {
+                id
+            }
+          }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
+    }
+
+    /** @test */
+    public function testOverlappingBookingsCannotBeCreatedOverlappingOnEnd()
+    {
+        $this->bypassRatingCheckViaMock();
+
+        $position = factory(Position::class)->create()->id;
+
+        factory(Booking::class)->create([
+            'position_id' => $position,
+            'from' => '2019-08-10 19:00:00',
+            'to' => '2019-08-10 20:00:00',
+        ]);
+
+        $this->graphQL("
+          mutation {
+            createBooking(user_id: 1300001, position_id: {$position}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
+                id
+            }
+          }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
+    }
+
     /** @test */
     public function testOverlappingBookings()
     {
+        $this->mock(BookingsService::class, function ($mock) {
+            $mock->shouldReceive('validateRatingRequirement')->andReturn(true);
+        })->makePartial();
+
         $position = factory(Position::class)->create()->id;
         $position2 = factory(Position::class)->create()->id;
 
@@ -293,15 +351,6 @@ class BookingTest extends TestCase
             'to' => '2019-08-10 20:00:00',
         ]);
 
-        // Test 1: Doesn't allow to book inside of booking
-        $this->graphQL("
-          mutation {
-            createBooking(user_id: 1300001, position: {
-                connect: {$position}
-            }, from:\"2019-08-10 14:30:00\", to:\"2019-08-10 15:30:00\") {
-                id
-            }
-          }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
 
         $this->graphQL("
           mutation {
@@ -330,8 +379,7 @@ class BookingTest extends TestCase
         // Test 3: Allows if not on same position as other booking
         $this->graphQL("
           mutation {
-            createBooking(user_id: 1300001, position: {
-                connect: {$position2}
+            createBooking(user_id: 1300001, position_id: {$position2}
             }, from:\"2019-08-10 14:30:00\", to:\"2019-08-10 15:30:00\") {
                 id
             }
@@ -348,9 +396,7 @@ class BookingTest extends TestCase
         // Test 4: Can create booking in empty space
         $this->graphQL("
           mutation {
-            createBooking(user_id: 1300001, position: {
-                connect: {$position}
-            }, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:00:00\") {
+            createBooking(user_id: 1300001, position_id: {$position}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:00:00\") {
                 id
             }
           }")->assertJsonPath('data.createBooking.id', 4);
