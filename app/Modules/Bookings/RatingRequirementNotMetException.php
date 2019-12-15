@@ -32,7 +32,7 @@ class RatingRequirementNotMetException extends Exception implements RendersError
      */
     public function getCategory()
     {
-        return 'bookings-validation';
+        return 'validation';
     }
 
     /**

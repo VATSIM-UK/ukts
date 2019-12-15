@@ -32,7 +32,7 @@ class OverlappingBookingException extends DomainException implements RendersErro
      */
     public function getCategory()
     {
-        return 'bookings';
+        return 'validation';
     }
 
     /**

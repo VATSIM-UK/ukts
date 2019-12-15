@@ -19,5 +19,5 @@ interface BookingsServiceInterface
 
     public function validateBookingTimes(Carbon $from, Carbon $to, Position $position): bool;
 
-    public function createBooking(array $bookingData): array;
+    public function createBooking(array $bookingData): Booking;
 }

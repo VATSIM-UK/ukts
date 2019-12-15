@@ -33,7 +33,7 @@ class BookingsServiceTest extends TestCase
             'id' => 1234567,
             'name_fist' => 'First',
             'name_last' => 'Last',
-            'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
+            'atcRating' => (object)['code' => 'S2', 'vatsim_id' => 3],
         ]);
     }
 
@@ -112,6 +112,22 @@ class BookingsServiceTest extends TestCase
         $this->assertTrue($this->service->validateBookingTimes(
             new Carbon('10th January 2019 13:00:00'),
             new Carbon('10th January 2019 14:00:00'),
+            $this->position
+        ));
+    }
+
+    /** @test */
+    public function itAllowsBookingsWhichAreBackToBackOnSamePosition()
+    {
+        factory(Booking::class)->create([
+            'from' => new Carbon('10th January 2019 13:00:00'),
+            'to' => new Carbon('10th January 2019 15:00:00'),
+            'position_id' => $this->position->id,
+        ]);
+
+        $this->assertTrue($this->service->validateBookingTimes(
+            new Carbon('10th January 2019 15:00:00'),
+            new Carbon('10th January 2019 16:00:00'),
             $this->position
         ));
     }

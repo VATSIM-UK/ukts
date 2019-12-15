@@ -55,17 +55,17 @@ class BookingsService implements BookingsServiceInterface
         return $bookings->doesntExist();
     }
 
-    public function createBooking(array $bookingData): array
+    public function createBooking(array $bookingData): Booking
     {
         ['from' => $from, 'to' => $to] = $bookingData;
         $position = Position::findOrFail($bookingData['position_id']);
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
-        if (! $this->validateRatingRequirement($bookingUser, $position)) {
+        if (!$this->validateRatingRequirement($bookingUser, $position)) {
             throw new RatingRequirementNotMetException();
         }
 
-        if (! $this->validateBookingTimes($from, $to, $position)) {
+        if (!$this->validateBookingTimes($from, $to, $position)) {
             throw new OverlappingBookingException();
         }
 
@@ -74,6 +74,6 @@ class BookingsService implements BookingsServiceInterface
             'position_id' => $position->id,
             'from' => $from,
             'to' => $to,
-        ])->toArray();
+        ]);
     }
 }

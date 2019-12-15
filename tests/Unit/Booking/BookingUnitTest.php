@@ -4,12 +4,13 @@ namespace Tests\Unit\Booking;
 
 use App\Modules\Bookings\Booking;
 use App\Position;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BookingUnitTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, BookingsTestHelper;
 
     protected $position;
     protected $booking;
@@ -25,5 +26,17 @@ class BookingUnitTest extends TestCase
     public function itReturnsThePositionRelation()
     {
         $this->assertInstanceOf(Position::class, $this->booking->position);
+    }
+
+    /** @test */
+    public function itReturnsTheUserRelation()
+    {
+        $this->booking->setRelation('user', User::initModelWithData([
+            'id' => $this->mockUserId,
+            'name_fist' => 'First',
+            'name_last' => 'Last'
+        ]));
+
+        $this->assertInstanceOf(User::class, $this->booking->user);
     }
 }
