@@ -26,6 +26,7 @@ class BookingUnitTest extends TestCase
     {
         $this->assertInstanceOf(Position::class, $this->booking->position);
     }
+
 //
 //    /** @test */
 //    public function itWillThrowExceptionIfBookingCantBeMade()

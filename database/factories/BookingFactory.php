@@ -1,7 +1,6 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-
 use App\Modules\Bookings\Booking;
 use Faker\Generator as Faker;
 

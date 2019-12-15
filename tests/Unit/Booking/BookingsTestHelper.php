@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Unit\Booking;
-
 
 use App\User;
 
@@ -12,7 +10,7 @@ trait BookingsTestHelper
 
     protected function mockUserFind(array $atcRatingOverrides = ['code' => 'S2', 'vatsim_id' => 3])
     {
-        $ratingObject = (object)$atcRatingOverrides;
+        $ratingObject = (object) $atcRatingOverrides;
         $this->mock(User::class, function ($mock) use ($ratingObject) {
             $mock->shouldReceive('findOrFail')
                 ->andReturn(
@@ -20,10 +18,9 @@ trait BookingsTestHelper
                         'id' => $this->mockUserId,
                         'name_fist' => 'First',
                         'name_last' => 'Last',
-                        'atcRating' => $ratingObject
+                        'atcRating' => $ratingObject,
                     ])
                 );
         });
-
     }
 }

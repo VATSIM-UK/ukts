@@ -33,7 +33,7 @@ class BookingsServiceTest extends TestCase
             'id' => 1234567,
             'name_fist' => 'First',
             'name_last' => 'Last',
-            'atcRating' => (object)['code' => 'S2', 'vatsim_id' => 3]
+            'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
         ]);
     }
 
@@ -75,7 +75,7 @@ class BookingsServiceTest extends TestCase
         factory(Booking::class)->create([
             'from' => new Carbon('10th January 2019 15:00:00'),
             'to' => new Carbon('10th January 2019 16:30:00'),
-            'position_id' => $this->position->id
+            'position_id' => $this->position->id,
         ]);
 
         $from = new Carbon('10th January 2019 13:15:00');
@@ -94,7 +94,7 @@ class BookingsServiceTest extends TestCase
         factory(Booking::class)->create([
             'from' => $from,
             'to' => $to,
-            'position_id' => $this->position->id
+            'position_id' => $this->position->id,
         ]);
 
         $this->assertFalse($this->service->validateBookingTimes($from, $to, $this->position));
@@ -106,7 +106,7 @@ class BookingsServiceTest extends TestCase
         factory(Booking::class)->create([
             'from' => new Carbon('10th January 2019 15:00:00'),
             'to' => new Carbon('10th January 2019 16:30:00'),
-            'position_id' => $this->position->id
+            'position_id' => $this->position->id,
         ]);
 
         $this->assertTrue($this->service->validateBookingTimes(
@@ -130,14 +130,14 @@ class BookingsServiceTest extends TestCase
             'position_id' => $this->position->id,
             'user_id' => 1234567,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:00:00')
+            'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
 
         $this->assertDatabaseHas('bookings', [
             'position_id' => $this->position->id,
             'user_id' => 1234567,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:00:00')
+            'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
     }
 
@@ -151,7 +151,7 @@ class BookingsServiceTest extends TestCase
         factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:30:00')
+            'to' => new Carbon('10th January 2019 14:30:00'),
         ]);
 
         $this->mockUserFind();
@@ -162,13 +162,13 @@ class BookingsServiceTest extends TestCase
             'position_id' => $this->position->id,
             'user_id' => 1234567,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:00:00')
+            'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
 
         $this->assertDatabaseMissing('bookings', [
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:30:00')
+            'to' => new Carbon('10th January 2019 14:30:00'),
         ]);
     }
 
@@ -187,13 +187,13 @@ class BookingsServiceTest extends TestCase
             'position_id' => $this->position->id,
             'user_id' => 1234567,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:00:00')
+            'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
 
         $this->assertDatabaseMissing('bookings', [
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:30:00')
+            'to' => new Carbon('10th January 2019 14:30:00'),
         ]);
     }
 
@@ -211,7 +211,7 @@ class BookingsServiceTest extends TestCase
             'position_id' => $this->position->id,
             'user_id' => 1234587,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:00:00')
+            'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
     }
 
@@ -227,7 +227,7 @@ class BookingsServiceTest extends TestCase
             'position_id' => 9999,
             'user_id' => 1234567,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:00:00')
+            'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
     }
 }

@@ -44,7 +44,7 @@ class RatingRequirementNotMetException extends Exception implements RendersError
     public function extensionsContent(): array
     {
         return [
-            'code' => 422
+            'code' => 422,
         ];
     }
 }

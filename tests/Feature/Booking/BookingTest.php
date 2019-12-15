@@ -166,7 +166,7 @@ class BookingTest extends TestCase
     public function testValidBookingCanBeCreated()
     {
         $creationJsonFormat = ['data' => ['createBooking' => ['id']]];
-        $this->position->callsign = "EGGD_GND";
+        $this->position->callsign = 'EGGD_GND';
         $this->position->save();
 
         $this->mockUserFind();
@@ -348,13 +348,13 @@ class BookingTest extends TestCase
         $firstBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 13:00:00'),
-            'to' => new Carbon('10th January 2019 14:00:00')
+            'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
 
         $secondBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 15:00:00'),
-            'to' => new Carbon('10th January 2019 16:00:00')
+            'to' => new Carbon('10th January 2019 16:00:00'),
         ]);
 
         $this->graphQL("
@@ -419,7 +419,7 @@ class BookingTest extends TestCase
     }
 
     /**
-     * Setup a test case to pass the rating check for testing overlapping
+     * Setup a test case to pass the rating check for testing overlapping.
      * @param  string  $callsign
      */
     private function setupOverlappingTest($callsign = 'EGGD_TWR')

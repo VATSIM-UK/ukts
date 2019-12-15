@@ -20,6 +20,7 @@ class CreateBookingHandler
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $service = app()->make(BookingsServiceInterface::class);
+
         return $service->createBooking($args);
     }
 }
