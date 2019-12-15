@@ -61,11 +61,11 @@ class BookingsService implements BookingsServiceInterface
         $position = Position::findOrFail($bookingData['position_id']);
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
-        if (!$this->validateRatingRequirement($bookingUser, $position)) {
+        if (! $this->validateRatingRequirement($bookingUser, $position)) {
             throw new RatingRequirementNotMetException();
         }
 
-        if (!$this->validateBookingTimes($from, $to, $position)) {
+        if (! $this->validateBookingTimes($from, $to, $position)) {
             throw new OverlappingBookingException();
         }
 

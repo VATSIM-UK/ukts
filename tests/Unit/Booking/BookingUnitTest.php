@@ -34,7 +34,7 @@ class BookingUnitTest extends TestCase
         $this->booking->setRelation('user', User::initModelWithData([
             'id' => $this->mockUserId,
             'name_fist' => 'First',
-            'name_last' => 'Last'
+            'name_last' => 'Last',
         ]));
 
         $this->assertInstanceOf(User::class, $this->booking->user);
