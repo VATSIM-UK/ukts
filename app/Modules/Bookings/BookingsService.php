@@ -58,7 +58,7 @@ class BookingsService implements BookingsServiceInterface
     public function createBooking(array $bookingData): array
     {
         ['from' => $from, 'to' => $to] = $bookingData;
-        $position = Position::find($bookingData['position_id']);
+        $position = Position::findOrFail($bookingData['position_id']);
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
         if (!$this->validateRatingRequirement($bookingUser, $position)) {

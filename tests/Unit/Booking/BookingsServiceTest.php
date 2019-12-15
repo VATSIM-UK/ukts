@@ -213,6 +213,21 @@ class BookingsServiceTest extends TestCase
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00')
         ]);
+    }
 
+    /** @test */
+    public function itThrowsModelNotFoundExceptionWhenThePositionIsntFound()
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->mockUserFind();
+
+        $newService = $this->app->make(BookingsServiceInterface::class);
+        $newService->createBooking([
+            'position_id' => 9999,
+            'user_id' => 1234567,
+            'from' => new Carbon('10th January 2019 13:00:00'),
+            'to' => new Carbon('10th January 2019 14:00:00')
+        ]);
     }
 }
