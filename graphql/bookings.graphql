@@ -15,7 +15,6 @@ extend type Mutation {
 
 	updateBooking(
 		id: ID!
-		position: PositionRelation,
 		from: DateTime @rules(apply: ["before:to"]),
 		to: DateTime @rules(apply: ["after:from"]),
 	): Booking @update

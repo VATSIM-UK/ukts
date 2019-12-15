@@ -34,9 +34,9 @@ class BookingsService implements BookingsServiceInterface
         return ControllerRating::isValidRatingForSuffix($positionSuffix, $ratingValue);
     }
 
-    public function validateBookingTimes(Carbon $from, Carbon $to, Position $position): bool
+    public function validateBookingTimes(Carbon $from, Carbon $to, Position $position, int $excluded = null): bool
     {
-        $bookings = Booking::where('position_id', $position->getKey());
+        $bookings = Booking::where([['position_id', $position->getKey()], ['id', '!=', $excluded]]);
 
         // Find between the times being booked for
         $bookings->where(function ($query) use (&$from, &$to) {
@@ -72,6 +72,24 @@ class BookingsService implements BookingsServiceInterface
         return Booking::create([
             'user_id' => $bookingUser->id,
             'position_id' => $position->id,
+            'from' => $from,
+            'to' => $to,
+        ]);
+    }
+
+    public function updateExistingBooking(array $newData): bool
+    {
+        ['from' => $from, 'to' => $to] = $newData;
+        /** @var Booking $existingBooking */
+        $existingBooking = Booking::find($newData['id']);
+
+        $position = Position::findOrFail($newData['position_id']);
+
+        if (!$this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
+            throw new OverlappingBookingException();
+        }
+
+        return Booking::update([
             'from' => $from,
             'to' => $to,
         ]);

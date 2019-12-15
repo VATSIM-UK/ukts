@@ -133,6 +133,46 @@ class BookingsServiceTest extends TestCase
     }
 
     /** @test */
+    public function itAllowsBookingsWhenUpdatedToTimeOverlappingOriginal()
+    {
+        $booking = factory(Booking::class)->create([
+            'from' => new Carbon('10th January 2019 13:00:00'),
+            'to' => new Carbon('10th January 2019 15:00:00'),
+            'position_id' => $this->position->id,
+        ]);
+
+        $this->assertTrue($this->service->validateBookingTimes(
+            new Carbon('10th January 2019 13:00:00'),
+            new Carbon('10th January 2019 14:00:00'),
+            $this->position,
+            $booking->id
+        ));
+    }
+
+    /** @test */
+    public function itDoesntAllowBookingsWhichWhenUpdatedOverlapWithAnotherBooking()
+    {
+        $booking = factory(Booking::class)->create([
+            'from' => new Carbon('10th January 2019 13:00:00'),
+            'to' => new Carbon('10th January 2019 15:00:00'),
+            'position_id' => $this->position->id,
+        ]);
+
+        $booking2 = factory(Booking::class)->create([
+            'from' => new Carbon('10th January 2019 16:00:00'),
+            'to' => new Carbon('10th January 2019 17:00:00'),
+            'position_id' => $this->position->id,
+        ]);
+
+        $this->assertFalse($this->service->validateBookingTimes(
+            new Carbon('10th January 2019 15:30:00'),
+            new Carbon('10th January 2019 17:00:00'),
+            $this->position,
+            $booking->id
+        ));
+    }
+
+    /** @test */
     public function itCreatesTheBookingGivenAllValidParameters()
     {
         $this->position->callsign = 'EGGD_TWR';
