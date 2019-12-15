@@ -85,7 +85,7 @@ class BookingsService implements BookingsServiceInterface
 
         $position = Position::findOrFail($newData['position_id']);
 
-        if (!$this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
+        if (! $this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
             throw new OverlappingBookingException();
         }
 
