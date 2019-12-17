@@ -55,17 +55,34 @@ class BookingsService implements BookingsServiceInterface
         return $bookings->doesntExist();
     }
 
+    public function validateSpecialEndorsementRequirement(User $user, Position $position): bool
+    {
+        $requiredEndorsements = $position->specialEndorsements;
+
+        if ($requiredEndorsements->isEmpty()) {
+            return true;
+        }
+
+        return $requiredEndorsements->every(function ($value) use (&$user) {
+            return $user->specialEndorsements->contains('id', $value->id);
+        });
+    }
+
     public function createBooking(array $bookingData): Booking
     {
         ['from' => $from, 'to' => $to] = $bookingData;
         $position = Position::findOrFail($bookingData['position_id']);
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
-        if (! $this->validateRatingRequirement($bookingUser, $position)) {
+        if (!$this->validateRatingRequirement($bookingUser, $position)) {
             throw new RatingRequirementNotMetException();
         }
 
-        if (! $this->validateBookingTimes($from, $to, $position)) {
+        if (!$this->validateSpecialEndorsementRequirement($bookingUser, $position)) {
+            throw new SpecialEndorsementNotAttainedException();
+        }
+
+        if (!$this->validateBookingTimes($from, $to, $position)) {
             throw new OverlappingBookingException();
         }
 
