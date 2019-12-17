@@ -378,14 +378,14 @@ class BookingTest extends TestCase
         // create a constraint for the position.
         DB::table('special_endorsement_positions')->insert([
             'endorsement_id' => $specialEndorsement->id,
-            'position_id' => $this->position->id
+            'position_id' => $this->position->id,
         ]);
 
         // assign the endorsement to the user.
         Assignment::create([
             'user_id' => $this->mockUserId,
             'endorsement_id' => $specialEndorsement->id,
-            'granted_by' => $this->mockUserId
+            'granted_by' => $this->mockUserId,
         ]);
 
         $this->graphQL("
@@ -406,7 +406,7 @@ class BookingTest extends TestCase
         // create a constraint for the position
         DB::table('special_endorsement_positions')->insert([
             'endorsement_id' => $specialEndorsement->id,
-            'position_id' => $this->position->id
+            'position_id' => $this->position->id,
         ]);
 
         $this->graphQL("
