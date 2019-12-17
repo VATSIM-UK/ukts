@@ -36,7 +36,7 @@ class BookingsServiceTest extends TestCase
             'id' => 1234567,
             'name_fist' => 'First',
             'name_last' => 'Last',
-            'atcRating' => (object)['code' => 'S2', 'vatsim_id' => 3],
+            'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
         ]);
     }
 
@@ -349,7 +349,7 @@ class BookingsServiceTest extends TestCase
         Assignment::create([
             'endorsement_id' => $endorsement_id,
             'granted_by' => $user_id,
-            'user_id' => $user_id
+            'user_id' => $user_id,
         ]);
     }
 
@@ -357,7 +357,7 @@ class BookingsServiceTest extends TestCase
     {
         DB::table('special_endorsement_positions')->insert([
             'endorsement_id' => $endorsement_id,
-            'position_id' => $position_id
+            'position_id' => $position_id,
         ]);
     }
 }
