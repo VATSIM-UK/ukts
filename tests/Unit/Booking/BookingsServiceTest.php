@@ -6,11 +6,14 @@ use App\Exceptions\OverlappingBookingException;
 use App\Modules\Bookings\Booking;
 use App\Modules\Bookings\BookingsServiceInterface;
 use App\Modules\Bookings\RatingRequirementNotMetException;
+use App\Modules\Endorsement\Special\Assignment;
+use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Position;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class BookingsServiceTest extends TestCase
@@ -173,6 +176,60 @@ class BookingsServiceTest extends TestCase
     }
 
     /** @test */
+    public function itShouldAllowBookingWhenMandatedEndorsementOnPositionIsAttained()
+    {
+        $specialEndorsement = factory(SpecialEndorsement::class)->create();
+
+        $this->mandateEndorsementForPositionHelper($specialEndorsement->id, $this->position->id);
+
+        $this->grantEndorsementHelper($this->mockUserId, $specialEndorsement->id);
+
+        $this->assertTrue($this->service->validateSpecialEndorsementRequirement($this->mockUserModel, $this->position));
+    }
+
+    /** @test */
+    public function itShouldNotAllowBookingWhenMandatedEndorsementOnPositionIsNotAttained()
+    {
+        $specialEndorsement = factory(SpecialEndorsement::class)->create();
+
+        $this->mandateEndorsementForPositionHelper($specialEndorsement->id, $this->position->id);
+
+        $this->assertFalse($this->service->validateSpecialEndorsementRequirement($this->mockUserModel,
+            $this->position));
+    }
+
+    /** @test */
+    public function itShouldNotAllowBookingWhenOnlyOneOfTwoMandatedEndorsementsAreAttained()
+    {
+        $specialEndorsement = factory(SpecialEndorsement::class)->create();
+        $specialEndorsement2 = factory(SpecialEndorsement::class)->create();
+
+        $this->mandateEndorsementForPositionHelper($specialEndorsement->id, $this->position->id);
+        $this->mandateEndorsementForPositionHelper($specialEndorsement2->id, $this->position->id);
+
+        $this->grantEndorsementHelper($this->mockUserId, $specialEndorsement->id);
+
+        $this->assertFalse($this->service->validateSpecialEndorsementRequirement($this->mockUserModel,
+            $this->position));
+    }
+
+    /** @test */
+    public function itShouldAllowBookingWhenMultipleEndorsementsMandatedHaveAllBeenAttained()
+    {
+        $specialEndorsement = factory(SpecialEndorsement::class)->create();
+        $specialEndorsement2 = factory(SpecialEndorsement::class)->create();
+
+        $this->mandateEndorsementForPositionHelper($specialEndorsement->id, $this->position->id);
+        $this->mandateEndorsementForPositionHelper($specialEndorsement2->id, $this->position->id);
+
+        $this->grantEndorsementHelper($this->mockUserId, $specialEndorsement->id);
+        $this->grantEndorsementHelper($this->mockUserId, $specialEndorsement2->id);
+
+        $this->assertTrue($this->service->validateSpecialEndorsementRequirement($this->mockUserModel,
+            $this->position));
+    }
+
+    /** @test */
     public function itCreatesTheBookingGivenAllValidParameters()
     {
         $this->position->callsign = 'EGGD_TWR';
@@ -284,6 +341,23 @@ class BookingsServiceTest extends TestCase
             'user_id' => 1234567,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
+        ]);
+    }
+
+    private function grantEndorsementHelper($user_id, $endorsement_id)
+    {
+        Assignment::create([
+            'endorsement_id' => $endorsement_id,
+            'granted_by' => $user_id,
+            'user_id' => $user_id,
+        ]);
+    }
+
+    private function mandateEndorsementForPositionHelper($endorsement_id, $position_id)
+    {
+        DB::table('special_endorsement_positions')->insert([
+            'endorsement_id' => $endorsement_id,
+            'position_id' => $position_id,
         ]);
     }
 }

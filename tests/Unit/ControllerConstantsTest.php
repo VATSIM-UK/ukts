@@ -64,4 +64,11 @@ class ControllerConstantsTest extends TestCase
         $this->assertFalse(ControllerRating::isValidRatingForSuffix('ctr', 1));
         $this->assertTrue(ControllerRating::isValidRatingForSuffix('ctr', 5));
     }
+
+    /** @test */
+    public function itFailsGracefullyIfPassedInvalidIndexToRatingCodeMethod()
+    {
+        $this->assertNull(ControllerRating::getRatingCodeByNumber(0));
+        $this->assertNull(ControllerRating::getRatingCodeByNumber(7));
+    }
 }

@@ -3,9 +3,12 @@
 namespace Tests\Feature\Booking;
 
 use App\Modules\Bookings\Booking;
+use App\Modules\Endorsement\Special\Assignment;
+use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Position;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;
 use Tests\Unit\Booking\BookingsTestHelper;
@@ -279,7 +282,7 @@ class BookingTest extends TestCase
     /** @test */
     public function testOverlappingBookingsCannotBeCreatedOverlappingOnStart()
     {
-        $this->setupOverlappingTest();
+        $this->bypassRatingChecks();
 
         // Create two bookings for position 1
         factory(Booking::class)->create([
@@ -300,7 +303,7 @@ class BookingTest extends TestCase
     /** @test */
     public function testOverlappingBookingsCannotBeCreatedOverlappingOnEnd()
     {
-        $this->setupOverlappingTest();
+        $this->bypassRatingChecks();
 
         factory(Booking::class)->create([
             'position_id' => $this->position->id,
@@ -319,7 +322,7 @@ class BookingTest extends TestCase
     /** @test */
     public function testAllowsOverlappingBookingsOnDifferentPositions()
     {
-        $this->setupOverlappingTest();
+        $this->bypassRatingChecks();
 
         $creationJsonFormat = ['data' => ['createBooking' => ['id']]];
         // twr position to meet the default rating check in setupOverlappingTest.
@@ -343,7 +346,7 @@ class BookingTest extends TestCase
     /** @test */
     public function testAllowsBookingInEmptySpaceForSamePosition()
     {
-        $this->setupOverlappingTest();
+        $this->bypassRatingChecks();
 
         $firstBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
@@ -363,6 +366,56 @@ class BookingTest extends TestCase
                 id
             }
           }")->assertJsonStructure(['data' => ['createBooking' => ['id']]]);
+    }
+
+    /** @test */
+    public function testAllowsBookingCreationWhenRequiredSpecialEndorsementIsFound()
+    {
+        $this->bypassRatingChecks();
+
+        $specialEndorsement = factory(SpecialEndorsement::class)->create();
+
+        // create a constraint for the position.
+        DB::table('special_endorsement_positions')->insert([
+            'endorsement_id' => $specialEndorsement->id,
+            'position_id' => $this->position->id,
+        ]);
+
+        // assign the endorsement to the user.
+        Assignment::create([
+            'user_id' => $this->mockUserId,
+            'endorsement_id' => $specialEndorsement->id,
+            'granted_by' => $this->mockUserId,
+        ]);
+
+        $this->graphQL("
+          mutation {
+            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
+                id
+            }
+        }")->assertJsonStructure(['data' => ['createBooking' => ['id']]]);
+    }
+
+    /** @test */
+    public function testDoesntAllowBookingRequiringSpecialEndorsementWhenUserNotEndorsed()
+    {
+        $this->bypassRatingChecks();
+
+        $specialEndorsement = factory(SpecialEndorsement::class)->create();
+
+        // create a constraint for the position
+        DB::table('special_endorsement_positions')->insert([
+            'endorsement_id' => $specialEndorsement->id,
+            'position_id' => $this->position->id,
+        ]);
+
+        $this->graphQL("
+          mutation {
+            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
+                id
+            }
+        }")->assertJsonPath('errors.0.message',
+            'You do not have the required Special Endorsement to book this position.');
     }
 
     /** @test */
@@ -422,7 +475,7 @@ class BookingTest extends TestCase
      * Setup a test case to pass the rating check for testing overlapping.
      * @param  string  $callsign
      */
-    private function setupOverlappingTest($callsign = 'EGGD_TWR')
+    private function bypassRatingChecks($callsign = 'EGGD_TWR')
     {
         // ensure position in valid inline with the mockUserFind method.
         $this->position->callsign = $callsign;

@@ -34,6 +34,15 @@ class BookingsService implements BookingsServiceInterface
         return ControllerRating::isValidRatingForSuffix($positionSuffix, $ratingValue);
     }
 
+    /**
+     * Validate that two given times are valid within the context of other bookings.
+     *
+     * @param  Carbon  $from
+     * @param  Carbon  $to
+     * @param  Position  $position
+     * @param  int|null  $excluded  - Booking ID to be excluded from the check.
+     * @return bool
+     */
     public function validateBookingTimes(Carbon $from, Carbon $to, Position $position, int $excluded = null): bool
     {
         $bookings = Booking::where([['position_id', $position->getKey()], ['id', '!=', $excluded]]);
@@ -55,6 +64,26 @@ class BookingsService implements BookingsServiceInterface
         return $bookings->doesntExist();
     }
 
+    /**
+     * Validates whether the booking is allowed under any conditions of any relevant SpecialEndorsements.
+     *
+     * @param  User  $user
+     * @param  Position  $position
+     * @return bool
+     */
+    public function validateSpecialEndorsementRequirement(User $user, Position $position): bool
+    {
+        $requiredEndorsements = $position->specialEndorsements;
+
+        if ($requiredEndorsements->isEmpty()) {
+            return true;
+        }
+
+        return $requiredEndorsements->every(function ($value) use (&$user) {
+            return $user->specialEndorsements->contains('id', $value->id);
+        });
+    }
+
     public function createBooking(array $bookingData): Booking
     {
         ['from' => $from, 'to' => $to] = $bookingData;
@@ -63,6 +92,10 @@ class BookingsService implements BookingsServiceInterface
 
         if (! $this->validateRatingRequirement($bookingUser, $position)) {
             throw new RatingRequirementNotMetException();
+        }
+
+        if (! $this->validateSpecialEndorsementRequirement($bookingUser, $position)) {
+            throw new SpecialEndorsementNotAttainedException();
         }
 
         if (! $this->validateBookingTimes($from, $to, $position)) {
@@ -81,7 +114,7 @@ class BookingsService implements BookingsServiceInterface
     {
         ['from' => $from, 'to' => $to] = $newData;
         /** @var Booking $existingBooking */
-        $existingBooking = Booking::find($newData['id']);
+        $existingBooking = Booking::findOrFail($newData['id']);
 
         $position = Position::findOrFail($newData['position_id']);
 

@@ -31,7 +31,7 @@ final class ControllerRating
         'TWR' => 3,
         'APP' => 4,
         'CTR' => 5,
-        'FSS' => 6,
+        'FSS' => 5,
     ];
 
     /**
@@ -40,9 +40,9 @@ final class ControllerRating
      * @param  int  $index
      * @return string
      */
-    public static function getRatingCodeByNumber(int $index): string
+    public static function getRatingCodeByNumber(int $index): ?string
     {
-        return self::NUMERIC_RATINGS[$index];
+        return self::NUMERIC_RATINGS[$index] ?? null;
     }
 
     /**
