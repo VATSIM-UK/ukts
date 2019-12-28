@@ -66,7 +66,7 @@ final class ControllerRating
     {
         $parsedSuffix = strtoupper($suffix);
 
-        if (!self::isValidSuffix($parsedSuffix)) {
+        if (! self::isValidSuffix($parsedSuffix)) {
             return false;
         }
 
