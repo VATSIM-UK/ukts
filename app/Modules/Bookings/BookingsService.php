@@ -34,6 +34,15 @@ class BookingsService implements BookingsServiceInterface
         return ControllerRating::isValidRatingForSuffix($positionSuffix, $ratingValue);
     }
 
+    /**
+     * Validate that two given times are valid within the context of other bookings.
+     *
+     * @param  Carbon  $from
+     * @param  Carbon  $to
+     * @param  Position  $position
+     * @param  int|null  $excluded  - Booking ID to be excluded from the check.
+     * @return bool
+     */
     public function validateBookingTimes(Carbon $from, Carbon $to, Position $position, int $excluded = null): bool
     {
         $bookings = Booking::where([['position_id', $position->getKey()], ['id', '!=', $excluded]]);
@@ -55,6 +64,13 @@ class BookingsService implements BookingsServiceInterface
         return $bookings->doesntExist();
     }
 
+    /**
+     * Validates whether the booking is allowed under any conditions of any relevant SpecialEndorsements.
+     *
+     * @param  User  $user
+     * @param  Position  $position
+     * @return bool
+     */
     public function validateSpecialEndorsementRequirement(User $user, Position $position): bool
     {
         $requiredEndorsements = $position->specialEndorsements;
