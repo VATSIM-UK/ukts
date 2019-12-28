@@ -98,7 +98,7 @@ class BookingsService implements BookingsServiceInterface
     {
         ['from' => $from, 'to' => $to] = $newData;
         /** @var Booking $existingBooking */
-        $existingBooking = Booking::find($newData['id']);
+        $existingBooking = Booking::findOrFail($newData['id']);
 
         $position = Position::findOrFail($newData['position_id']);
 
