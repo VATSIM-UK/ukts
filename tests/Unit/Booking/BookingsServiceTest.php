@@ -59,8 +59,8 @@ class BookingsServiceTest extends TestCase
     /** @test */
     public function itDetectsWhenBookingOverlapsOnStartTime()
     {
-        $from = new Carbon('10th January 2018 15:00:00');
-        $to = new Carbon('10th January 2018 16:30:00');
+        $from = new Carbon('10th January 2019 15:00:00');
+        $to = new Carbon('10th January 2019 16:30:00');
 
         // create existing booking
         factory(Booking::class)->create(['from' => $from, 'to' => $to, 'position_id' => $this->position->id]);
