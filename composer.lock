@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e3097681413704cf9b13df333083311",
+    "content-hash": "7051fa3be4c9e8050daf66f5f04f9869",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -3673,16 +3673,16 @@
         },
         {
             "name": "vatsimuk/auth-package",
-            "version": "v0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VATSIM-UK/auth-package.git",
-                "reference": "2153112b9087f8e7897ec423d78ab8ee58a3f0b3"
+                "reference": "70738e3dff4f4f34c55d0b13d7e7f8115ff0e284"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VATSIM-UK/auth-package/zipball/2153112b9087f8e7897ec423d78ab8ee58a3f0b3",
-                "reference": "2153112b9087f8e7897ec423d78ab8ee58a3f0b3",
+                "url": "https://api.github.com/repos/VATSIM-UK/auth-package/zipball/70738e3dff4f4f34c55d0b13d7e7f8115ff0e284",
+                "reference": "70738e3dff4f4f34c55d0b13d7e7f8115ff0e284",
                 "shasum": ""
             },
             "require": {
@@ -3722,10 +3722,10 @@
             ],
             "description": "A Laravel Library for interfacing with the VATSIM UK Central Authentication Service",
             "support": {
-                "source": "https://github.com/VATSIM-UK/auth-package/tree/v0.1",
+                "source": "https://github.com/VATSIM-UK/auth-package/tree/master",
                 "issues": "https://github.com/VATSIM-UK/auth-package/issues"
             },
-            "time": "2019-12-12T19:55:29+00:00"
+            "time": "2019-12-30T16:59:21+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -5600,7 +5600,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "vatsimuk/auth-package": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

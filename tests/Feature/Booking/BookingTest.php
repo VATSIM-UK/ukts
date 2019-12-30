@@ -23,6 +23,9 @@ class BookingTest extends TestCase
     {
         parent::setUp();
 
+        $this->actingAs($this->mockedUser());
+        $this->mockUserFind();
+
         $this->position = factory(Position::class)->create();
     }
 
@@ -172,11 +175,9 @@ class BookingTest extends TestCase
         $this->position->callsign = 'EGGD_GND';
         $this->position->save();
 
-        $this->mockUserFind();
-
         $data = $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:\"2019-08-20 15:00:00\", to:\"2019-08-20 16:30:00\") {
+            createBooking(position_id: {$this->position->id}, from:\"2019-08-20 15:00:00\", to:\"2019-08-20 16:30:00\") {
                 id
             }
           }")->assertJsonStructure($creationJsonFormat);
@@ -190,7 +191,7 @@ class BookingTest extends TestCase
 
         $data = $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from: \"2019-08-20 16:30:00\", to:\"2019-08-20 17:30:00\") {
+            createBooking(position_id: {$this->position->id}, from: \"2019-08-20 16:30:00\", to:\"2019-08-20 17:30:00\") {
                 id
             }
           }")->assertJsonStructure($creationJsonFormat);
@@ -206,12 +207,12 @@ class BookingTest extends TestCase
     /** @test */
     public function testInvalidBookingCantBeCreated()
     {
-        $this->mockUserFind();
+
 
         // Invalid "from" date
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:'Blah', to:'2019-08-20 16:30:00') {
+            createBooking(position_id: {$this->position->id}, from:'Blah', to:'2019-08-20 16:30:00') {
                 id
             }
           }")->assertJsonStructure([
@@ -229,7 +230,7 @@ class BookingTest extends TestCase
         // Invalid Position
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$unknownPositionId}, from: '2019-08-20 15:00:00', to:'2019-08-20 16:30:00') {
+            createBooking(position_id: {$unknownPositionId}, from: '2019-08-20 15:00:00', to:'2019-08-20 16:30:00') {
                 id
             }
           }")->assertJsonStructure([
@@ -246,7 +247,7 @@ class BookingTest extends TestCase
         // "From" and "To" the same
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: 1
+            createBooking(position_id: 1
             }, from:\"2019-08-20 15:00:00\", to:\"2019-08-20 15:00:00\") {
                 id
             }
@@ -294,7 +295,7 @@ class BookingTest extends TestCase
         // Test 1: Doesn't allow to book inside of booking
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:\"2019-08-10 14:30:00\", to:\"2019-08-10 15:30:00\") {
+            createBooking(position_id: {$this->position->id}, from:\"2019-08-10 14:30:00\", to:\"2019-08-10 15:30:00\") {
                 id
             }
           }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
@@ -313,7 +314,7 @@ class BookingTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
+            createBooking(position_id: {$this->position->id}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
                 id
             }
           }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
@@ -330,14 +331,14 @@ class BookingTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
+            createBooking(position_id: {$this->position->id}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
                 id
             }
           }")->assertJsonStructure($creationJsonFormat);
 
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$differentPosition->id}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
+            createBooking(position_id: {$differentPosition->id}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
                 id
             }
           }")->assertJsonStructure($creationJsonFormat);
@@ -362,7 +363,7 @@ class BookingTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
+            createBooking(position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
                 id
             }
           }")->assertJsonStructure(['data' => ['createBooking' => ['id']]]);
@@ -390,7 +391,7 @@ class BookingTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
+            createBooking(position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
                 id
             }
         }")->assertJsonStructure(['data' => ['createBooking' => ['id']]]);
@@ -411,7 +412,7 @@ class BookingTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(user_id: {$this->mockUserId}, position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
+            createBooking(position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
                 id
             }
         }")->assertJsonPath('errors.0.message',
@@ -473,13 +474,12 @@ class BookingTest extends TestCase
 
     /**
      * Setup a test case to pass the rating check for testing overlapping.
-     * @param  string  $callsign
+     * @param string $callsign
      */
     private function bypassRatingChecks($callsign = 'EGGD_TWR')
     {
         // ensure position in valid inline with the mockUserFind method.
         $this->position->callsign = $callsign;
         $this->position->save();
-        $this->mockUserFind();
     }
 }

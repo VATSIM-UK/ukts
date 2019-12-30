@@ -21,8 +21,8 @@ class BookingsService implements BookingsServiceInterface
     /**
      * Check if the the user is able to book the given position only on the rating requirement.
      *
-     * @param  User  $user
-     * @param  Position  $position
+     * @param User $user
+     * @param Position $position
      * @return bool
      */
     public function validateRatingRequirement(User $user, Position $position): bool
@@ -37,10 +37,10 @@ class BookingsService implements BookingsServiceInterface
     /**
      * Validate that two given times are valid within the context of other bookings.
      *
-     * @param  Carbon  $from
-     * @param  Carbon  $to
-     * @param  Position  $position
-     * @param  int|null  $excluded  - Booking ID to be excluded from the check.
+     * @param Carbon $from
+     * @param Carbon $to
+     * @param Position $position
+     * @param int|null $excluded - Booking ID to be excluded from the check.
      * @return bool
      */
     public function validateBookingTimes(Carbon $from, Carbon $to, Position $position, int $excluded = null): bool
@@ -67,8 +67,8 @@ class BookingsService implements BookingsServiceInterface
     /**
      * Validates whether the booking is allowed under any conditions of any relevant SpecialEndorsements.
      *
-     * @param  User  $user
-     * @param  Position  $position
+     * @param User $user
+     * @param Position $position
      * @return bool
      */
     public function validateSpecialEndorsementRequirement(User $user, Position $position): bool
@@ -88,21 +88,22 @@ class BookingsService implements BookingsServiceInterface
     {
         ['from' => $from, 'to' => $to] = $bookingData;
         $position = Position::findOrFail($bookingData['position_id']);
+
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
-        if (! $this->validateRatingRequirement($bookingUser, $position)) {
+        if (!$this->validateRatingRequirement($bookingUser, $position)) {
             throw new RatingRequirementNotMetException();
         }
 
-        if (! $this->validateSpecialEndorsementRequirement($bookingUser, $position)) {
+        if (!$this->validateSpecialEndorsementRequirement($bookingUser, $position)) {
             throw new SpecialEndorsementNotAttainedException();
         }
 
-        if (! $this->validateBookingTimes($from, $to, $position)) {
+        if (!$this->validateBookingTimes($from, $to, $position)) {
             throw new OverlappingBookingException();
         }
 
-        return Booking::create([
+        return $bookingUser->bookings()->create([
             'user_id' => $bookingUser->id,
             'position_id' => $position->id,
             'from' => $from,
@@ -118,7 +119,7 @@ class BookingsService implements BookingsServiceInterface
 
         $position = Position::findOrFail($newData['position_id']);
 
-        if (! $this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
+        if (!$this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
             throw new OverlappingBookingException();
         }
 
