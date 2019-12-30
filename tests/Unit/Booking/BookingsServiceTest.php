@@ -36,7 +36,7 @@ class BookingsServiceTest extends TestCase
             'id' => 1234567,
             'name_fist' => 'First',
             'name_last' => 'Last',
-            'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
+            'atcRating' => (object)['code' => 'S2', 'vatsim_id' => 3],
         ]);
     }
 
@@ -101,6 +101,7 @@ class BookingsServiceTest extends TestCase
         ]);
 
         $this->assertFalse($this->service->validateBookingTimes($from, $to, $this->position));
+        $this->assertFalse($this->service->validateBookingTimes($from->subHour(), $to->addHour(), $this->position));
     }
 
     /** @test */
