@@ -22,9 +22,9 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit --coverage-clover=coverage.xml
-    - name: Codecov
+    - name: Upload Code Coverage Report
       uses: codecov/codecov-action@v1.0.5
       with:
-        # Repository upload token - get it from codecov.io
         token: ${{secrets.CODECOV_TOKEN}}
         file: ./coverage.xml
+        fail_ci_if_error: true
