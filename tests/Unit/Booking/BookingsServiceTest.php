@@ -36,7 +36,7 @@ class BookingsServiceTest extends TestCase
             'id' => 1234567,
             'name_fist' => 'First',
             'name_last' => 'Last',
-            'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
+            'atcRating' => (object)['code' => 'S2', 'vatsim_id' => 3],
         ]);
     }
 
@@ -65,9 +65,10 @@ class BookingsServiceTest extends TestCase
         // create existing booking
         factory(Booking::class)->create(['from' => $from, 'to' => $to, 'position_id' => $this->position->id]);
 
-        $overlappingFrom = new Carbon('10th January 2019 15:15:00');
+        $overlappingFrom = new Carbon('10th January 2019 14:45:00');
+        $overlappingTo = new Carbon('10th January 2019 16:00:00');
 
-        $this->assertFalse($this->service->validateBookingTimes($overlappingFrom, $to, $this->position));
+        $this->assertFalse($this->service->validateBookingTimes($overlappingFrom, $overlappingTo, $this->position));
     }
 
     /** @test */
@@ -81,10 +82,10 @@ class BookingsServiceTest extends TestCase
             'position_id' => $this->position->id,
         ]);
 
-        $from = new Carbon('10th January 2019 13:15:00');
-        $overlappingTo = new Carbon('10th January 2019 15:15:00');
+        $overlappingFrom = new Carbon('10th January 2019 16:00:00');
+        $overlappingTo = new Carbon('10th January 2019 17:00:00');
 
-        $this->assertFalse($this->service->validateBookingTimes($from, $overlappingTo, $this->position));
+        $this->assertFalse($this->service->validateBookingTimes($overlappingFrom, $overlappingTo, $this->position));
     }
 
     /** @test */
