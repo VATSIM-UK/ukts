@@ -281,7 +281,7 @@ class BookingTest extends TestCase
     }
 
     /** @test */
-    public function testOverlappingBookingsCannotBeCreatedOverlappingOnStart()
+    public function testOverlappingBookingsCannotBeCreatedOverlappingOnEnd()
     {
         $this->bypassRatingChecks();
 
@@ -302,7 +302,7 @@ class BookingTest extends TestCase
     }
 
     /** @test */
-    public function testOverlappingBookingsCannotBeCreatedOverlappingOnEnd()
+    public function testOverlappingBookingsCannotBeCreatedOverlappingOnStart()
     {
         $this->bypassRatingChecks();
 
