@@ -36,7 +36,7 @@ class BookingsServiceTest extends TestCase
             'id' => 1234567,
             'name_fist' => 'First',
             'name_last' => 'Last',
-            'atcRating' => (object)['code' => 'S2', 'vatsim_id' => 3],
+            'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
         ]);
     }
 
