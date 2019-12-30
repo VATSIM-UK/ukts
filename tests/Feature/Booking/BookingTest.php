@@ -208,7 +208,6 @@ class BookingTest extends TestCase
     public function testInvalidBookingCantBeCreated()
     {
 
-
         // Invalid "from" date
         $this->graphQL("
           mutation {
@@ -245,13 +244,13 @@ class BookingTest extends TestCase
         );
 
         // "From" and "To" the same
-        $this->graphQL("
+        $this->graphQL('
           mutation {
             createBooking(position_id: 1
-            }, from:\"2019-08-20 15:00:00\", to:\"2019-08-20 15:00:00\") {
+            }, from:"2019-08-20 15:00:00", to:"2019-08-20 15:00:00") {
                 id
             }
-          }")->assertJsonStructure([
+          }')->assertJsonStructure([
                 'errors' => [
                     [
                         'message',
