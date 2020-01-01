@@ -50,7 +50,7 @@ class BookingServiceUpdateTest extends TestCase
             'id' => $params['id'],
             'position_id' => $params['position_id'],
             'from' => $params['from'],
-            'to' => $params['to']
+            'to' => $params['to'],
         ]);
     }
 
@@ -76,13 +76,13 @@ class BookingServiceUpdateTest extends TestCase
         $otherBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 16:30:00'),
-            'to' => new Carbon('10th January 2019 18:30:00')
+            'to' => new Carbon('10th January 2019 18:30:00'),
         ]);
 
         $this->service->updateExistingBooking($this->generateUpdateMethodParameters([
             'id' => $this->existingBooking->id,
             'from' => new Carbon('10th January 2019 16:45:00'),
-            'to' => new Carbon('10th January 2019 18:45:00')
+            'to' => new Carbon('10th January 2019 18:45:00'),
         ]));
     }
 

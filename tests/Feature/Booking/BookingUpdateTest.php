@@ -26,7 +26,6 @@ class BookingUpdateTest extends TestCase
         $this->position = factory(Position::class)->create();
     }
 
-
     /** @test */
     public function testItCanUpdateABooking()
     {
@@ -57,7 +56,6 @@ class BookingUpdateTest extends TestCase
             'to' => new Carbon('2019-08-20 18:00:00'),
         ]);
     }
-
 
     /** @test */
     public function testValidationForBookingIdExistingOccurs()

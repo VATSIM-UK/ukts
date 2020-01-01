@@ -75,14 +75,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-                'errors' => [
-                    [
-                        'message',
-                        'extensions',
-                        'locations',
-                    ],
+            'errors' => [
+                [
+                    'message',
+                    'extensions',
+                    'locations',
                 ],
-            ]
+            ],
+        ]
         );
 
         $unknownPositionId = 2;
@@ -93,14 +93,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-                'errors' => [
-                    [
-                        'message',
-                        'extensions',
-                        'locations',
-                    ],
+            'errors' => [
+                [
+                    'message',
+                    'extensions',
+                    'locations',
                 ],
-            ]
+            ],
+        ]
         );
 
         // "From" and "To" the same
@@ -111,14 +111,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }')->assertJsonStructure([
-                'errors' => [
-                    [
-                        'message',
-                        'extensions',
-                        'locations',
-                    ],
+            'errors' => [
+                [
+                    'message',
+                    'extensions',
+                    'locations',
                 ],
-            ]
+            ],
+        ]
         );
 
         // "From" after "To"
@@ -128,14 +128,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-                'errors' => [
-                    [
-                        'message',
-                        'extensions',
-                        'locations',
-                    ],
+            'errors' => [
+                [
+                    'message',
+                    'extensions',
+                    'locations',
                 ],
-            ]
+            ],
+        ]
         );
     }
 
