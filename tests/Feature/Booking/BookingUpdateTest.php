@@ -58,4 +58,17 @@ class BookingUpdateTest extends TestCase
         ]);
     }
 
+
+    /** @test */
+    public function testValidationForBookingIdExistingOccurs()
+    {
+        $invalidBookingId = -1;
+
+        $this->graphQL("
+            mutation {
+                updateBooking(id: {$invalidBookingId}, from: \"2019-08-20 17:00:00\", to: \"2019-08-20 18:00:00\") {
+                    id
+                }
+            }")->assertJsonPath('errors.0.extensions.validation.id.0', 'The selected id is invalid.');
+    }
 }

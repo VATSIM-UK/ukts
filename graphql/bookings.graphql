@@ -13,7 +13,7 @@ extend type Mutation @middleware(checks: ["auth"]) {
     ): Booking! @field(resolver: "App\\Modules\\Bookings\\CreateBookingHandler")
 
     updateBooking(
-        id: ID!
+        id: ID! @rules(apply: ["exists:bookings"])
         from: DateTime @rules(apply: ["required", "before:to"]),
         to: DateTime @rules(apply: ["required", "after:from"]),
     ): Booking @field(resolver: "App\\Modules\\Bookings\\UpdateBookingHandler")
