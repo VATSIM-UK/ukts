@@ -14,9 +14,9 @@ extend type Mutation @middleware(checks: ["auth"]) {
 
     updateBooking(
         id: ID!
-        from: DateTime @rules(apply: ["before:to"]),
-        to: DateTime @rules(apply: ["after:from"]),
-    ): Booking @update
+        from: DateTime @rules(apply: ["required", "before:to"]),
+        to: DateTime @rules(apply: ["required", "after:from"]),
+    ): Booking @field(resolver: "App\\Modules\\Bookings\\UpdateBookingHandler")
 
     deleteBooking(
         id: ID!

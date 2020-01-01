@@ -21,8 +21,8 @@ class BookingsService implements BookingsServiceInterface
     /**
      * Check if the the user is able to book the given position only on the rating requirement.
      *
-     * @param User $user
-     * @param Position $position
+     * @param  User  $user
+     * @param  Position  $position
      * @return bool
      */
     public function validateRatingRequirement(User $user, Position $position): bool
@@ -37,10 +37,10 @@ class BookingsService implements BookingsServiceInterface
     /**
      * Validate that two given times are valid within the context of other bookings.
      *
-     * @param Carbon $from
-     * @param Carbon $to
-     * @param Position $position
-     * @param int|null $excluded - Booking ID to be excluded from the check.
+     * @param  Carbon  $from
+     * @param  Carbon  $to
+     * @param  Position  $position
+     * @param  int|null  $excluded  - Booking ID to be excluded from the check.
      * @return bool
      */
     public function validateBookingTimes(Carbon $from, Carbon $to, Position $position, int $excluded = null): bool
@@ -67,8 +67,8 @@ class BookingsService implements BookingsServiceInterface
     /**
      * Validates whether the booking is allowed under any conditions of any relevant SpecialEndorsements.
      *
-     * @param User $user
-     * @param Position $position
+     * @param  User  $user
+     * @param  Position  $position
      * @return bool
      */
     public function validateSpecialEndorsementRequirement(User $user, Position $position): bool
@@ -117,13 +117,13 @@ class BookingsService implements BookingsServiceInterface
         /** @var Booking $existingBooking */
         $existingBooking = Booking::findOrFail($newData['id']);
 
-        $position = Position::findOrFail($newData['position_id']);
+        $position = $existingBooking->position;
 
         if (! $this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
             throw new OverlappingBookingException();
         }
 
-        return Booking::update([
+        return $existingBooking->update([
             'from' => $from,
             'to' => $to,
         ]);

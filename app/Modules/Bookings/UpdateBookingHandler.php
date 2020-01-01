@@ -21,6 +21,8 @@ class UpdateBookingHandler
     {
         $service = app()->make(BookingsServiceInterface::class);
 
-        return $service->updateBooking($args);
+        $service->updateExistingBooking($args);
+
+        return Booking::findOrFail($args['id']);
     }
 }
