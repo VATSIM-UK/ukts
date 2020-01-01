@@ -58,6 +58,30 @@ class BookingUpdateTest extends TestCase
     }
 
     /** @test */
+    public function testBookingNotUpdatedWhenOverlapsWithRelevantMessage()
+    {
+        factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => new Carbon('2019-08-20 15:00:00'),
+            'to' => new Carbon('2019-08-20 16:30:00'),
+        ]);
+
+        $bookingToUpdate = factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => new Carbon('2019-08-20 17:00:00'),
+            'to' => new Carbon('2019-08-20 18:30:00'),
+        ]);
+
+        // start
+        $this->graphQL("
+            mutation {
+                updateBooking(id: {$bookingToUpdate->id}, from: \"2019-08-20 16:15:00\", to: \"2019-08-20 17:00:00\") {
+                    id
+                }
+            }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
+    }
+
+    /** @test */
     public function testValidationForBookingIdExistingOccurs()
     {
         $invalidBookingId = -1;
