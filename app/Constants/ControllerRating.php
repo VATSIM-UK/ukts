@@ -62,7 +62,7 @@ final class ControllerRating
      * @param  int  $rating
      * @return bool
      */
-    public static function isValidRatingForSuffix(string $suffix, int $rating)
+    public static function isValidRatingForSuffix(string $suffix, int $rating): bool
     {
         $parsedSuffix = strtoupper($suffix);
 
@@ -79,7 +79,7 @@ final class ControllerRating
      * @param  string  $suffix
      * @return bool
      */
-    private static function isValidSuffix(string $suffix)
+    private static function isValidSuffix(string $suffix): bool
     {
         return array_key_exists($suffix, self::SUFFIX_REQUIREMENTS);
     }
