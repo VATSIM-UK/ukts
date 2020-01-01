@@ -31,11 +31,10 @@ class BookingUnitTest extends TestCase
     /** @test */
     public function itReturnsTheUserRelation()
     {
-        $this->booking->setRelation('user', User::initModelWithData([
-            'id' => $this->mockUserId,
-            'name_fist' => 'First',
-            'name_last' => 'Last',
-        ]));
+        $this->mock(User::class, function ($mock) {
+            $mock->shouldReceive('find')
+                ->andReturn($this->mockedUser());
+        })->makePartial();
 
         $this->assertInstanceOf(User::class, $this->booking->user);
     }
