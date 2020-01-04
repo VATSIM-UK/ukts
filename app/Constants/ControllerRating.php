@@ -13,41 +13,44 @@ final class ControllerRating
         'C3' => 'Controller 3',
     ];
 
+    /**
+     * Indexes reference the VATSIM data representation of the ratings.
+     */
     private const NUMERIC_RATINGS = [
-        0 => 'OBS',
-        1 => 'S1',
-        2 => 'S2',
-        3 => 'S3',
-        4 => 'C1',
-        5 => 'C3',
+        1 => 'OBS',
+        2 => 'S1',
+        3 => 'S2',
+        4 => 'S3',
+        5 => 'C1',
+        6 => 'C3',
     ];
 
     private const SUFFIX_REQUIREMENTS = [
-        'DEL' => 1,
-        'GND' => 1,
-        'TWR' => 2,
-        'APP' => 3,
-        'CTR' => 4,
-        'FSS' => 4,
+        'DEL' => 2,
+        'GND' => 2,
+        'TWR' => 3,
+        'APP' => 4,
+        'CTR' => 5,
+        'FSS' => 5,
     ];
 
     /**
      * Returns the code of the rating based upon the numeric key.
      *
-     * @param int $index
+     * @param  int  $index
      * @return string
      */
-    public static function getRatingCodeByNumber(int $index) : string
+    public static function getRatingCodeByNumber(int $index): ?string
     {
-        return self::NUMERIC_RATINGS[$index];
+        return self::NUMERIC_RATINGS[$index] ?? null;
     }
 
     /**
      * Get the human readable version of a given code.
-     * @param string $code
+     * @param  string  $code
      * @return string
      */
-    public static function getHumanReadableRatingByCode(string $code) : string
+    public static function getHumanReadableRatingByCode(string $code): string
     {
         return self::RATINGS[$code];
     }
@@ -55,16 +58,16 @@ final class ControllerRating
     /**
      * Determines whether the given suffix is valid given the position.
      *
-     * @param string $suffix
-     * @param int $rating
+     * @param  string  $suffix
+     * @param  int  $rating
      * @return bool
      */
-    public static function isValidRatingForSuffix(string $suffix, int $rating)
+    public static function isValidRatingForSuffix(string $suffix, int $rating): bool
     {
         $parsedSuffix = strtoupper($suffix);
 
         if (! self::isValidSuffix($parsedSuffix)) {
-            return;
+            return false;
         }
 
         return $rating >= self::SUFFIX_REQUIREMENTS[$parsedSuffix];
@@ -73,10 +76,10 @@ final class ControllerRating
     /**
      * Determines whether the given suffix is valid for analysis.
      *
-     * @param string $suffix
+     * @param  string  $suffix
      * @return bool
      */
-    private static function isValidSuffix(string $suffix)
+    private static function isValidSuffix(string $suffix): bool
     {
         return array_key_exists($suffix, self::SUFFIX_REQUIREMENTS);
     }

@@ -23,7 +23,6 @@ services:
     environment:
       - DB_HOST=mariadb
       - DB_USERNAME=ukts
-      - DB_DATABASE=ukts_core
       - DB_PASSWORD=secret
     depends_on:
       - mariadb

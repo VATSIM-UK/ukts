@@ -1,25 +1,25 @@
 <?php
 
-namespace Tests\Unit\Position;
+namespace Tests\Unit\Booking;
 
-use App\Booking;
-use App\Exceptions\OverlappingBookingException;
+use App\Modules\Bookings\Booking;
 use App\Position;
-use Carbon\Carbon;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BookingUnitTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, BookingsTestHelper;
 
     protected $position;
+    protected $booking;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->booking = factory(Booking::class)->create();
+        $this->booking = factory(Booking::class)->create(['user_id' => 1234567]);
     }
 
     /** @test */
@@ -29,74 +29,13 @@ class BookingUnitTest extends TestCase
     }
 
     /** @test */
-    public function itCorrectlyDeterminesIfABookingCanBeMade()
+    public function itReturnsTheUserRelation()
     {
-        $this->booking->from = new Carbon('10th January 2018 15:00:00');
-        $this->booking->to = new Carbon('10th January 2018 16:00:00');
-        $this->booking->save();
+        $this->mock(User::class, function ($mock) {
+            $mock->shouldReceive('find')
+                ->andReturn($this->mockedUser());
+        })->makePartial();
 
-        $this->assertTrue(Booking::canBeMade(
-            $this->booking->position_id,
-            new Carbon('10th January 2018 14:00:00'),
-            new Carbon('10th January 2018 15:00:00'))
-        );
-        $this->assertTrue(Booking::canBeMade(
-            $this->booking->position_id,
-            new Carbon('10th January 2018 16:00:00'),
-            new Carbon('10th January 2018 17:00:00'))
-        );
-        $this->assertFalse(Booking::canBeMade(
-            $this->booking->position_id,
-            new Carbon('10th January 2018 14:00:00'),
-            new Carbon('10th January 2018 15:30:00'))
-        );
-        $this->assertFalse(Booking::canBeMade(
-            $this->booking->position_id,
-            new Carbon('10th January 2018 15:59:00'),
-            new Carbon('10th January 2018 18:00:00'))
-        );
-        $this->assertFalse(Booking::canBeMade(
-            $this->booking->position_id,
-            new Carbon('10th January 2018 15:00:00'),
-            new Carbon('10th January 2018 16:00:00'))
-        );
-        $this->assertTrue(Booking::canBeMade(
-            $this->booking->position_id,
-            new Carbon('10th January 2018 15:00:00'),
-            new Carbon('10th January 2018 16:00:00'),
-            $this->booking->id)
-        );
-    }
-
-    /** @test */
-    public function itWillThrowExceptionIfBookingCantBeMade()
-    {
-        $this->expectException(OverlappingBookingException::class);
-        $this->booking->from = new Carbon('10th January 2018 15:00:00');
-        $this->booking->to = new Carbon('10th January 2018 16:00:00');
-        $this->booking->save();
-
-        Booking::create([
-            'user_id' => $this->booking->user_id,
-            'position_id' => $this->booking->position_id,
-            'from' => new Carbon('10th January 2018 14:00:00'),
-            'to' => new Carbon('10th January 2018 15:30:00'),
-        ]);
-    }
-
-    /** @test */
-    public function itWontThrowExceptionIfBookingCanBeMade()
-    {
-        $this->expectNotToPerformAssertions();
-        $this->booking->from = new Carbon('10th January 2018 15:00:00');
-        $this->booking->to = new Carbon('10th January 2018 16:00:00');
-        $this->booking->save();
-
-        Booking::create([
-            'user_id' => $this->booking->user_id,
-            'position_id' => $this->booking->position_id,
-            'from' => new Carbon('10th January 2018 14:00:00'),
-            'to' => new Carbon('10th January 2018 15:00:00'),
-        ]);
+        $this->assertInstanceOf(User::class, $this->booking->user);
     }
 }

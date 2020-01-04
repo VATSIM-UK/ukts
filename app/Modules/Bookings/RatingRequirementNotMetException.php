@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Modules\Bookings;
 
-use DomainException;
+use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
-class OverlappingBookingException extends DomainException implements RendersErrorsExtensions
+class RatingRequirementNotMetException extends Exception implements RendersErrorsExtensions
 {
-    protected $message = "Can't have overlapping bookings for the same position!";
+    protected $message = 'Your rating is not high enough to book that position.';
 
     /**
      * Returns true when exception message is safe to be displayed to a client.

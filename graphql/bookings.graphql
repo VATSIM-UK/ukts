@@ -5,20 +5,18 @@ extend type Query {
     booking(id: ID @eq): Booking @find
 }
 
-extend type Mutation {
+extend type Mutation @middleware(checks: ["auth"]) {
     createBooking(
-        user_id: ID! @rules(apply: ["required", "App\\Rules\\UserExistsRule"]),
-        position: PositionRelation!,
+        position_id: Int!,
         from: DateTime! @rules(apply: ["before:to"]),
         to: DateTime! @rules(apply: ["after:from"]),
-    ): Booking! @create
+    ): Booking! @field(resolver: "App\\Modules\\Bookings\\CreateBookingHandler")
 
     updateBooking(
-        id: ID!
-        position: PositionRelation,
-        from: DateTime @rules(apply: ["before:to"]),
-        to: DateTime @rules(apply: ["after:from"]),
-    ): Booking @update
+        id: ID! @rules(apply: ["exists:bookings"])
+        from: DateTime! @rules(apply: ["before:to"]),
+        to: DateTime! @rules(apply: ["after:from"]),
+    ): Booking @field(resolver: "App\\Modules\\Bookings\\UpdateBookingHandler")
 
     deleteBooking(
         id: ID!

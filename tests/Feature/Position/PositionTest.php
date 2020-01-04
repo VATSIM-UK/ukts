@@ -131,10 +131,10 @@ class PositionTest extends TestCase
                     name
                 }
             }')->assertJsonFragment(['validation' => [
-                'callsign' => [
-                    'The callsign has already been taken.',
-                ],
-            ]]);
+            'callsign' => [
+                'The callsign has already been taken.',
+            ],
+        ]]);
 
         $this->assertCount(1, Position::all());
     }
@@ -156,12 +156,12 @@ class PositionTest extends TestCase
                     name
                 }
             }')->assertJson([
-                'data' => [
-                    'updatePosition' => [
-                        'id' => 1,
-                        'name' => 'Slough Tower',
-                    ],
+            'data' => [
+                'updatePosition' => [
+                    'id' => 1,
+                    'name' => 'Slough Tower',
                 ],
+            ],
         ]);
 
         $this->assertDatabaseHas('positions', [
