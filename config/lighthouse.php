@@ -79,7 +79,10 @@ return [
     */
 
     'namespaces' => [
-        'models' => ['App', 'App\\Models', 'App\\Modules\\Endorsement\\Special', 'App\\Modules\\Bookings'],
+        'models' => [
+            'App', 'App\\Models', 'App\\Modules\\Endorsement\\Special', 'App\\Modules\\Bookings',
+            'App\\Modules\\Position'
+        ],
         'queries' => 'App\\GraphQL\\Queries',
         'mutations' => 'App\\GraphQL\\Mutations',
         'subscriptions' => 'App\\GraphQL\\Subscriptions',

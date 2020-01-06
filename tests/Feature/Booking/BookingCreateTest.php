@@ -5,7 +5,7 @@ namespace Tests\Feature\Booking;
 use App\Modules\Bookings\Booking;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
-use App\Position;
+use App\Modules\Position\Position;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -75,14 +75,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         $unknownPositionId = 2;
@@ -93,14 +93,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         // "From" and "To" the same
@@ -111,14 +111,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }')->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         // "From" after "To"
@@ -128,14 +128,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
     }
 

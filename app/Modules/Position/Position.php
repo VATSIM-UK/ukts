@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Modules\Position;
 
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Illuminate\Database\Eloquent\Model;

@@ -3,7 +3,7 @@
 namespace Tests\Feature\Booking;
 
 use App\Modules\Bookings\Booking;
-use App\Position;
+use App\Modules\Position\Position;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;

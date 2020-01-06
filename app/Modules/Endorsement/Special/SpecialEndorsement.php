@@ -2,7 +2,7 @@
 
 namespace App\Modules\Endorsement\Special;
 
-use App\Position;
+use App\Modules\Position\Position;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
