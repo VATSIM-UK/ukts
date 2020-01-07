@@ -19,7 +19,7 @@ class UpdateBookingHandler
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $service = app()->make(BookingsServiceInterface::class);
+        $service = app()->make(BookingsService::class);
 
         $service->updateExistingBooking($args);
 

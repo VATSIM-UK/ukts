@@ -4,7 +4,7 @@ namespace Tests\Unit\Booking;
 
 use App\Exceptions\OverlappingBookingException;
 use App\Modules\Bookings\Booking;
-use App\Modules\Bookings\BookingsServiceInterface;
+use App\Modules\Bookings\BookingsService;
 use App\Position;
 use App\User;
 use Carbon\Carbon;
@@ -25,7 +25,7 @@ class BookingServiceUpdateTest extends TestCase
     {
         parent::setUp();
 
-        $this->service = $this->app->make(BookingsServiceInterface::class);
+        $this->service = $this->app->make(BookingsService::class);
 
         $this->position = factory(Position::class)->create();
 
