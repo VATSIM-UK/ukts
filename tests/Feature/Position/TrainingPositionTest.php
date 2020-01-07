@@ -50,4 +50,31 @@ class TrainingPositionTest extends TestCase
         }")->assertJsonPath('errors.0.message', 'The given position is already assigned for training.')
             ->assertJsonPath('errors.0.extensions.code', 422);
     }
+
+    /** @test */
+    public function testTrainingPositionAssignmentsCanBeQueried()
+    {
+        factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+        $this->graphQL("
+        query {
+            positionsAvailableForTraining {
+                position {
+                    id
+                }
+            }
+        }
+        ")->assertJsonStructure(['data' => ['positionsAvailableForTraining']])
+            ->assertJsonFragment([
+                'data' => [
+                    'positionsAvailableForTraining' => [
+                        [
+                            'position' => [
+                                'id' => (string) $this->position->id
+                            ]
+                        ]
+                    ]
+                ]
+            ]);
+    }
+
 }
