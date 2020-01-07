@@ -18,6 +18,10 @@ extend type Mutation {
         frequency: String @rules(apply: ["min:7"]),
         type: Int
     ): Position @update
+
+    assignPositionForTraining(
+        position_id: Int!
+    ): TrainingPositionAssigment! @field(resolver: "App\\Modules\\Position\\CreateAssignmentHandler")
 }
 
 input PositionRelation {
@@ -33,4 +37,10 @@ type Position {
     type_human: String!
     created_at: DateTime!
     updated_at: DateTime!
+}
+
+type TrainingPositionAssigment {
+    id: ID!
+    position: Position!
+    deleted_at: DateTime!
 }

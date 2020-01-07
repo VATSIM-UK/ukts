@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Modules\Bookings\BookingsService;
+use App\Modules\Position\TrainingPositionService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(BookingsService::class);
+        $this->app->singleton(TrainingPositionService::class);
     }
 
     /**
