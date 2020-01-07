@@ -4,7 +4,7 @@ namespace Tests\Unit\Booking;
 
 use App\Exceptions\OverlappingBookingException;
 use App\Modules\Bookings\Booking;
-use App\Modules\Bookings\BookingsServiceInterface;
+use App\Modules\Bookings\BookingsService;
 use App\Modules\Bookings\RatingRequirementNotMetException;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
@@ -30,7 +30,9 @@ class BookingsServiceTest extends TestCase
 
         $this->position = factory(Position::class)->create();
 
-        $this->service = $this->app->make(BookingsServiceInterface::class);
+        $this->mockUserFind();
+
+        $this->service = $this->app->make(BookingsService::class);
 
         $this->mockUserModel = User::initModelWithData([
             'id' => 1234567,
@@ -237,11 +239,7 @@ class BookingsServiceTest extends TestCase
         $this->position->callsign = 'EGGD_TWR';
         $this->position->save();
 
-        $this->mockUserFind();
-
-        // new service required to inject user dependency
-        $newService = $this->app->make(BookingsServiceInterface::class);
-        $newService->createBooking([
+        $this->service->createBooking([
             'position_id' => $this->position->id,
             'user_id' => 1234567,
             'from' => new Carbon('10th January 2019 13:00:00'),
@@ -269,11 +267,7 @@ class BookingsServiceTest extends TestCase
             'to' => new Carbon('10th January 2019 14:30:00'),
         ]);
 
-        $this->mockUserFind();
-
-        // new service required to inject user dependency
-        $newService = $this->app->make(BookingsServiceInterface::class);
-        $newService->createBooking([
+        $this->service->createBooking([
             'position_id' => $this->position->id,
             'user_id' => 1234567,
             'from' => new Carbon('10th January 2019 13:00:00'),
@@ -291,16 +285,12 @@ class BookingsServiceTest extends TestCase
     public function itThrowsAnExceptionWhenRatingRequirementNotMet()
     {
         $this->expectException(RatingRequirementNotMetException::class);
-        $this->position->callsign = 'EGGD_TWR';
+        $this->position->callsign = 'LON_C_CTR'; // higher than the base mocked user
         $this->position->save();
 
-        $this->mockUserFind(['code' => 'OBS', 'vatsim_id' => 1]);
-
-        // new service required to inject user dependency
-        $newService = $this->app->make(BookingsServiceInterface::class);
-        $newService->createBooking([
+        $this->service->createBooking([
             'position_id' => $this->position->id,
-            'user_id' => 1234567,
+            'user_id' => $this->mockUserId,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
@@ -317,14 +307,9 @@ class BookingsServiceTest extends TestCase
     {
         $this->expectException(ModelNotFoundException::class);
 
-        $this->mock(User::class, function ($mock) {
-            $mock->shouldReceive('findOrFail')->andThrow(ModelNotFoundException::class);
-        });
-
-        $newService = $this->app->make(BookingsServiceInterface::class);
-        $newService->createBooking([
+        $this->service->createBooking([
             'position_id' => $this->position->id,
-            'user_id' => 1234587,
+            'user_id' => $this->invalidUserId,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
@@ -335,10 +320,7 @@ class BookingsServiceTest extends TestCase
     {
         $this->expectException(ModelNotFoundException::class);
 
-        $this->mockUserFind();
-
-        $newService = $this->app->make(BookingsServiceInterface::class);
-        $newService->createBooking([
+        $this->service->createBooking([
             'position_id' => 9999,
             'user_id' => 1234567,
             'from' => new Carbon('10th January 2019 13:00:00'),

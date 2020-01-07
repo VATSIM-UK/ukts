@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Modules\Bookings\BookingsService;
-use App\Modules\Bookings\BookingsServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(BookingsServiceInterface::class, BookingsService::class);
+        $this->app->singleton(BookingsService::class);
     }
 
     /**
