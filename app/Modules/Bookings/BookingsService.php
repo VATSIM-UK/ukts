@@ -8,7 +8,7 @@ use App\Position;
 use App\User;
 use Carbon\Carbon;
 
-class BookingsService implements BookingsServiceInterface
+class BookingsService
 {
     /** @var mixed App\User */
     protected $user;
