@@ -135,7 +135,7 @@ class PositionTest extends TestCase
                 'callsign' => [
                     'The callsign has already been taken.',
                 ],
-            ]
+            ],
         ]);
 
         $this->assertCount(1, Position::all());

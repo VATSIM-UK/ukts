@@ -55,7 +55,7 @@ class TrainingPositionTest extends TestCase
     public function testTrainingPositionAssignmentsCanBeQueried()
     {
         factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
-        $this->graphQL("
+        $this->graphQL('
         query {
             positionsAvailableForTraining {
                 position {
@@ -63,18 +63,17 @@ class TrainingPositionTest extends TestCase
                 }
             }
         }
-        ")->assertJsonStructure(['data' => ['positionsAvailableForTraining']])
+        ')->assertJsonStructure(['data' => ['positionsAvailableForTraining']])
             ->assertJsonFragment([
                 'data' => [
                     'positionsAvailableForTraining' => [
                         [
                             'position' => [
-                                'id' => (string) $this->position->id
-                            ]
-                        ]
-                    ]
-                ]
+                                'id' => (string) $this->position->id,
+                            ],
+                        ],
+                    ],
+                ],
             ]);
     }
-
 }
