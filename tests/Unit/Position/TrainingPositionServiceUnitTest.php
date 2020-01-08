@@ -55,7 +55,7 @@ class TrainingPositionServiceUnitTest extends TestCase
 
         $this->assertDatabaseHas('training_position_assignments', [
             'position_id' => $this->position->id,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
     }
 
@@ -69,7 +69,7 @@ class TrainingPositionServiceUnitTest extends TestCase
 
         $this->assertDatabaseMissing('training_position_assignments', [
             'position_id' => $this->position->id,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
     }
 
