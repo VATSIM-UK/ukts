@@ -69,7 +69,36 @@ class TrainingPositionTest extends TestCase
                     'positionsAvailableForTraining' => [
                         [
                             'position' => [
-
+                                'id' => (string) $this->position->id
+                            ]
+                        ]
+                    ]
+                ]
+            ])
+            ->assertStatus(200);
     }
 
+    /** @test */
+    public function testTrainingPositionAssignmentsCanBeRevoked()
+    {
+        factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+        $this->graphQL("
+            mutation {
+                removePositionFromTraining(position_id: {$this->position->id})
+            }
+        ")->assertJsonPath('data.removePositionFromTraining', true)
+            ->assertStatus(200);
+    }
+
+    /** @test */
+    public function testExceptionThrownWhenAssignmentIsRemovedThatDoesntExist()
+    {
+        $this->graphQL("
+            mutation {
+                removePositionFromTraining(position_id: {$this->position->id})
+            }
+        ")->assertJsonPath('errors.0.message',
+            'The given position has not been assigned for training so cannot be deleted.')
+            ->assertStatus(200);
+    }
 }
