@@ -69,11 +69,11 @@ class TrainingPositionTest extends TestCase
                     'positionsAvailableForTraining' => [
                         [
                             'position' => [
-                                'id' => (string) $this->position->id
-                            ]
-                        ]
-                    ]
-                ]
+                                'id' => (string) $this->position->id,
+                            ],
+                        ],
+                    ],
+                ],
             ])
             ->assertStatus(200);
     }
