@@ -4,6 +4,7 @@ namespace Tests\Unit\Position;
 
 use App\Modules\Position\Position;
 use App\Modules\Position\PositionAlreadyAssignedForTrainingException;
+use App\Modules\Position\PositionNotAssignedForTrainingException;
 use App\Modules\Position\TrainingPositionAssignment;
 use App\Modules\Position\TrainingPositionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,14 +29,14 @@ class TrainingPositionServiceUnitTest extends TestCase
     /** @test */
     public function itPassesCheckWhenNoActiveAssignmentsForGivenPositionExist()
     {
-        $this->assertTrue($this->service->checkExistingActivePositionAssignments($this->position));
+        $this->assertFalse($this->service->checkHasExistingActivePositionAssignments($this->position));
     }
 
     /** @test */
     public function itDetectsWhenActivePositionAssignmentExists()
     {
         factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
-        $this->assertFalse($this->service->checkExistingActivePositionAssignments($this->position));
+        $this->assertTrue($this->service->checkHasExistingActivePositionAssignments($this->position));
     }
 
     /** @test */
@@ -44,7 +45,7 @@ class TrainingPositionServiceUnitTest extends TestCase
         $assignment = factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
         $assignment->delete();
 
-        $this->assertTrue($this->service->checkExistingActivePositionAssignments($this->position));
+        $this->assertFalse($this->service->checkHasExistingActivePositionAssignments($this->position));
     }
 
     /** @test */
@@ -70,5 +71,26 @@ class TrainingPositionServiceUnitTest extends TestCase
             'position_id' => $this->position->id,
             'deleted_at' => null
         ]);
+    }
+
+    /** @test */
+    public function itRemovesPositionsFromTraining()
+    {
+        factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+
+        $this->service->removeAssignment($this->position);
+
+        $this->assertDatabaseHas('training_position_assignments', [
+            'position_id' => $this->position->id,
+            'deleted_at' => now()
+        ]);
+    }
+
+    /** @test */
+    public function itDoesntRemovePositionFromTrainingIfDoesntAlreadyExist()
+    {
+        $this->expectException(PositionNotAssignedForTrainingException::class);
+
+        $this->service->removeAssignment($this->position);
     }
 }
