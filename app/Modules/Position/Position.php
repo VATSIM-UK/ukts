@@ -55,7 +55,7 @@ class Position extends Model
         return self::TYPES[$this->attributes['type']][1];
     }
 
-    public function getSuffixAttribute()
+    public function getSuffixAttribute(): string
     {
         static $GROUP_1 = 1;
         $matches = [];

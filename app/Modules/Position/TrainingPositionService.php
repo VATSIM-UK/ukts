@@ -11,7 +11,7 @@ class TrainingPositionService
         return is_null($this->findAssignmentByPosition($position)) ? false : true;
     }
 
-    public function createAssignment(Position $position)
+    public function createAssignment(Position $position): TrainingPositionAssignment
     {
         throw_if($this->checkHasExistingActivePositionAssignments($position),
             PositionAlreadyAssignedForTrainingException::class);
