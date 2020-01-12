@@ -44,7 +44,7 @@ class PositionNotAssignedForTrainingException extends Exception implements Rende
     public function extensionsContent(): array
     {
         return [
-            'code' => 422,
+            'code' => 404,
         ];
     }
 }
