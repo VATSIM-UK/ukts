@@ -5,7 +5,7 @@ namespace Tests\Feature\Booking;
 use App\Modules\Bookings\Booking;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
-use App\Position;
+use App\Modules\Position\Position;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;

@@ -1,6 +1,7 @@
 extend type Query {
     positions: [Position!]! @all
     position(id: ID @eq, callsign: String @eq): Position @find
+    positionsAvailableForTraining: [TrainingPositionAssignment!]! @all
 }
 
 extend type Mutation {
@@ -18,6 +19,15 @@ extend type Mutation {
         frequency: String @rules(apply: ["min:7"]),
         type: Int
     ): Position @update
+
+    assignPositionForTraining(
+        position_id: Int!
+    ): TrainingPositionAssignment! @field(resolver: "App\\Modules\\Position\\CreateAssignmentHandler")
+
+    removePositionFromTraining(
+        position_id: Int!
+    ): Boolean! @field(resolver: "App\\Modules\\Position\\RemoveAssignmentHandler" )
+
 }
 
 input PositionRelation {
@@ -33,4 +43,10 @@ type Position {
     type_human: String!
     created_at: DateTime!
     updated_at: DateTime!
+}
+
+type TrainingPositionAssignment {
+    id: ID!
+    position: Position!
+    deleted_at: DateTime!
 }

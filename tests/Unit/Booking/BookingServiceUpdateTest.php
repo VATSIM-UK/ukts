@@ -5,7 +5,7 @@ namespace Tests\Unit\Booking;
 use App\Exceptions\OverlappingBookingException;
 use App\Modules\Bookings\Booking;
 use App\Modules\Bookings\BookingsService;
-use App\Position;
+use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

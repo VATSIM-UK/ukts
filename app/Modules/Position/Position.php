@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Modules\Position;
 
+use App\Modules\Bookings\Booking;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -44,17 +45,17 @@ class Position extends Model
         );
     }
 
-    public function getTypeAttribute()
+    public function getTypeAttribute(): string
     {
         return self::TYPES[$this->attributes['type']][0];
     }
 
-    public function getTypeHumanAttribute()
+    public function getTypeHumanAttribute(): string
     {
         return self::TYPES[$this->attributes['type']][1];
     }
 
-    public function getSuffixAttribute()
+    public function getSuffixAttribute(): string
     {
         static $GROUP_1 = 1;
         $matches = [];

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Position;
 
-use App\Position;
+use App\Modules\Position\Position;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;
@@ -94,7 +94,7 @@ class PositionTest extends TestCase
     public function testValidPositionCanBeCreated()
     {
         $this->graphQL('
-          mutation { 
+          mutation {
             createPosition(name: "Bristol Tower", callsign: "EGGD_TWR", frequency: "133.850", type: 4) {
                 id
                 name
@@ -125,16 +125,18 @@ class PositionTest extends TestCase
         ]);
 
         $this->graphQL('
-            mutation { 
+            mutation {
                 createPosition(name: "Bristol Tower", callsign: "EGGD_TWR", frequency: "133.850", type: 4) {
                     id
                     name
                 }
-            }')->assertJsonFragment(['validation' => [
-            'callsign' => [
-                'The callsign has already been taken.',
+            }')->assertJsonFragment([
+            'validation' => [
+                'callsign' => [
+                    'The callsign has already been taken.',
+                ],
             ],
-        ]]);
+        ]);
 
         $this->assertCount(1, Position::all());
     }
@@ -150,7 +152,7 @@ class PositionTest extends TestCase
         ]);
 
         $this->graphQL('
-            mutation { 
+            mutation {
                 updatePosition(id: 1, name: "Slough Tower", callsign: "EGLL_TWR") {
                     id
                     name

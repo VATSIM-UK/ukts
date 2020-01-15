@@ -3,7 +3,7 @@
 namespace Tests\Unit\Position;
 
 use App\Modules\Endorsement\Special\SpecialEndorsement;
-use App\Position;
+use App\Modules\Position\Position;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

@@ -3,7 +3,7 @@
 namespace Tests\Unit\Booking;
 
 use App\Modules\Bookings\Booking;
-use App\Position;
+use App\Modules\Position\Position;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

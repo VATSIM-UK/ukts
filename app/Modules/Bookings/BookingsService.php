@@ -4,7 +4,7 @@ namespace App\Modules\Bookings;
 
 use App\Constants\ControllerRating;
 use App\Exceptions\OverlappingBookingException;
-use App\Position;
+use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
 

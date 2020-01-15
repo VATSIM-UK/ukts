@@ -8,7 +8,7 @@ use App\Modules\Bookings\BookingsService;
 use App\Modules\Bookings\RatingRequirementNotMetException;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
-use App\Position;
+use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
