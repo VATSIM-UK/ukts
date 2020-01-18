@@ -77,14 +77,16 @@ class SpecialEndorsementTest extends TestCase
     public function testEndorsementCanBeCreated()
     {
         $this->graphQL('
-            mutation { 
+            mutation {
                 createSpecialEndorsement(
-                    name: "Heathrow Director"
+                    input: {
+                        name: "Heathrow Director"
+                    }
                 )
                 {
                     id
                     name
-                }                    
+                }
             }
         ');
 
@@ -106,15 +108,17 @@ class SpecialEndorsementTest extends TestCase
         ]);
 
         $this->graphQL("
-            mutation { 
+            mutation {
                 updateSpecialEndorsement(
                     id: \"{$endorsement->id}\"
-                    name: \"Heathrow Director\"
+                    input: {
+                        name: \"Heathrow Director\"
+                    }
                 )
                 {
                     id
                     name
-                }                    
+                }
             }
         ");
 
