@@ -41,7 +41,7 @@ class SpecialEndorsementRequestTest extends TestCase
                         User::initModelWithData([
                             'id' => 1300005,
                             'name_first' => 'Callum',
-                        ])
+                        ]),
                     ])
                 );
         })->makePartial();
@@ -126,7 +126,7 @@ class SpecialEndorsementRequestTest extends TestCase
                         User::initModelWithData([
                             'id' => 1300005,
                             'name_first' => 'Callum',
-                        ])
+                        ]),
                     ])
                 );
 

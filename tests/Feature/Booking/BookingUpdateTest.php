@@ -115,13 +115,13 @@ class BookingUpdateTest extends TestCase
                     'extensions' => [
                         'validation' => [
                             'input.id' => [
-                                'The selected input.id is invalid.'
-                            ]
+                                'The selected input.id is invalid.',
+                            ],
                         ],
-                        "category" => "validation"
-                    ]
-                ]
-            ]
+                        'category' => 'validation',
+                    ],
+                ],
+            ],
         ]);
     }
 }

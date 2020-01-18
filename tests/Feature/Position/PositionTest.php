@@ -152,9 +152,9 @@ class PositionTest extends TestCase
                             'input.callsign' => [
                                 'The input.callsign has already been taken.',
                             ],
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
         ]);
 
