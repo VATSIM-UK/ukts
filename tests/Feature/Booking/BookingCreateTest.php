@@ -32,13 +32,21 @@ class BookingCreateTest extends TestCase
     /** @test */
     public function testValidBookingCanBeCreated()
     {
+        $this->withoutExceptionHandling();
         $creationJsonFormat = ['data' => ['createBooking' => ['id']]];
         $this->position->callsign = 'EGGD_GND';
         $this->position->save();
 
-        $data = $this->graphQL("
+        $this->graphQL("
           mutation {
-            createBooking(position_id: {$this->position->id}, from:\"2019-08-20 15:00:00\", to:\"2019-08-20 16:30:00\") {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:\"2019-08-20 15:00:00\",
+                    to:\"2019-08-20 16:30:00\"
+                }
+            )
+            {
                 id
             }
           }")->assertJsonStructure($creationJsonFormat);
@@ -50,9 +58,16 @@ class BookingCreateTest extends TestCase
             'to' => new Carbon('2019-08-20 16:30:00'),
         ]);
 
-        $data = $this->graphQL("
+        $this->graphQL("
           mutation {
-            createBooking(position_id: {$this->position->id}, from: \"2019-08-20 16:30:00\", to:\"2019-08-20 17:30:00\") {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from: \"2019-08-20 16:30:00\",
+                    to:\"2019-08-20 17:30:00\"
+                }
+            )
+            {
                 id
             }
           }")->assertJsonStructure($creationJsonFormat);
@@ -71,54 +86,74 @@ class BookingCreateTest extends TestCase
         // Invalid "from" date
         $this->graphQL("
           mutation {
-            createBooking(position_id: {$this->position->id}, from:'Blah', to:'2019-08-20 16:30:00') {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:'Blah',
+                    to:'2019-08-20 16:30:00'
+                }
+            )
+            {
                 id
             }
           }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         $unknownPositionId = 2;
         // Invalid Position
         $this->graphQL("
           mutation {
-            createBooking(position_id: {$unknownPositionId}, from: '2019-08-20 15:00:00', to:'2019-08-20 16:30:00') {
+            createBooking(
+                input: {
+                    position_id: {$unknownPositionId},
+                    from: '2019-08-20 15:00:00',
+                    to:'2019-08-20 16:30:00'
+                }
+            )
+            {
                 id
             }
           }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         // "From" and "To" the same
         $this->graphQL('
           mutation {
-            createBooking(position_id: 1
-            }, from:"2019-08-20 15:00:00", to:"2019-08-20 15:00:00") {
+            createBooking(
+                input: {
+                    position_id: 1,
+                    from:"2019-08-20 15:00:00",
+                    to:"2019-08-20 15:00:00"
+                }
+            )
+            {
                 id
             }
           }')->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         // "From" after "To"
@@ -128,14 +163,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
     }
 
@@ -154,7 +189,14 @@ class BookingCreateTest extends TestCase
         // Test 1: Doesn't allow to book inside of booking
         $this->graphQL("
           mutation {
-            createBooking(position_id: {$this->position->id}, from:\"2019-08-10 14:30:00\", to:\"2019-08-10 15:30:00\") {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:\"2019-08-10 14:30:00\",
+                    to:\"2019-08-10 15:30:00\"
+                }
+            )
+            {
                 id
             }
           }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
@@ -173,7 +215,14 @@ class BookingCreateTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(position_id: {$this->position->id}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
+                }
+            )
+            {
                 id
             }
           }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
@@ -190,14 +239,28 @@ class BookingCreateTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(position_id: {$this->position->id}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
+                }
+            )
+            {
                 id
             }
           }")->assertJsonStructure($creationJsonFormat);
 
         $this->graphQL("
           mutation {
-            createBooking(position_id: {$differentPosition->id}, from:\"2019-08-10 18:30:00\", to:\"2019-08-10 19:30:00\") {
+            createBooking(
+                input: {
+                    position_id: {$differentPosition->id},
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
+                }
+            )
+            {
                 id
             }
           }")->assertJsonStructure($creationJsonFormat);
@@ -222,7 +285,14 @@ class BookingCreateTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:\"2019-01-10 14:00:00\",
+                    to:\"2019-01-10 15:00:00\"
+                }
+            )
+            {
                 id
             }
           }")->assertJsonStructure(['data' => ['createBooking' => ['id']]]);
@@ -250,7 +320,14 @@ class BookingCreateTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:\"2019-01-10 14:00:00\",
+                    to:\"2019-01-10 15:00:00\"
+                }
+            )
+            {
                 id
             }
         }")->assertJsonStructure(['data' => ['createBooking' => ['id']]]);
@@ -271,7 +348,14 @@ class BookingCreateTest extends TestCase
 
         $this->graphQL("
           mutation {
-            createBooking(position_id: {$this->position->id}, from:\"2019-01-10 14:00:00\", to:\"2019-01-10 15:00:00\") {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:\"2019-01-10 14:00:00\",
+                    to:\"2019-01-10 15:00:00\"
+                }
+            )
+            {
                 id
             }
         }")->assertJsonPath('errors.0.message',
