@@ -95,7 +95,14 @@ class PositionTest extends TestCase
     {
         $this->graphQL('
           mutation {
-            createPosition(name: "Bristol Tower", callsign: "EGGD_TWR", frequency: "133.850", type: 4) {
+            createPosition(
+                input: {
+                    name: "Bristol Tower",
+                    callsign: "EGGD_TWR",
+                    frequency: "133.850",
+                    type: 4
+                }
+            ) {
                 id
                 name
             }
@@ -126,15 +133,28 @@ class PositionTest extends TestCase
 
         $this->graphQL('
             mutation {
-                createPosition(name: "Bristol Tower", callsign: "EGGD_TWR", frequency: "133.850", type: 4) {
+                createPosition(
+                    input: {
+                        name: "Bristol Tower",
+                        callsign: "EGGD_TWR",
+                        frequency: "133.850",
+                        type: 4
+                    }
+                ) {
                     id
                     name
                 }
-            }')->assertJsonFragment([
-            'validation' => [
-                'callsign' => [
-                    'The callsign has already been taken.',
-                ],
+            }')->assertJson([
+            'errors' => [
+                [
+                    'extensions' => [
+                        'validation' => [
+                            'input.callsign' => [
+                                'The input.callsign has already been taken.',
+                            ],
+                        ]
+                    ]
+                ]
             ],
         ]);
 
@@ -153,7 +173,15 @@ class PositionTest extends TestCase
 
         $this->graphQL('
             mutation {
-                updatePosition(id: 1, name: "Slough Tower", callsign: "EGLL_TWR") {
+                updatePosition(
+                    id: 1,
+                    input: {
+                        name: "Slough Tower",
+                        callsign: "EGLL_TWR",
+                        frequency: "133.850",
+                        type: 4
+                    }
+                ) {
                     id
                     name
                 }

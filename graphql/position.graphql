@@ -4,21 +4,18 @@ extend type Query {
     positionsAvailableForTraining: [TrainingPositionAssignment!]! @all
 }
 
-extend type Mutation {
-    createPosition(
-        name: String! @rules(apply: ["required"]),
-        callsign: String! @rules(apply: ["required", "min:4", "unique:positions,callsign"]),
-        frequency: String! @rules(apply: ["required", "min:7"]),
-        type: Int! @rules(apply: ["required"])
-    ): Position! @create
+input PositionInput {
+    name: String! @rules(apply: ["required"]),
+    callsign: String! @rules(apply: ["required", "min:4", "unique:positions,callsign"]),
+    frequency: String! @rules(apply: ["required", "min:7"]),
+    type: Int! @rules(apply: ["required"])
+}
 
-    updatePosition(
-        id: ID!
-        name: String,
-        callsign: String @rules(apply: ["min:4", "unique:positions,callsign"]),
-        frequency: String @rules(apply: ["min:7"]),
-        type: Int
-    ): Position @update
+
+extend type Mutation {
+    createPosition(input: PositionInput! @spread): Position! @create
+
+    updatePosition(id: ID!, input: PositionInput! @spread): Position @update
 
     assignPositionForTraining(
         position_id: Int!
