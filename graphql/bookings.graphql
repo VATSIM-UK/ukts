@@ -20,7 +20,7 @@ input UpdateBookingInput {
 extend type Mutation @middleware(checks: ["auth"]) {
     createBooking(input: CreateBookingInput! @spread): Booking! @field(resolver: "App\\Modules\\Bookings\\CreateBookingHandler")
     updateBooking(input: UpdateBookingInput! @spread): Booking! @field(resolver: "App\\Modules\\Bookings\\UpdateBookingHandler")
-    deleteBooking(id: ID!): Booking @delete
+    deleteBooking(id: ID!): Booking! @delete
 }
 
 type Booking implements Node {
