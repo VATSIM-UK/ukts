@@ -37,16 +37,24 @@ class SpecialEndorsementRequestTest extends TestCase
                 );
             $mock->shouldReceive('findMany')
                 ->andReturn(
-                    collect([User::initModelWithData([
-                        'id' => 1300005,
-                        'name_first' => 'Callum',
-                    ])])
+                    collect([
+                        User::initModelWithData([
+                            'id' => 1300005,
+                            'name_first' => 'Callum',
+                        ]),
+                    ])
                 );
         })->makePartial();
 
         $this->graphQL("
         mutation {
-            requestSpecialEndorsement (user_id: 1300005, endorsement_id: {$this->endorsement->id}, requested_by: 1300002) {
+            requestSpecialEndorsement (
+                input: {
+                    user_id: 1300005,
+                    endorsement_id: {$this->endorsement->id},
+                    requested_by: 1300002
+                }
+            ) {
                 approved_at
                 denied_at
                 user {
@@ -82,7 +90,13 @@ class SpecialEndorsementRequestTest extends TestCase
 
         $this->graphQL("
         mutation {
-            requestSpecialEndorsement (user_id: 1300005, endorsement_id: {$this->endorsement->id}, requested_by: 1300002) {
+            requestSpecialEndorsement (
+                input: {
+                    user_id: 1300005,
+                    endorsement_id: {$this->endorsement->id},
+                    requested_by: 1300002
+                }
+            ) {
                 approved_at
                 denied_at
                 user {
@@ -108,10 +122,12 @@ class SpecialEndorsementRequestTest extends TestCase
 
             $mock->shouldReceive('findMany')
                 ->andReturn(
-                    collect([User::initModelWithData([
-                        'id' => 1300005,
-                        'name_first' => 'Callum',
-                    ])])
+                    collect([
+                        User::initModelWithData([
+                            'id' => 1300005,
+                            'name_first' => 'Callum',
+                        ]),
+                    ])
                 );
 
             $mock->shouldReceive('findOrFail')

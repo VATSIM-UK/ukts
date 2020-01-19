@@ -4,30 +4,29 @@ extend type Query {
     specialEndorsementsForUser(user_id: ID): [SpecialEndorsement]! @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\SpecialEndorsementsForUser")
 }
 
+input SpecialEndorsementInput {
+    name: String! @rules(apply: ["min:3"])
+}
+
+input SpecialEndorsementRequestInput {
+    user_id: ID!
+    endorsement_id: Int! @rules(apply: ["exists:special_endorsements,id"])
+    requested_by: Int!
+}
+
 extend type Mutation {
-    createSpecialEndorsement(
-        name: String! @rules(apply: ["min:3"])
-    ): SpecialEndorsement! @create
+    createSpecialEndorsement(input: SpecialEndorsementInput! @spread): SpecialEndorsement! @create
 
-    updateSpecialEndorsement(
-        id: ID!
-        name: String @rules(apply: ["min:3"])
-    ): SpecialEndorsement @update
+    updateSpecialEndorsement(id: ID!, input: SpecialEndorsementInput! @spread): SpecialEndorsement @update
 
-    deleteSpecialEndorsement(
-        id: ID!
-    ): SpecialEndorsement! @delete
+    deleteSpecialEndorsement(id: ID!): SpecialEndorsement! @delete
 
     grantSpecialEndorsement(
         request_id: ID!
         actioner_id: Int!): Assignment!
     @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\GrantSpecialEndorsementHandler")
 
-    requestSpecialEndorsement(
-        user_id: ID!
-        endorsement_id: Int!
-        requested_by: Int!
-    ): EndorsementRequest!
+    requestSpecialEndorsement(input: SpecialEndorsementRequestInput! @spread): EndorsementRequest!
     @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\RequestSpecialEndorsementHandler")
 }
 interface Endorsement {

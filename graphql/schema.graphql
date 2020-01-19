@@ -15,12 +15,23 @@ input DateRange {
 type User {
     name_first: String!
     name_last: String!
-    id: ID
+    id: ID!
     atcRating: Rating!
 }
 
 type Rating {
     code: String!
+}
+
+interface Node {
+    id: ID!
+}
+
+type Query {
+    node(
+        """ Identifiers of the node. """
+        id: ID!
+    ): Node @find
 }
 
 #import position.graphql

@@ -39,7 +39,13 @@ class BookingUpdateTest extends TestCase
 
         $this->graphQL('
             mutation {
-                updateBooking(id: 1, from: "2019-08-20 17:00:00", to: "2019-08-20 18:00:00") {
+                updateBooking(
+                    input: {
+                        id: 1,
+                        from: "2019-08-20 17:00:00",
+                        to: "2019-08-20 18:00:00"
+                    }
+                ) {
                     id
                 }
             }')->assertJson([
@@ -75,7 +81,13 @@ class BookingUpdateTest extends TestCase
         // start
         $this->graphQL("
             mutation {
-                updateBooking(id: {$bookingToUpdate->id}, from: \"2019-08-20 16:15:00\", to: \"2019-08-20 17:00:00\") {
+                updateBooking(
+                    input: {
+                        id: {$bookingToUpdate->id},
+                        from: \"2019-08-20 16:15:00\",
+                        to: \"2019-08-20 17:00:00\"
+                    }
+                ) {
                     id
                 }
             }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
@@ -88,9 +100,28 @@ class BookingUpdateTest extends TestCase
 
         $this->graphQL("
             mutation {
-                updateBooking(id: {$invalidBookingId}, from: \"2019-08-20 17:00:00\", to: \"2019-08-20 18:00:00\") {
+                updateBooking(
+                    input: {
+                        id: {$invalidBookingId},
+                        from: \"2019-08-20 17:00:00\",
+                        to: \"2019-08-20 18:00:00\"
+                    }
+                ) {
                     id
                 }
-            }")->assertJsonPath('errors.0.extensions.validation.id.0', 'The selected id is invalid.');
+            }")->assertJson([
+            'errors' => [
+                [
+                    'extensions' => [
+                        'validation' => [
+                            'input.id' => [
+                                'The selected input.id is invalid.',
+                            ],
+                        ],
+                        'category' => 'validation',
+                    ],
+                ],
+            ],
+        ]);
     }
 }
