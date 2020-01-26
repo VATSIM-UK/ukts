@@ -2,7 +2,7 @@
 _Last changed: 25th January 2020_
 
 ## Overview
-UKTS facilitates bookings on positions which within the database. There is a fair amount of logic involved in making a booking, the documentation of which is listed below. 
+UKTS facilitates bookings on positions which are contained within the database. There is a fair amount of logic involved in making a booking, the documentation of which is listed below. 
 Bookings within UKTS for the same position cannot overlap. 
 
 ## Rating
