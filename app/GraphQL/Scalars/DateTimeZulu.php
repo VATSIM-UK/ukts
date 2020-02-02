@@ -9,9 +9,6 @@ use GraphQL\Language\AST\StringValueNode;
 use GraphQL\Type\Definition\ScalarType;
 use GraphQL\Utils\Utils;
 
-/**
- * Read more about scalars here http://webonyx.github.io/graphql-php/type-system/scalar-types/
- */
 class DateTimeZulu extends ScalarType
 {
     /**
