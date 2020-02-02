@@ -23,7 +23,7 @@ class DateTimeZulu extends ScalarType
         if ($value instanceof Carbon) {
             return $value->toIso8601String();
         }
-        
+
         return $this
             ->tryParsingDateTime($value, InvariantViolation::class)
             ->toIso8601String();
