@@ -13,36 +13,36 @@ services:
     ports:
       - 33060:3306 # expose db to local machine on port 33060
 
-#  app:
-#    tty: true
-#    build:
-#      context: .
-#      dockerfile: docker/php/Dockerfile
-#    ports:
-#      - 9002:9000
-#    environment:
-#      - DB_HOST=mariadb
-#      - DB_USERNAME=ukts
-#      - DB_PASSWORD=secret
-#    depends_on:
-#      - mariadb
-#    volumes:
-#      - .:/srv/app
-#    networks:
-#      - app-network
-#
-#  nginx:
-#    build:
-#      context: .
-#      dockerfile: docker/nginx/Dockerfile
-#    container_name: nginx_server
-#    tty: true
-#    depends_on:
-#      - app
-#    ports:
-#      - 8080:80
-#    networks:
-#      - app-network
+  app:
+    tty: true
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    ports:
+      - 9002:9000
+    environment:
+      - DB_HOST=mariadb
+      - DB_USERNAME=ukts
+      - DB_PASSWORD=secret
+    depends_on:
+      - mariadb
+    volumes:
+      - .:/srv/app
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    container_name: nginx_server
+    tty: true
+    depends_on:
+      - app
+    ports:
+      - 8080:80
+    networks:
+      - app-network
 
 networks:
   app-network:
