@@ -39,4 +39,4 @@ type Query {
 #import position.graphql
 #import bookings.graphql
 #import endorsement.graphql
-
+#import availability.graphql
