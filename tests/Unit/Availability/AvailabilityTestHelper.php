@@ -13,7 +13,8 @@ trait AvailabilityTestHelper
     protected function mockUserFind()
     {
         $this->mock(User::class, function ($mock) {
-            $mock->shouldReceive('findOrFail')->with($this->mockUserId);
+            $mock->shouldReceive('findOrFail')->with($this->mockUserId)
+                ->andReturn($this->mockedUser($this->mockUserId, ['code' => 'S2', 'vatsim_id' => 3]));
 
             $mock->shouldReceive('findOrFail')->with($this->invalidUserId)
                 ->andThrow(ModelNotFoundException::class);

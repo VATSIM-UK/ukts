@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Modules\Availability\Availability;
 use App\Modules\Bookings\Booking;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
@@ -22,5 +23,10 @@ class User extends RemoteUser
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function availability()
+    {
+        return $this->hasMany(Availability::class);
     }
 }

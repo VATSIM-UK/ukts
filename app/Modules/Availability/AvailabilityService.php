@@ -51,18 +51,19 @@ class AvailabilityService
         }
         $avail = Availability::where([['user_id', $user->id], ['id', '!=', $doNotCheck]]);
 
-        $avail->where(function($q1) use ($from, $to) {
-            $q1->where(function($q2) use ($from) {
-                $q2
-                    ->where('from', '<=', $from)
-                    ->where('to', '>=', $from);
-            })
-            ->orWhere(function($q2) use ($to) {
-                $q2
-                    ->where('from', '<=', $to)
-                    ->where('to', '>=', $to);
-            });
-    });
+        // Find between the times being booked for
+        $avail->where(function ($query) use (&$from, &$to) {
+            // Where the start date is inside the booked time
+            $query->where(function ($query) use (&$from, &$to) {
+                $query->where('from', '>', $from)
+                    ->where('from', '<', $to);
+                // Or where the end date is inside the booked time
+            })->orWhere(function ($query) use (&$from, &$to) {
+                $query->where('to', '>', $from)
+                    ->where('to', '<', $to);
+                // Or where the times are the same
+            })->orWhere(['from' => $from, 'to' => $to]);
+        });
 
         return $avail->doesntExist();
     }
@@ -77,7 +78,7 @@ class AvailabilityService
             throw new OverlappingAvailabilityException();
         }
 
-        return $availabilityUser->availabilitys()->create([
+        return $availabilityUser->availability()->create([
             'user_id' => $availabilityUser->id,
             'from' => $from,
             'to' => $to,
