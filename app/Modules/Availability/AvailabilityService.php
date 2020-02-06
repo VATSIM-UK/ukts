@@ -4,9 +4,12 @@ namespace App\Modules\Availability;
 
 use App\Constants\ControllerRating;
 use App\Exceptions\OverlappingAvailabilityException;
+use App\Exceptions\PrivilegeException;
 use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
+
+/** TODO: Users can view/amend other users availability. We need to make sure we fix this. */
 
 class AvailabilityService
 {
@@ -49,6 +52,10 @@ class AvailabilityService
         if ($from->isAfter($to)) {
             return false;
         }
+
+        if ($from->isBefore(new Carbon())) {
+            return false;
+        }
         $avail = Availability::where([['user_id', $user->id], ['id', '!=', $doNotCheck]]);
 
         // Find between the times being booked for
@@ -85,19 +92,26 @@ class AvailabilityService
         ]);
     }
 
-    public function updateExistingAvailability(array $newData): bool
+    public function updateExistingAvailability(array $newData, bool $adminOverride = false): bool
     {
-        ['from' => $from, 'to' => $to] = $newData;
+        ['from' => $from, 'to' => $to, 'user_id' => $userId] = $newData;
+
         /** @var Availability $existingAvailability */
         $existingAvailability = Availability::findOrFail($newData['id']);
 
-        $position = $existingAvailability->position;
+        $availabilityUser = $this->user::findOrFail($userId);
+//        dd("{$userId}-{$existingAvailability['user_id']}");
 
-        if (! $this->validateAvailabilityTimes($from, $to, $existingAvailability->getKey())) {
+        if (!$adminOverride && ($userId != $existingAvailability['user_id'])) {
+            throw new PrivilegeException('update this availability');
+        }
+
+        if (! $this->validateAvailabilityTimes($from, $to, $availabilityUser, $existingAvailability->getKey())) {
             throw new OverlappingAvailabilityException();
         }
 
         return $existingAvailability->update([
+            'user_id' => $availabilityUser->id,
             'from' => $from,
             'to' => $to,
         ]);

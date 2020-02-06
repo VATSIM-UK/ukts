@@ -8,6 +8,8 @@ use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
 
+/** TODO: Users can view/amend other users bookings. We need to make sure we fix this. */
+
 class BookingsService
 {
     /** @var mixed App\User */

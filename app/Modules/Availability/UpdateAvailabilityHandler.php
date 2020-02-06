@@ -4,6 +4,7 @@ namespace App\Modules\Availability;
 
 use App\Exceptions\OverlappingAvailabilityException;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Support\Facades\Auth;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class UpdateAvailabilityHandler
@@ -21,8 +22,10 @@ class UpdateAvailabilityHandler
     {
         $service = app()->make(AvailabilityService::class);
 
+        $args['user_id'] = Auth::user()->id;
+
         $service->updateExistingAvailability($args);
 
-        return Booking::findOrFail($args['id']);
+        return Availability::findOrFail($args['id']);
     }
 }

@@ -11,7 +11,7 @@ input CreateAvailabilityInput {
 }
 
 input UpdateAvailabilityInput {
-    id: ID! @rules(apply: ["exists:availabilitys,id"])
+    id: ID! @rules(apply: ["exists:availability,id"])
     from: DateTimeZulu! @rules(apply: ["before:input.to"]),
     to: DateTimeZulu! @rules(apply: ["after:input.from"]),
 }
