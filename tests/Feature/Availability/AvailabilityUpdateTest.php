@@ -220,7 +220,7 @@ class AvailabilityUpdateTest extends TestCase
     public function canRemoveAvailabilityFromRangeOfDates()
     {
 
-        [$from, $to] = $this->addMockRangeData();   
+        [$from, $to] = $this->addMockRangeData();
 
         factory(Availability::class)->create([
             'user_id' => $this->mockUserModel->id,
