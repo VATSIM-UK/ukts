@@ -220,29 +220,13 @@ class AvailabilityUpdateTest extends TestCase
     public function canRemoveAvailabilityFromRangeOfDates()
     {
 
-        $from = new Carbon();
-        $from->addHours(2);
-        $to = $from->copy()->addHours(1);
+        [$from, $to] = $this->addMockRangeData();   
 
         factory(Availability::class)->create([
             'user_id' => $this->mockUserModel->id,
             'from' => $from,
             'to' => $to,
             'id' => 1
-        ]);
-
-        factory(Availability::class)->create([
-            'user_id' => $this->mockUserModel->id,
-            'from' => $from->copy()->addDay(),
-            'to' => $to->copy()->addDay(),
-            'id' => 2
-        ]);
-
-        factory(Availability::class)->create([
-            'user_id' => $this->mockUserModel->id,
-            'from' => $from->copy()->addDays(2),
-            'to' => $to->copy()->addDays(2),
-            'id' => 3
         ]);
 
         $this->graphQL("
@@ -275,10 +259,7 @@ class AvailabilityUpdateTest extends TestCase
     /** @test */
     public function doesNotRemoveAnotherUsersAvailability()
     {
-
-        $from = new Carbon();
-        $from->addHours(2);
-        $to = $from->copy()->addHours(1);
+        [$from, $to] = $this->addMockRangeData();
 
         factory(Availability::class)->create([
             'user_id' => 9993338,
@@ -287,19 +268,6 @@ class AvailabilityUpdateTest extends TestCase
             'id' => 1
         ]);
 
-        factory(Availability::class)->create([
-            'user_id' => $this->mockUserModel->id,
-            'from' => $from->copy()->addDay(),
-            'to' => $to->copy()->addDay(),
-            'id' => 2
-        ]);
-
-        factory(Availability::class)->create([
-            'user_id' => $this->mockUserModel->id,
-            'from' => $from->copy()->addDays(2),
-            'to' => $to->copy()->addDays(2),
-            'id' => 3
-        ]);
 
         $this->graphQL("
             mutation {
@@ -326,6 +294,28 @@ class AvailabilityUpdateTest extends TestCase
         $this->assertDatabaseHas('availability', [
             'id' => 3
         ]);
+    }
+
+    public function addMockRangeData() {
+        $from = new Carbon();
+        $from->addHours(2);
+        $to = $from->copy()->addHours(1);
+
+        factory(Availability::class)->create([
+            'user_id' => $this->mockUserModel->id,
+            'from' => $from->copy()->addDay(),
+            'to' => $to->copy()->addDay(),
+            'id' => 2
+        ]);
+
+        factory(Availability::class)->create([
+            'user_id' => $this->mockUserModel->id,
+            'from' => $from->copy()->addDays(2),
+            'to' => $to->copy()->addDays(2),
+            'id' => 3
+        ]);
+
+        return [$from, $to];
     }
 
 }
