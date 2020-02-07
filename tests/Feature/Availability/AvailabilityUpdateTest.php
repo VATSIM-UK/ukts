@@ -116,6 +116,35 @@ class AvailabilityUpdateTest extends TestCase
     }
 
     /** @test */
+    public function testAvailabilityNotUpdatedWhenUnderMinTime()
+    {
+        $from = new Carbon();
+        $from->addHours(2);
+
+        $to = $from->clone()->addHour();
+
+        $availabilityToUpdate = factory(Availability::class)->create([
+            'from' => $from,
+            'to' => $to,
+            'user_id' => $this->mockUserModel->id,
+        ]);
+
+        // start
+        $this->graphQL("
+            mutation {
+                updateAvailability(
+                    input: {
+                        id: {$availabilityToUpdate->id},
+                        from: \"{$from->toIso8601String()}\",
+                        to: \"{$to->subMinutes(35)->toIso8601String()}\"
+                    }
+                ) {
+                    id
+                }
+            }")->assertJsonPath('errors.0.message', "The minimum availability time is 30 minutes");
+    }
+
+    /** @test */
     public function testValidationForAvailabilityIdExistingOccurs()
     {
         $invalidAvailabilityId = -1;
@@ -186,4 +215,117 @@ class AvailabilityUpdateTest extends TestCase
                 }
             }")->assertJsonPath('errors.0.message', "You do not have permission to update this availability");
     }
+
+    /** @test */
+    public function canRemoveAvailabilityFromRangeOfDates()
+    {
+
+        $from = new Carbon();
+        $from->addHours(2);
+        $to = $from->copy()->addHours(1);
+
+        factory(Availability::class)->create([
+            'user_id' => $this->mockUserModel->id,
+            'from' => $from,
+            'to' => $to,
+            'id' => 1
+        ]);
+
+        factory(Availability::class)->create([
+            'user_id' => $this->mockUserModel->id,
+            'from' => $from->copy()->addDay(),
+            'to' => $to->copy()->addDay(),
+            'id' => 2
+        ]);
+
+        factory(Availability::class)->create([
+            'user_id' => $this->mockUserModel->id,
+            'from' => $from->copy()->addDays(2),
+            'to' => $to->copy()->addDays(2),
+            'id' => 3
+        ]);
+
+        $this->graphQL("
+            mutation {
+                removeAvailabilityRange(
+                    input: {
+                        from: \"{$from->toIso8601String()}\",
+                        to: \"{$to->copy()->addDays(2)->subHour()->toIso8601String()}\",
+                    }
+                )
+            }")->assertJson([
+            'data' => [
+                'removeAvailabilityRange' => 2
+            ]
+        ]);
+
+        $this->assertDatabaseMissing('availability', [
+            'id' => 1
+        ]);
+
+        $this->assertDatabaseMissing('availability', [
+            'id' => 2
+        ]);
+
+        $this->assertDatabaseHas('availability', [
+            'id' => 3
+        ]);
+    }
+
+    /** @test */
+    public function doesNotRemoveAnotherUsersAvailability()
+    {
+
+        $from = new Carbon();
+        $from->addHours(2);
+        $to = $from->copy()->addHours(1);
+
+        factory(Availability::class)->create([
+            'user_id' => 9993338,
+            'from' => $from,
+            'to' => $to,
+            'id' => 1
+        ]);
+
+        factory(Availability::class)->create([
+            'user_id' => $this->mockUserModel->id,
+            'from' => $from->copy()->addDay(),
+            'to' => $to->copy()->addDay(),
+            'id' => 2
+        ]);
+
+        factory(Availability::class)->create([
+            'user_id' => $this->mockUserModel->id,
+            'from' => $from->copy()->addDays(2),
+            'to' => $to->copy()->addDays(2),
+            'id' => 3
+        ]);
+
+        $this->graphQL("
+            mutation {
+                removeAvailabilityRange(
+                    input: {
+                        from: \"{$from->toIso8601String()}\",
+                        to: \"{$to->copy()->addDays(2)->subHour()->toIso8601String()}\",
+                    }
+                )
+            }")->assertJson([
+            'data' => [
+                'removeAvailabilityRange' => 1
+            ]
+        ]);
+
+        $this->assertDatabaseHas('availability', [
+            'id' => 1
+        ]);
+
+        $this->assertDatabaseMissing('availability', [
+            'id' => 2
+        ]);
+
+        $this->assertDatabaseHas('availability', [
+            'id' => 3
+        ]);
+    }
+
 }

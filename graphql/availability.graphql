@@ -16,10 +16,16 @@ input UpdateAvailabilityInput {
     to: DateTimeZulu! @rules(apply: ["after:input.from"]),
 }
 
+input RemoveAvailabilityInput {
+    from: DateTimeZulu! @rules(apply: ["before:input.to"]),
+    to: DateTimeZulu! @rules(apply: ["after:input.from"]),
+}
+
 extend type Mutation @middleware(checks: ["auth"]) {
     createAvailability(input: CreateAvailabilityInput! @spread): Availability! @field(resolver: "App\\Modules\\Availability\\CreateAvailabilityHandler")
     updateAvailability(input: UpdateAvailabilityInput! @spread): Availability! @field(resolver: "App\\Modules\\Availability\\UpdateAvailabilityHandler")
     deleteAvailability(id: ID!): Availability! @delete
+    removeAvailabilityRange(input: RemoveAvailabilityInput! @spread): Int @field(resolver: "App\\Modules\\Availability\\RemoveAvailabilityRangeHandler")
 }
 
 type Availability implements Node {

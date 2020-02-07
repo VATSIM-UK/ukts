@@ -135,13 +135,14 @@ class AvailabilityCreateTest extends TestCase
     {
 
         $from = new Carbon();
-        $to = new Carbon();
-        $to->addHour();
+        $from->addHour();
+        $to = $from->clone()->addHour();
 
         // Create two availabilitys for position 1
         factory(Availability::class)->create([
             'from' => $from->toDateTimeString(),
             'to' => $to->toDateTimeString(),
+            'user_id' => $this->mockUserId,
         ]);
 
         // Test 1: Doesn't allow to book inside of availability
@@ -160,19 +161,40 @@ class AvailabilityCreateTest extends TestCase
     }
 
     /** @test */
+    public function testMustBeOverMinTime()
+    {
+
+        $from = new Carbon();
+        $from->addHour();
+        $to = $from->clone()->addMinutes(29);
+
+        // Test 1: Doesn't allow to book inside of availability
+        $this->graphQL("
+          mutation {
+            createAvailability(
+                input: {
+                  from:\"{$from->toIso8601String()}\",
+                  to:\"{$to->toIso8601String()}\"
+                }
+            )
+            {
+                id
+            }
+          }")->assertJsonPath('errors.0.message', "The minimum availability time is 30 minutes");
+    }
+    /** @test */
     public function testOverlappingAvailabilitysCannotBeCreatedOverlappingOnStart()
     {
 
         $from = new Carbon();
-        $to = new Carbon();
-        $to->addHour();
+        $from->addHour();
+        $to = $from->clone()->addHour();
 
         factory(Availability::class)->create([
             'user_id' => $this->mockUserId,
             'from' => $from->toDateTimeString(),
             'to' => $to->toDateTimeString(),
         ]);
-
 
         $this->graphQL("
           mutation {
@@ -189,7 +211,7 @@ class AvailabilityCreateTest extends TestCase
     }
 
     /** @test */
-    public function testItCanDeleteAAvailability()
+    public function testItCanDeleteAvailability()
     {
         factory(Availability::class)->create();
 
@@ -210,4 +232,34 @@ class AvailabilityCreateTest extends TestCase
 
         $this->assertEquals(0, Availability::count());
     }
+//
+//    /** @test */
+//    public function testOverlappingAvailabilitysCannotBeCreatedOverlappingOnEnd()
+//    {
+//
+//        $from = new Carbon();
+//        $from->addHour();
+//        $to = $from->clone()->addHour();
+//
+//        // Create two availabilitys for position 1
+//        factory(Availability::class)->create([
+//            'from' => $from->toDateTimeString(),
+//            'to' => $to->toDateTimeString(),
+//            'user_id' => $this->mockUserId,
+//        ]);
+//
+//        // Test 1: Doesn't allow to book inside of availability
+//        $this->graphQL("
+//          mutation {
+//            createAvailability(
+//                input: {
+//                  from:\"{$from->toIso8601String()}\",
+//                  to:\"{$to->toIso8601String()}\"
+//                }
+//            )
+//            {
+//                id
+//            }
+//          }")->assertJsonPath('errors.0.message', "Can't have overlapping availability!");
+//    }
 }
