@@ -11,7 +11,7 @@ $factory->define(Availability::class, function (Faker $faker) {
     $to = $faker->dateTimeInInterval($from, '+1 day');
 
     return [
-        'user_id' => factory(User::class),
+        'user_id' => factory(User::class)->make(),
         'from' => $from,
         'to' => $to,
     ];
