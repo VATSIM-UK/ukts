@@ -14,8 +14,6 @@ class AvailabilityUpdateTest extends TestCase
 {
     use RefreshDatabase, MakesGraphQLRequests, AvailabilityTestHelper;
 
-    private $position;
-
     protected function setUp(): void
     {
         parent::setUp();

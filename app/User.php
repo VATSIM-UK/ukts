@@ -29,4 +29,5 @@ class User extends RemoteUser
     {
         return $this->hasMany(Availability::class);
     }
+
 }

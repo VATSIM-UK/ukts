@@ -6,7 +6,6 @@ use App\Exceptions\OverlappingAvailabilityException;
 use App\Modules\Availability\Availability;
 use App\Modules\Availability\AvailabilityMinimumTimeException;
 use App\Modules\Availability\AvailabilityService;
-use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -19,7 +18,6 @@ class AvailabilityServiceTest extends TestCase
 {
     use RefreshDatabase, AvailabilityTestHelper;
 
-    protected $position;
     protected $service;
     private $mockUserModel;
 
@@ -27,8 +25,6 @@ class AvailabilityServiceTest extends TestCase
     {
         parent::setUp();
         DB::enableQueryLog();
-
-        $this->position = factory(Position::class)->create();
 
         $this->mockUserModel = User::initModelWithData([
             'id' => 1234567,

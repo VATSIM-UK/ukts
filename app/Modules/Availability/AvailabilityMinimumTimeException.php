@@ -7,8 +7,12 @@ use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
 class AvailabilityMinimumTimeException extends Exception implements RendersErrorsExtensions
 {
-    protected $message = 'The minimum availability time is 30 minutes';
+    protected $defaultMessage = "The minimum availability time is ";
 
+    public function __construct($msg = "", $code = 0, Throwable $previous = null)
+    {
+        parent::__construct($this->defaultMessage.=($msg.=" minutes"), $code, $previous);
+    }
 
     /**
      * Returns true when exception message is safe to be displayed to a client.

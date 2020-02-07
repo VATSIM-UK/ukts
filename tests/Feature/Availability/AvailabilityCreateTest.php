@@ -3,9 +3,6 @@
 namespace Tests\Feature\Availability;
 
 use App\Modules\Availability\Availability;
-use App\Modules\Endorsement\Special\Assignment;
-use App\Modules\Endorsement\Special\SpecialEndorsement;
-use App\Modules\Position\Position;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +14,7 @@ class AvailabilityCreateTest extends TestCase
 {
     use RefreshDatabase, MakesGraphQLRequests, AvailabilityTestHelper;
 
-    protected $position;
+
     public $expectedExceptions = [
         'errors' => [
             [
@@ -34,8 +31,6 @@ class AvailabilityCreateTest extends TestCase
 
         $this->actingAs($this->mockedUser());
         $this->mockUserFind();
-
-        $this->position = factory(Position::class)->create();
 
     }
 
@@ -138,7 +133,7 @@ class AvailabilityCreateTest extends TestCase
         $from->addHour();
         $to = $from->clone()->addHour();
 
-        // Create two availabilitys for position 1
+        // Create two availabilities
         factory(Availability::class)->create([
             'from' => $from->toDateTimeString(),
             'to' => $to->toDateTimeString(),
@@ -168,7 +163,6 @@ class AvailabilityCreateTest extends TestCase
         $from->addHour();
         $to = $from->clone()->addMinutes(29);
 
-        // Test 1: Doesn't allow to book inside of availability
         $this->graphQL("
           mutation {
             createAvailability(
@@ -232,34 +226,5 @@ class AvailabilityCreateTest extends TestCase
 
         $this->assertEquals(0, Availability::count());
     }
-//
-//    /** @test */
-//    public function testOverlappingAvailabilitysCannotBeCreatedOverlappingOnEnd()
-//    {
-//
-//        $from = new Carbon();
-//        $from->addHour();
-//        $to = $from->clone()->addHour();
-//
-//        // Create two availabilitys for position 1
-//        factory(Availability::class)->create([
-//            'from' => $from->toDateTimeString(),
-//            'to' => $to->toDateTimeString(),
-//            'user_id' => $this->mockUserId,
-//        ]);
-//
-//        // Test 1: Doesn't allow to book inside of availability
-//        $this->graphQL("
-//          mutation {
-//            createAvailability(
-//                input: {
-//                  from:\"{$from->toIso8601String()}\",
-//                  to:\"{$to->toIso8601String()}\"
-//                }
-//            )
-//            {
-//                id
-//            }
-//          }")->assertJsonPath('errors.0.message', "Can't have overlapping availability!");
-//    }
+
 }

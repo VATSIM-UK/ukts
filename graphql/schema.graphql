@@ -19,6 +19,8 @@ type User {
     name_last: String!
     id: ID!
     atcRating: Rating!
+    availability: [Availability]!
+    bookings: [Booking]!
 }
 
 type Rating {

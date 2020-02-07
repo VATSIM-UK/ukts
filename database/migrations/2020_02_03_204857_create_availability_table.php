@@ -16,8 +16,8 @@ class CreateAvailabilityTable extends Migration
         Schema::create('availability', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
-            $table->dateTime('from')->nullable();
-            $table->dateTime('to')->nullable();
+            $table->timestamp('from')->nullable();
+            $table->timestamp('to')->nullable();
             $table->timestamps();
         });
     }

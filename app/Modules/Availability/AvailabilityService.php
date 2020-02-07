@@ -2,11 +2,9 @@
 
 namespace App\Modules\Availability;
 
-use App\Constants\ControllerRating;
 use App\Exceptions\OverlappingAvailabilityException;
 use App\Exceptions\PrivilegeException;
 use App\Modules\Availability\AvailabilityInPastException;
-use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
 
@@ -15,28 +13,12 @@ class AvailabilityService
     /** @var mixed App\User */
     protected $user;
 
-    /** @var int THIS MINIMUM TIME AVAILABILITY SHOULD BE */
-    public $TIME_IN_MINS = 30;
+    /** HIS MIN TIME BLOCK TIME AVAILABILITY SHOULD BE */
+    const MIN_BLOCK_TIME = 30;
 
     public function __construct(User $user)
     {
         $this->user = $user;
-    }
-
-    /**
-     * Check if the the user is able to book the given position only on the rating requirement.
-     *
-     * @param  User  $user
-     * @param  Position  $position
-     * @return bool
-     */
-    public function validateRatingRequirement(User $user, Position $position): bool
-    {
-        $positionSuffix = $position->suffix;
-
-        $ratingValue = $user->atcRating->vatsim_id;
-
-        return ControllerRating::isValidRatingForSuffix($positionSuffix, $ratingValue);
     }
 
     /**
@@ -60,8 +42,8 @@ class AvailabilityService
             throw new AvailabilityInPastException();
         }
 
-        if ($from->diffInMinutes($to) < $this->TIME_IN_MINS) {
-            throw new AvailabilityMinimumTimeException();
+        if ($from->diffInMinutes($to) < self::MIN_BLOCK_TIME) {
+            throw new AvailabilityMinimumTimeException(self::MIN_BLOCK_TIME);
         }
 
         $avail = Availability::where([['user_id', $user->id], ['id', '!=', $doNotCheck]]);
@@ -95,7 +77,7 @@ class AvailabilityService
             if (get_class($e) == 'AvailabilityInPastException') {
                 throw new AvailabilityInPastException();
             } else {
-                throw new AvailabilityMinimumTimeException();
+                throw new AvailabilityMinimumTimeException(self::MIN_BLOCK_TIME);
             }
         }
 
@@ -129,7 +111,7 @@ class AvailabilityService
             if (get_class($e) == 'AvailabilityInPastException') {
                 throw new AvailabilityInPastException();
             } else {
-                throw new AvailabilityMinimumTimeException($this->TIME_IN_MINS);
+                throw new AvailabilityMinimumTimeException(self::MIN_BLOCK_TIME);
             }
         }
 

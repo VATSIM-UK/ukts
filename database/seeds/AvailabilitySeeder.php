@@ -11,6 +11,6 @@ class AvailabilitySeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Modules\Availability\Availability::class, 20)->create();
+        factory(\App\Modules\Availability\Availability::class, 5)->create();
     }
 }
