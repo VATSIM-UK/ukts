@@ -7,11 +7,11 @@ use App\Modules\Position\Position;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Unit\Booking\BookingsTestHelper;
+use Tests\Helpers\UserHelper;
 
 class BookingUnitTest extends TestCase
 {
-    use RefreshDatabase, BookingsTestHelper;
+    use RefreshDatabase, UserHelper;
 
     protected $position;
     protected $booking;

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\Booking;
+namespace Tests\Helpers;
 
 use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-trait BookingsTestHelper
+trait UserHelper
 {
     protected $mockUserId = 1234567;
     protected $invalidUserId = 12345678;

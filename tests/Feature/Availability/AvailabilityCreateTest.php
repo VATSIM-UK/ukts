@@ -4,15 +4,14 @@ namespace Tests\Feature\Availability;
 
 use App\Modules\Availability\Availability;
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;
-use Tests\Unit\Availability\AvailabilityTestHelper;
+use Tests\Helpers\UserHelper;
 
 class AvailabilityCreateTest extends TestCase
 {
-    use RefreshDatabase, MakesGraphQLRequests, AvailabilityTestHelper;
+    use RefreshDatabase, MakesGraphQLRequests, UserHelper;
 
 
     public $expectedExceptions = [

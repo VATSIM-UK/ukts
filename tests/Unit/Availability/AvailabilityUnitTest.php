@@ -5,11 +5,12 @@ namespace Tests\Unit\Availability;
 use App\Modules\Availability\Availability;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Helpers\UserHelper;
 use Tests\TestCase;
 
 class AvailabilityUnitTest extends TestCase
 {
-    use RefreshDatabase, AvailabilityTestHelper;
+    use RefreshDatabase, UserHelper;
 
     protected $availability;
 
@@ -23,11 +24,6 @@ class AvailabilityUnitTest extends TestCase
     /** @test */
     public function itReturnsTheUserRelation()
     {
-        $this->mock(User::class, function ($mock) {
-            $mock->shouldReceive('find')
-                ->andReturn($this->mockedUser());
-        })->makePartial();
-
         $this->assertInstanceOf(User::class, $this->availability->user);
     }
 }

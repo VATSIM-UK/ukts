@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
-use Tests\Unit\Availability\AvailabilityTestHelper;
+use Tests\Helpers\UserHelper;
 
 class AvailabilityServiceTest extends TestCase
 {
-    use RefreshDatabase, AvailabilityTestHelper;
+    use RefreshDatabase, UserHelper;
 
     protected $service;
     private $mockUserModel;
