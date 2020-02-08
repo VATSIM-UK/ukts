@@ -294,7 +294,8 @@ class AvailabilityUpdateTest extends TestCase
         ]);
     }
 
-    public function addMockRangeData() {
+    public function addMockRangeData()
+    {
         $from = new Carbon();
         $from->addHours(2);
         $to = $from->copy()->addHours(1);
