@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            Availability::where('to', '<', Carbon::now())->delete();
+            Availability::old()->delete();
         })->dailyAt('0:00');
     }
 

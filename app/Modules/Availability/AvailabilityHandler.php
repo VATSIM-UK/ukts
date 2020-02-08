@@ -20,7 +20,7 @@ class AvailabilityHandler
      * @return Availability
      * @throws BindingResolutionException
      */
-    public function Update($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function update($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $service = app()->make(AvailabilityService::class);
 
@@ -42,7 +42,7 @@ class AvailabilityHandler
      * @throws OverlappingAvailabilityException
      * @throws BindingResolutionException
      */
-    public function Create($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function create($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $service = app()->make(AvailabilityService::class);
 
@@ -61,7 +61,7 @@ class AvailabilityHandler
      * @return mixed
      * @throws BindingResolutionException
      */
-    public function Remove($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function remove($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $service = app()->make(AvailabilityService::class);
 

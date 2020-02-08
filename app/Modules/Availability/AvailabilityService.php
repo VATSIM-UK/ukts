@@ -24,13 +24,14 @@ class AvailabilityService
     /**
      * Validate that two given times are valid within the context of other availability.
      *
-     * @param  Carbon  $from
-     * @param  Carbon  $to
+     * @param Carbon $from
+     * @param Carbon $to
+     * @param User $user - User
      * @param int $doNotCheck - Pass in an int to exclude from the search
-     * @param  User  $user - User
-     * @param  int|null  $excluded  - Availability ID to be excluded from the check.
-     * @throws AvailabilityInPastException - Cannot add availability that occurs in the past
      * @return bool
+     * @throws AvailabilityMinimumTimeException
+     * @throws AvailabilityInPastException
+     * @throws \Throwable
      */
     public function validateAvailabilityTimes(Carbon $from, Carbon $to, User $user, int $doNotCheck =  NULL): bool
     {
@@ -38,9 +39,7 @@ class AvailabilityService
             return false;
         }
 
-        if ($from->isBefore(new Carbon())) {
-            throw new AvailabilityInPastException();
-        }
+        throw_if($from->isBefore(new Carbon()), AvailabilityInPastException::class);
 
         if ($from->diffInMinutes($to) < self::MIN_BLOCK_TIME) {
             throw new AvailabilityMinimumTimeException(self::MIN_BLOCK_TIME);
@@ -107,12 +106,10 @@ class AvailabilityService
 
         try {
             $passesTimeChecks = $this->validateAvailabilityTimes($from, $to, $availabilityUser, $existingAvailability->getKey());
-        } catch (Exception $e)  {
-            if (get_class($e) == 'AvailabilityInPastException') {
-                throw new AvailabilityInPastException();
-            } else {
-                throw new AvailabilityMinimumTimeException(self::MIN_BLOCK_TIME);
-            }
+        } catch (AvailabilityInPastException $e) {
+            throw new AvailabilityInPastException();
+        } catch (AvailabilityMinimumTimeException $e) {
+            throw new AvailabilityMinimumTimeException(self::MIN_BLOCK_TIME);
         }
 
         if (!$passesTimeChecks) {

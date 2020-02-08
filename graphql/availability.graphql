@@ -22,9 +22,9 @@ input RemoveAvailabilityInput {
 }
 
 extend type Mutation @middleware(checks: ["auth"]) {
-    createAvailability(input: CreateAvailabilityInput! @spread): Availability! @field(resolver: "App\\Modules\\Availability\\AvailabilityHandler@Create")
-    removeAvailabilityRange(input: RemoveAvailabilityInput! @spread): Int @field(resolver: "App\\Modules\\Availability\\AvailabilityHandler@Remove")
-    updateAvailability(input: UpdateAvailabilityInput! @spread): Availability! @field(resolver: "App\\Modules\\Availability\\AvailabilityHandler@Update")
+    createAvailability(input: CreateAvailabilityInput! @spread): Availability! @field(resolver: "App\\Modules\\Availability\\AvailabilityHandler@create")
+    removeAvailabilityRange(input: RemoveAvailabilityInput! @spread): Int @field(resolver: "App\\Modules\\Availability\\AvailabilityHandler@remove")
+    updateAvailability(input: UpdateAvailabilityInput! @spread): Availability! @field(resolver: "App\\Modules\\Availability\\AvailabilityHandler@update")
     deleteAvailability(id: ID!): Availability! @delete
 }
 

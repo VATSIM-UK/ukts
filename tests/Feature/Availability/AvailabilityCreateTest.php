@@ -4,8 +4,8 @@ namespace Tests\Feature\Availability;
 
 use App\Modules\Availability\Availability;
 use Carbon\Carbon;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;
 use Tests\Unit\Availability\AvailabilityTestHelper;
