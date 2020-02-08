@@ -35,7 +35,7 @@ class SpecialEndorsement extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->remoteBelongsToMany(
+        return $this->belongsToMany(
             $this->userInstance,
             'special_endorsement_assignments',
             'endorsement_id',

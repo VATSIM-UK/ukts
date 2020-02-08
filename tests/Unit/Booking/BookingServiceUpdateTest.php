@@ -31,7 +31,7 @@ class BookingServiceUpdateTest extends TestCase
 
         $this->existingBooking = factory(Booking::class)->create(['position_id' => $this->position->id]);
 
-        $this->mockUserModel = User::initModelWithData([
+        $this->mockUserModel = new User([
             'id' => 1234567,
             'name_fist' => 'First',
             'name_last' => 'Last',

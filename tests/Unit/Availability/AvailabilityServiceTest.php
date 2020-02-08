@@ -26,7 +26,7 @@ class AvailabilityServiceTest extends TestCase
         parent::setUp();
         DB::enableQueryLog();
 
-        $this->mockUserModel = User::initModelWithData([
+        $this->mockUserModel = new User([
             'id' => 1234567,
             'name_fist' => 'First',
             'name_last' => 'Last',

@@ -34,7 +34,7 @@ class BookingsServiceTest extends TestCase
 
         $this->service = $this->app->make(BookingsService::class);
 
-        $this->mockUserModel = User::initModelWithData([
+        $this->mockUserModel = new User([
             'id' => 1234567,
             'name_fist' => 'First',
             'name_last' => 'Last',

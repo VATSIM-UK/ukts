@@ -24,7 +24,7 @@ trait BookingsTestHelper
 
     protected function mockedUser($id = null, $ratingObject = ['code' => 'S2', 'vatsim_id' => 3])
     {
-        return User::initModelWithData([
+        return new User([
             'id' => $id ?: $this->mockUserId,
             'name_fist' => 'First',
             'name_last' => 'Last',
