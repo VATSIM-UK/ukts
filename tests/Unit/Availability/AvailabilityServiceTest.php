@@ -92,7 +92,10 @@ class AvailabilityServiceTest extends TestCase
         ]);
 
         $this->assertFalse($this->service->validateAvailabilityTimes($from, $to, $this->mockUserModel));
-        $this->assertFalse($this->service->validateAvailabilityTimes($from->subHour(), $to->addHour(),  $this->mockUserModel));
+        $this->assertFalse($this->service->validateAvailabilityTimes(
+            $from->subHour(),
+            $to->addHour(),
+            $this->mockUserModel));
     }
 
     /** @test */

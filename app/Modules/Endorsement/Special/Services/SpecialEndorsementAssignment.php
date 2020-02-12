@@ -38,6 +38,11 @@ class SpecialEndorsementAssignment implements BaseService
         $this->endorsementRequest->update(['approved_at' => now()]);
 
         // return the assignment object.
-        return $this->endorsementRequest->fresh()->endorsement->users()->find($this->endorsementRequest->user_id)->pivot;
+        return $this->endorsementRequest
+            ->fresh()
+            ->endorsement
+            ->users()
+            ->find($this->endorsementRequest->user_id)
+            ->pivot;
     }
 }

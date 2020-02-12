@@ -33,7 +33,7 @@ class AvailabilityService
      * @throws AvailabilityInPastException
      * @throws \Throwable
      */
-    public function validateAvailabilityTimes(Carbon $from, Carbon $to, User $user, int $doNotCheck =  NULL): bool
+    public function validateAvailabilityTimes(Carbon $from, Carbon $to, User $user, int $doNotCheck =  null): bool
     {
         if ($from->isAfter($to)) {
             return false;
@@ -72,7 +72,7 @@ class AvailabilityService
 
         try {
             $passesTimeChecks = $this->validateAvailabilityTimes($from, $to, $availabilityUser);
-        } catch (Exception $e)  {
+        } catch (Exception $e) {
             if (get_class($e) == 'AvailabilityInPastException') {
                 throw new AvailabilityInPastException();
             } else {
@@ -105,7 +105,8 @@ class AvailabilityService
         }
 
         try {
-            $passesTimeChecks = $this->validateAvailabilityTimes($from, $to, $availabilityUser, $existingAvailability->getKey());
+            $passesTimeChecks = $this->validateAvailabilityTimes($from, $to, $availabilityUser,
+                $existingAvailability->getKey());
         } catch (AvailabilityInPastException $e) {
             throw new AvailabilityInPastException();
         } catch (AvailabilityMinimumTimeException $e) {
