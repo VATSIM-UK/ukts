@@ -105,8 +105,12 @@ class AvailabilityService
         }
 
         try {
-            $passesTimeChecks = $this->validateAvailabilityTimes($from, $to, $availabilityUser,
-                $existingAvailability->getKey());
+            $passesTimeChecks = $this->validateAvailabilityTimes(
+                $from,
+                $to,
+                $availabilityUser,
+                $existingAvailability->getKey()
+            );
         } catch (AvailabilityInPastException $e) {
             throw new AvailabilityInPastException();
         } catch (AvailabilityMinimumTimeException $e) {
