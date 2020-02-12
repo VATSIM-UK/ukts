@@ -28,7 +28,7 @@ class AvailabilityServiceTest extends TestCase
 
         $this->mockUserModel = new User([
             'id' => 1234567,
-            'name_fist' => 'First',
+            'name_first' => 'First',
             'name_last' => 'Last',
             'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
         ]);

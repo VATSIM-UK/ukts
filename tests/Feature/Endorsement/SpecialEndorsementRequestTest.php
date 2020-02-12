@@ -142,6 +142,12 @@ class SpecialEndorsementRequestTest extends TestCase
                         'name_first' => 'Callum',
                     ])
                 );
+
+            $mock->shouldReceive('initModelWithData')
+                ->andReturn(new User([
+                    'id' => 1300005,
+                    'name_first' => 'Callum',
+                ]));
         })->makePartial();
 
         $request = $this->endorsement->requests()->create([

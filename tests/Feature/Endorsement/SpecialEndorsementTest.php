@@ -210,6 +210,12 @@ class SpecialEndorsementTest extends TestCase
                         'name_first' => $this->user->name_first,
                     ]),
                 ]));
+
+            $mock->shouldReceive('initModelWithData')
+                ->andReturn(new User([
+                    'id' => $this->user->id,
+                    'name_first' => $this->user->name_first,
+                ]));
         })->makePartial();
 
         $assignment = Assignment::create([
