@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\Booking;
+namespace Tests\Helpers;
 
 use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-trait BookingsTestHelper
+trait UserHelper
 {
     protected $mockUserId = 1234567;
     protected $invalidUserId = 12345678;
@@ -24,7 +24,7 @@ trait BookingsTestHelper
 
     protected function mockedUser($id = null, $ratingObject = ['code' => 'S2', 'vatsim_id' => 3])
     {
-        return User::initModelWithData([
+        return new User([
             'id' => $id ?: $this->mockUserId,
             'name_first' => 'First',
             'name_last' => 'Last',

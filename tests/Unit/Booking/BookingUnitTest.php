@@ -7,10 +7,11 @@ use App\Modules\Position\Position;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Helpers\UserHelper;
 
 class BookingUnitTest extends TestCase
 {
-    use RefreshDatabase, BookingsTestHelper;
+    use RefreshDatabase, UserHelper;
 
     protected $position;
     protected $booking;
@@ -31,10 +32,6 @@ class BookingUnitTest extends TestCase
     /** @test */
     public function itReturnsTheUserRelation()
     {
-        $this->mock(User::class, function ($mock) {
-            $mock->shouldReceive('find')
-                ->andReturn($this->mockedUser());
-        })->makePartial();
 
         $this->assertInstanceOf(User::class, $this->booking->user);
     }

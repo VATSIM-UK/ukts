@@ -4,11 +4,11 @@ namespace App\Modules\Endorsement\Special;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
-use VATSIMUK\Support\Auth\Models\Concerns\HasCustomInstanceCreation;
+use VATSIMUK\Support\Auth\Models\Concerns\HasRemoteRelationships;
 
 class EndorsementRequest extends Model
 {
-    use HasCustomInstanceCreation;
+    use HasRemoteRelationships;
 
     protected $fillable = ['user_id', 'endorsement_id', 'endorsement_type', 'requested_by', 'approved_at', 'denied_at'];
     public $timestamps = ['created_at', 'updated_at', 'approved_at', 'denied_at'];

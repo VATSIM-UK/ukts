@@ -2,14 +2,16 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Modules\Availability\Availability;
 use App\Modules\Booking\Booking;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use VATSIMUK\Support\Auth\Models\RemoteUser;
 
-class User extends RemoteUser
+class User extends RemoteUser implements Authenticatable
 {
     public function specialEndorsements(): BelongsToMany
     {
@@ -25,4 +27,10 @@ class User extends RemoteUser
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function availability(): HasMany
+    {
+        return $this->hasMany(Availability::class);
+    }
+
 }

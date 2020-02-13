@@ -22,11 +22,11 @@ class SpecialEndorsementAssignment implements BaseService
     public function handle()
     {
         // check if the endorsement has already been assigned.
-        if ($this->endorsementRequest->endorsement->users->contains($this->endorsementRequest->user)) {
+        if ($this->endorsementRequest->endorsement->users()->contains($this->endorsementRequest->user_id)) {
             throw new EndorsementAlreadyGrantedException();
         }
         // add the user to the endorsement relating to the request
-        $this->endorsementRequest->endorsement->users()->attach($this->endorsementRequest->user,
+        $this->endorsementRequest->endorsement->users()->attach($this->endorsementRequest->user_id,
             [
                 'granted_by' => $this->actioner->id,
             ]
@@ -38,6 +38,11 @@ class SpecialEndorsementAssignment implements BaseService
         $this->endorsementRequest->update(['approved_at' => now()]);
 
         // return the assignment object.
-        return $this->endorsementRequest->fresh()->endorsement->users->find($this->endorsementRequest->user->id)->pivot;
+        return $this->endorsementRequest
+            ->fresh()
+            ->endorsement
+            ->users()
+            ->find($this->endorsementRequest->user_id)
+            ->pivot;
     }
 }

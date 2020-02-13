@@ -1,0 +1,38 @@
+extend type Query {
+    availabilities: [Availability!]! @paginate
+    availabilityByDate(from: Date! @where(clause: "whereDate")): [Availability!]! @all
+    availabilityBetweenDates(from: DateRange @whereBetweenDate): [Availability!]! @all
+    availability(id: ID @eq): Availability @find
+}
+
+input CreateAvailabilityInput {
+    from: DateTimeZulu! @rules(apply: ["before:input.to"]),
+    to: DateTimeZulu! @rules(apply: ["after:input.from"]),
+}
+
+input UpdateAvailabilityInput {
+    id: ID! @rules(apply: ["exists:availability,id"])
+    from: DateTimeZulu! @rules(apply: ["before:input.to"]),
+    to: DateTimeZulu! @rules(apply: ["after:input.from"]),
+}
+
+input RemoveAvailabilityInput {
+    from: DateTimeZulu! @rules(apply: ["before:input.to"]),
+    to: DateTimeZulu! @rules(apply: ["after:input.from"]),
+}
+
+extend type Mutation @middleware(checks: ["auth"]) {
+    createAvailability(input: CreateAvailabilityInput! @spread): Availability! @field(resolver: "App\\Modules\\Availability\\AvailabilityHandler@create")
+    removeAvailabilityRange(input: RemoveAvailabilityInput! @spread): Int @field(resolver: "App\\Modules\\Availability\\AvailabilityHandler@remove")
+    updateAvailability(input: UpdateAvailabilityInput! @spread): Availability! @field(resolver: "App\\Modules\\Availability\\AvailabilityHandler@update")
+    deleteAvailability(id: ID!): Availability! @delete
+}
+
+type Availability implements Node {
+    id: ID!
+    user_id: ID!
+    from: DateTimeZulu!
+    to: DateTimeZulu!
+    created_at: DateTimeZulu!
+    updated_at: DateTimeZulu!
+}

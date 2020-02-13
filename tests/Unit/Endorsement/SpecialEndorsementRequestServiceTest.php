@@ -86,15 +86,21 @@ class SpecialEndorsementRequestServiceTest extends TestCase
         $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('find')
                 ->andReturn(
-                    User::initModelWithData([
+                    new User([
                         'id' => 1300005,
                         'name_first' => 'Callum',
                     ])
                 );
-
+            $mock->shouldReceive('initModelWithData')
+                ->andReturn(
+                    new User([
+                        'id' => 1300005,
+                        'name_first' => 'Callum',
+                    ])
+                );
             $mock->shouldReceive('findMany')
                 ->andReturn(
-                    collect([User::initModelWithData([
+                    collect([new User([
                         'id' => 1300005,
                         'name_first' => 'Callum',
                     ])])

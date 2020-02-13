@@ -8,11 +8,11 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;
-use Tests\Unit\Booking\BookingsTestHelper;
+use Tests\Helpers\UserHelper;
 
 class BookingUpdateTest extends TestCase
 {
-    use RefreshDatabase, MakesGraphQLRequests, BookingsTestHelper;
+    use RefreshDatabase, MakesGraphQLRequests, UserHelper;
 
     private $position;
 
