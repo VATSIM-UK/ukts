@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Modules\Bookings\Booking;
+use App\Modules\Booking\Booking;
 use Faker\Generator as Faker;
 
 $factory->define(Booking::class, function (Faker $faker) {
@@ -12,6 +12,7 @@ $factory->define(Booking::class, function (Faker $faker) {
     return [
         'user_id' => $faker->numberBetween(1000000, 9999999),
         'position_id' => factory(\App\Modules\Position\Position::class),
+        'network_type' => 0,
         'from' => $from,
         'to' => $to,
     ];

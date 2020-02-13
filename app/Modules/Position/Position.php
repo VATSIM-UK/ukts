@@ -2,7 +2,7 @@
 
 namespace App\Modules\Position;
 
-use App\Modules\Bookings\Booking;
+use App\Modules\Booking\Booking;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

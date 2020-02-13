@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Scalars;
 
+use Exception;
 use Carbon\Carbon;
 use GraphQL\Error\Error;
 use GraphQL\Error\InvariantViolation;

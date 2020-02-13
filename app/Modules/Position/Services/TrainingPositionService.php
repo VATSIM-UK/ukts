@@ -1,7 +1,11 @@
 <?php
 
-namespace App\Modules\Position;
+namespace App\Modules\Position\Services;
 
+use App\Modules\Position\Position;
+use App\Modules\Position\TrainingPositionAssignment;
+use App\Modules\Position\Exceptions\PositionAlreadyAssignedForTrainingException;
+use App\Modules\Position\Exceptions\PositionNotAssignedForTrainingException;
 use Illuminate\Database\Eloquent\Builder;
 
 class TrainingPositionService

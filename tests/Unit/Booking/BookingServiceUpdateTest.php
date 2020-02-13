@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Booking;
 
-use App\Exceptions\OverlappingBookingException;
-use App\Modules\Bookings\Booking;
-use App\Modules\Bookings\BookingsService;
+use App\Modules\Booking\Exceptions\OverlappingBookingException;
+use App\Modules\Booking\Booking;
+use App\Modules\Booking\Services\BookingsService;
 use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
@@ -33,7 +33,7 @@ class BookingServiceUpdateTest extends TestCase
 
         $this->mockUserModel = User::initModelWithData([
             'id' => 1234567,
-            'name_fist' => 'First',
+            'name_first' => 'First',
             'name_last' => 'Last',
             'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
         ]);

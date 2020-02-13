@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Booking;
 
-use App\Modules\Bookings\Booking;
+use App\Modules\Booking\Booking;
 use App\Modules\Position\Position;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;

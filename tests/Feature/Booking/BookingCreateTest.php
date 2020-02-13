@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Booking;
 
-use App\Modules\Bookings\Booking;
+use App\Modules\Booking\Booking;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Modules\Position\Position;
@@ -42,6 +42,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: 0,
                     from:\"2019-08-20 15:00:00\",
                     to:\"2019-08-20 16:30:00\"
                 }
@@ -63,6 +64,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: 0,
                     from: \"2019-08-20 16:30:00\",
                     to:\"2019-08-20 17:30:00\"
                 }
@@ -89,6 +91,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: 0,
                     from:'Blah',
                     to:'2019-08-20 16:30:00'
                 }
@@ -96,15 +99,16 @@ class BookingCreateTest extends TestCase
             {
                 id
             }
-          }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+          }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         $unknownPositionId = 2;
@@ -114,6 +118,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$unknownPositionId},
+                    network_type: 0,
                     from: '2019-08-20 15:00:00',
                     to:'2019-08-20 16:30:00'
                 }
@@ -121,15 +126,16 @@ class BookingCreateTest extends TestCase
             {
                 id
             }
-          }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+          }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         // "From" and "To" the same
@@ -138,6 +144,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: 1,
+                    network_type: 0,
                     from:"2019-08-20 15:00:00",
                     to:"2019-08-20 15:00:00"
                 }
@@ -145,32 +152,34 @@ class BookingCreateTest extends TestCase
             {
                 id
             }
-          }')->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+          }')->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         // "From" after "To"
         $this->graphQL("
           mutation {
-            createBooking(user_id: 1300001, position_id: {$this->position->id}, from:\"2019-08-20 15:30:00\", to:\"2019-08-20 15:00:00\") {
+            createBooking(user_id: 1300001, position_id: {$this->position->id}, network_type: 0, from:\"2019-08-20 15:30:00\", to:\"2019-08-20 15:00:00\") {
                 id
             }
-          }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+          }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
     }
 
@@ -192,6 +201,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: 0,
                     from:\"2019-08-10 14:30:00\",
                     to:\"2019-08-10 15:30:00\"
                 }
@@ -218,6 +228,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: 0,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -242,6 +253,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: 0,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -256,6 +268,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$differentPosition->id},
+                    network_type: 0,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -288,6 +301,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: 0,
                     from:\"2019-01-10 14:00:00\",
                     to:\"2019-01-10 15:00:00\"
                 }
@@ -323,6 +337,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: 0,
                     from:\"2019-01-10 14:00:00\",
                     to:\"2019-01-10 15:00:00\"
                 }
@@ -351,6 +366,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: 0,
                     from:\"2019-01-10 14:00:00\",
                     to:\"2019-01-10 15:00:00\"
                 }
@@ -358,8 +374,105 @@ class BookingCreateTest extends TestCase
             {
                 id
             }
-        }")->assertJsonPath('errors.0.message',
-            'You do not have the required Special Endorsement to book this position.');
+        }")->assertJsonPath(
+            'errors.0.message',
+            'You do not have the required Special Endorsement to book this position.'
+        );
+    }
+
+    /** @test */
+    public function testAllowsOverlappingBookingsOfDifferentNetworkTypes()
+    {
+        $this->bypassRatingChecks();
+        $this->position->callsign = 'EGFF_TWR';
+        $this->position->save();
+
+        $creationJsonFormat = ['data' => ['createBooking' => ['id']]];
+
+        $this->graphQL("
+          mutation {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    network_type: 0,
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
+                }
+            )
+            {
+                id
+            }
+          }")->assertJsonStructure($creationJsonFormat);
+
+        $this->graphQL("
+          mutation {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    network_type: 1,
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
+                }
+            )
+            {
+                id
+            }
+          }")->assertJsonStructure($creationJsonFormat);
+    }
+
+    /** @test */
+    public function testDoesntAllowBookingOfInvalidNetworkType()
+    {
+        $this->bypassRatingChecks();
+        $this->position->callsign = 'EGFF_TWR';
+        $this->position->save();
+
+        $this->graphQL("
+          mutation {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    network_type: 2,
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
+                }
+            )
+            {
+                id
+            }
+          }")->assertJsonPath(
+            'errors.0.message',
+            'Invalid network type!'
+        );
+    }
+
+    /** @test */
+    public function testDoesntAllowBookingNetworkTypeOverlap()
+    {
+        $this->bypassRatingChecks();
+        $this->position->callsign = 'EGFF_TWR';
+        $this->position->save();
+
+        factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => '2019-08-10 19:00:00',
+            'to' => '2019-08-10 20:00:00',
+        ]);
+
+        $this->graphQL("
+          mutation {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    network_type: 0,
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
+                }
+            )
+            {
+                id
+            }
+          }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
     }
 
     /** @test */

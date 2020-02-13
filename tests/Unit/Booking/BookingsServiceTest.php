@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Booking;
 
-use App\Exceptions\OverlappingBookingException;
-use App\Modules\Bookings\Booking;
-use App\Modules\Bookings\BookingsService;
-use App\Modules\Bookings\RatingRequirementNotMetException;
+use App\Modules\Booking\Exceptions\OverlappingBookingException;
+use App\Modules\Booking\Booking;
+use App\Modules\Booking\Services\BookingsService;
+use App\Modules\Booking\Exceptions\RatingRequirementNotMetException;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Modules\Position\Position;
@@ -36,7 +36,7 @@ class BookingsServiceTest extends TestCase
 
         $this->mockUserModel = User::initModelWithData([
             'id' => 1234567,
-            'name_fist' => 'First',
+            'name_first' => 'First',
             'name_last' => 'Last',
             'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
         ]);
@@ -198,8 +198,10 @@ class BookingsServiceTest extends TestCase
 
         $this->mandateEndorsementForPositionHelper($specialEndorsement->id, $this->position->id);
 
-        $this->assertFalse($this->service->validateSpecialEndorsementRequirement($this->mockUserModel,
-            $this->position));
+        $this->assertFalse($this->service->validateSpecialEndorsementRequirement(
+            $this->mockUserModel,
+            $this->position
+        ));
     }
 
     /** @test */
@@ -213,8 +215,10 @@ class BookingsServiceTest extends TestCase
 
         $this->grantEndorsementHelper($this->mockUserId, $specialEndorsement->id);
 
-        $this->assertFalse($this->service->validateSpecialEndorsementRequirement($this->mockUserModel,
-            $this->position));
+        $this->assertFalse($this->service->validateSpecialEndorsementRequirement(
+            $this->mockUserModel,
+            $this->position
+        ));
     }
 
     /** @test */
@@ -229,8 +233,10 @@ class BookingsServiceTest extends TestCase
         $this->grantEndorsementHelper($this->mockUserId, $specialEndorsement->id);
         $this->grantEndorsementHelper($this->mockUserId, $specialEndorsement2->id);
 
-        $this->assertTrue($this->service->validateSpecialEndorsementRequirement($this->mockUserModel,
-            $this->position));
+        $this->assertTrue($this->service->validateSpecialEndorsementRequirement(
+            $this->mockUserModel,
+            $this->position
+        ));
     }
 
     /** @test */

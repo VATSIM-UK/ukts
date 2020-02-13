@@ -11,7 +11,7 @@ services:
     networks:
       - app-network
     ports:
-      - 33060:3306 # expose db to local machine on port 33060
+      - 3306:3306 # expose db to local machine on port 33060
 
   app:
     tty: true

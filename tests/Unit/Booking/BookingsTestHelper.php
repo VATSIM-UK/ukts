@@ -26,7 +26,7 @@ trait BookingsTestHelper
     {
         return User::initModelWithData([
             'id' => $id ?: $this->mockUserId,
-            'name_fist' => 'First',
+            'name_first' => 'First',
             'name_last' => 'Last',
             'atcRating' => $ratingObject,
         ]);

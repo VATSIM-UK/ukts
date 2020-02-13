@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Modules\Position;
+namespace App\Modules\Position\Mutations;
 
+use App\Modules\Position\Position;
+use App\Modules\Position\Services\TrainingPositionService;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class RemoveAssignmentHandler
+class CreateAssignmentHandler
 {
     /**
      * Return a value for the field.
@@ -20,6 +22,6 @@ class RemoveAssignmentHandler
     {
         $position = Position::findOrFail($args['position_id']);
 
-        return app()->make(TrainingPositionService::class)->removeAssignment($position);
+        return app()->make(TrainingPositionService::class)->createAssignment($position);
     }
 }

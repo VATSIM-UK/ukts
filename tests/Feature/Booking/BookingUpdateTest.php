@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Booking;
 
-use App\Modules\Bookings\Booking;
+use App\Modules\Booking\Booking;
 use App\Modules\Position\Position;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -43,7 +43,8 @@ class BookingUpdateTest extends TestCase
                     input: {
                         id: 1,
                         from: "2019-08-20 17:00:00",
-                        to: "2019-08-20 18:00:00"
+                        to: "2019-08-20 18:00:00",
+                        network_type: 0
                     }
                 ) {
                     id
@@ -85,7 +86,8 @@ class BookingUpdateTest extends TestCase
                     input: {
                         id: {$bookingToUpdate->id},
                         from: \"2019-08-20 16:15:00\",
-                        to: \"2019-08-20 17:00:00\"
+                        to: \"2019-08-20 17:00:00\",
+                        network_type: 0
                     }
                 ) {
                     id
@@ -104,7 +106,8 @@ class BookingUpdateTest extends TestCase
                     input: {
                         id: {$invalidBookingId},
                         from: \"2019-08-20 17:00:00\",
-                        to: \"2019-08-20 18:00:00\"
+                        to: \"2019-08-20 18:00:00\",
+                        network_type: 0
                     }
                 ) {
                     id

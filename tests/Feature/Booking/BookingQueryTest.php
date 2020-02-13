@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Booking;
 
-use App\Modules\Bookings\Booking;
+use App\Modules\Booking\Booking;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;

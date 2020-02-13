@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Position;
+namespace App\Modules\Booking\Exceptions;
 
-use Exception;
+use DomainException;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
-class PositionAlreadyAssignedForTrainingException extends Exception implements RendersErrorsExtensions
+class OverlappingBookingException extends DomainException implements RendersErrorsExtensions
 {
-    protected $message = 'The given position is already assigned for training.';
+    protected $message = "Can't have overlapping bookings for the same position!";
 
     /**
      * Returns true when exception message is safe to be displayed to a client.

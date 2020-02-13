@@ -2,14 +2,16 @@
 
 namespace App;
 
-use App\Modules\Bookings\Booking;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Modules\Booking\Booking;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
-use VATSIMUK\Auth\Remote\Models\RemoteUser;
+use VATSIMUK\Support\Auth\Models\RemoteUser;
 
 class User extends RemoteUser
 {
-    public function specialEndorsements()
+    public function specialEndorsements(): BelongsToMany
     {
         return $this->belongsToMany(
             SpecialEndorsement::class,
@@ -19,7 +21,7 @@ class User extends RemoteUser
         )->using(Assignment::class)->withTimestamps();
     }
 
-    public function bookings()
+    public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
     }

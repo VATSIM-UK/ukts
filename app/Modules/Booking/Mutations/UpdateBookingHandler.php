@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Modules\Bookings;
+namespace App\Modules\Booking\Mutations;
 
-use App\Exceptions\OverlappingBookingException;
+use App\Modules\Booking\Booking;
+use App\Modules\Booking\Services\BookingsService;
+use App\Modules\Booking\Exceptions\OverlappingBookingException;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 

@@ -4,7 +4,7 @@ namespace App\Modules\Endorsement\Special;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
-use VATSIMUK\Auth\Remote\RemoteEloquent\HasCustomInstanceCreation;
+use VATSIMUK\Support\Auth\Models\Concerns\HasCustomInstanceCreation;
 
 class EndorsementRequest extends Model
 {

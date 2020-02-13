@@ -15,8 +15,8 @@
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
         "mll-lab/laravel-graphql-playground": "^1.1",
-        "vatsimuk/auth-package": "dev-master",
-        "nuwave/lighthouse": "^4.2"
+        "nuwave/lighthouse": "^4.2",
+        "vatsimuk/auth-package": "dev-fix/relationship-mocks"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
