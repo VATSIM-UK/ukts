@@ -20,7 +20,7 @@ class SoloEndorsementService
         return SoloEndorsement::create([
             'position_id' => $position->id,
             'user_id' => $user->id,
-            'expiry_date' => Carbon::now()->addDays(self::DEFAULT_DURATION_IN_DAYS)
+            'expiry_date' => Carbon::now()->addDays(self::DEFAULT_DURATION_IN_DAYS),
         ]);
     }
 
