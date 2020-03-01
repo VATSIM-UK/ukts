@@ -3,6 +3,7 @@
 namespace App\Modules\Position;
 
 use App\Modules\Bookings\Booking;
+use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -42,6 +43,15 @@ class Position extends Model
             'special_endorsement_positions',
             'position_id',
             'endorsement_id'
+        );
+    }
+
+    public function soloEndorsements(): HasMany
+    {
+        return $this->hasMany(
+            SoloEndorsement::class,
+            'position_id',
+            'id'
         );
     }
 
