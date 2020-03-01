@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Modules\Endorsement\Solo;
-
 
 use App\Exceptions\OverlappingBookingException;
 use App\Modules\Position\Position;
