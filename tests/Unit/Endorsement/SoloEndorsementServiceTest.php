@@ -39,7 +39,7 @@ class SoloEndorsementServiceTest extends TestCase
         $this->assertDatabaseHas('solo_endorsements', [
             'position_id' => $this->position->id,
             'user_id' => $this->user->id,
-            'expiry_date' => Carbon::now()->addDays(30)
+            'expiry_date' => Carbon::now()->addDays(30),
         ]);
     }
 
@@ -51,7 +51,7 @@ class SoloEndorsementServiceTest extends TestCase
         SoloEndorsement::create([
             'position_id' => $this->position->id,
             'user_id' => $this->user->id,
-            'expiry_date' => Carbon::now()->addDays(30)
+            'expiry_date' => Carbon::now()->addDays(30),
         ]);
 
         $this->service->grantSoloEndorsement($this->position, $this->user);
@@ -63,7 +63,7 @@ class SoloEndorsementServiceTest extends TestCase
         SoloEndorsement::create([
             'position_id' => $this->position->id,
             'user_id' => $this->user->id,
-            'expiry_date' => Carbon::now()->addDays(30)
+            'expiry_date' => Carbon::now()->addDays(30),
         ]);
 
         $result = $this->service->checkForExistingActiveSoloEndorsements($this->position, $this->user);
@@ -78,7 +78,7 @@ class SoloEndorsementServiceTest extends TestCase
         SoloEndorsement::create([
             'position_id' => $this->position->id,
             'user_id' => $user->id,
-            'expiry_date' => Carbon::now()->subDays(1)
+            'expiry_date' => Carbon::now()->subDays(1),
         ]);
 
         $result = $this->service->checkForExistingActiveSoloEndorsements($this->position, $this->user);

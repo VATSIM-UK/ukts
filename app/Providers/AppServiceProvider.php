@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Modules\Bookings\BookingsService;
+use App\Modules\Endorsement\Solo\SoloEndorsementService;
 use App\Modules\Position\TrainingPositionService;
 use Illuminate\Support\ServiceProvider;
-use App\Modules\Endorsement\Solo\SoloEndorsementService;
 
 class AppServiceProvider extends ServiceProvider
 {

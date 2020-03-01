@@ -29,13 +29,13 @@ class SoloEndorsementModelTest extends TestCase
         $expiredEndorsement = SoloEndorsement::create([
             'position_id' => $this->position->id,
             'user_id' => $user->id,
-            'expiry_date' => Carbon::now()->subHours(1)
+            'expiry_date' => Carbon::now()->subHours(1),
         ]);
 
         $activeEndorsement = SoloEndorsement::create([
             'position_id' => $this->position->id,
             'user_id' => $user->id,
-            'expiry_date' => Carbon::now()->addHours(24)
+            'expiry_date' => Carbon::now()->addHours(24),
         ]);
 
         $collectionResult = SoloEndorsement::active()->get();

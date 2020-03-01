@@ -28,7 +28,7 @@ class SoloEndorsementService
     {
         $queryResult = SoloEndorsement::active()->where([
             'position_id' => $position->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->get();
 
         return ! $queryResult->isEmpty();

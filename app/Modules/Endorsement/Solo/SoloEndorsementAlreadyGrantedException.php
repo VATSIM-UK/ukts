@@ -9,7 +9,7 @@ class SoloEndorsementAlreadyGrantedException extends Exception implements Render
 {
     protected $message = 'A solo endorsement is already assigned to that user on the given position';
 
-        /**
+    /**
      * Returns true when exception message is safe to be displayed to a client.
      *
      * @return bool
