@@ -8,6 +8,8 @@ use Carbon\Carbon;
 
 class SoloEndorsementService
 {
+    private const DEFAULT_DURATION_IN_DAYS = 30;
+
     public function grantSoloEndorsement(Position $position, User $user): SoloEndorsement
     {
         throw_if(
@@ -18,7 +20,7 @@ class SoloEndorsementService
         return SoloEndorsement::create([
             'position_id' => $position->id,
             'user_id' => $user->id,
-            'expiry_date' => Carbon::now()->addDays(30)
+            'expiry_date' => Carbon::now()->addDays(self::DEFAULT_DURATION_IN_DAYS)
         ]);
     }
 

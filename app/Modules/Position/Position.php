@@ -48,11 +48,7 @@ class Position extends Model
 
     public function soloEndorsements(): HasMany
     {
-        return $this->hasMany(
-            SoloEndorsement::class,
-            'position_id',
-            'id'
-        );
+        return $this->hasMany(SoloEndorsement::class, 'position_id', 'id');
     }
 
     public function getTypeAttribute(): string
