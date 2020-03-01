@@ -18,7 +18,7 @@ class SoloEndorsementService
         return SoloEndorsement::create([
             'position_id' => $position->id,
             'user_id' => $user->id,
-            'expiry_date' => Carbon::now()->addDays(30)
+            'expiry_date' => Carbon::now()->addDays(30),
         ]);
     }
 
@@ -26,7 +26,7 @@ class SoloEndorsementService
     {
         $queryResult = SoloEndorsement::active()->where([
             'position_id' => $position->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->get();
 
         return ! $queryResult->isEmpty();

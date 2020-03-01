@@ -53,10 +53,9 @@ class PositionUnitTest extends TestCase
     {
         factory(SoloEndorsement::class, 3)->create([
             'position_id' => $this->position->id,
-            'user_id' => 134566
+            'user_id' => 134566,
         ]);
 
         $this->assertCount(3, $this->position->soloEndorsements);
     }
-
 }

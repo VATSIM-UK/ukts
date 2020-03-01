@@ -335,7 +335,7 @@ class BookingsServiceTest extends TestCase
         SoloEndorsement::create([
             'position_id' => $this->position->id,
             'user_id' => $this->mockUserId,
-            'expiry_date' => Carbon::now()->addDays(2)
+            'expiry_date' => Carbon::now()->addDays(2),
         ]);
 
         $this->assertTrue($this->service->validateSoloEndorsementEligibility($this->mockUserModel, $this->position));
@@ -353,7 +353,7 @@ class BookingsServiceTest extends TestCase
         SoloEndorsement::create([
             'position_id' => $this->position->id,
             'user_id' => $this->mockUserId,
-            'expiry_date' => Carbon::now()->subDay()
+            'expiry_date' => Carbon::now()->subDay(),
         ]);
 
         $this->assertFalse($this->service->validateSoloEndorsementEligibility($this->mockUserModel, $this->position));

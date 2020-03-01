@@ -98,14 +98,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-                'errors' => [
-                    [
-                        'message',
-                        'extensions',
-                        'locations',
-                    ],
+            'errors' => [
+                [
+                    'message',
+                    'extensions',
+                    'locations',
                 ],
-            ]
+            ],
+        ]
         );
 
         $unknownPositionId = 2;
@@ -123,14 +123,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-                'errors' => [
-                    [
-                        'message',
-                        'extensions',
-                        'locations',
-                    ],
+            'errors' => [
+                [
+                    'message',
+                    'extensions',
+                    'locations',
                 ],
-            ]
+            ],
+        ]
         );
 
         // "From" and "To" the same
@@ -147,14 +147,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }')->assertJsonStructure([
-                'errors' => [
-                    [
-                        'message',
-                        'extensions',
-                        'locations',
-                    ],
+            'errors' => [
+                [
+                    'message',
+                    'extensions',
+                    'locations',
                 ],
-            ]
+            ],
+        ]
         );
 
         // "From" after "To"
@@ -164,14 +164,14 @@ class BookingCreateTest extends TestCase
                 id
             }
           }")->assertJsonStructure([
-                'errors' => [
-                    [
-                        'message',
-                        'extensions',
-                        'locations',
-                    ],
+            'errors' => [
+                [
+                    'message',
+                    'extensions',
+                    'locations',
                 ],
-            ]
+            ],
+        ]
         );
     }
 
@@ -375,7 +375,7 @@ class BookingCreateTest extends TestCase
 
         // create the endorsement on our position...
         factory(SoloEndorsement::class)->create([
-            'position_id' => $this->position->id, 'user_id' => $this->mockUserId
+            'position_id' => $this->position->id, 'user_id' => $this->mockUserId,
         ]);
 
         $this->graphQL("
@@ -407,7 +407,7 @@ class BookingCreateTest extends TestCase
         factory(SoloEndorsement::class)->create([
             'position_id' => $this->position->id,
             'user_id' => $this->mockUserId,
-            'expiry_date' => Carbon::now()->subDay()
+            'expiry_date' => Carbon::now()->subDay(),
         ]);
 
         $this->graphQL("
