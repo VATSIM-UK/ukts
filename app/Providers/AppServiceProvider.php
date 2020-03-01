@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Modules\Bookings\BookingsService;
 use App\Modules\Position\TrainingPositionService;
 use Illuminate\Support\ServiceProvider;
+use App\Modules\Endorsement\Solo\SoloEndorsementService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(BookingsService::class);
         $this->app->singleton(TrainingPositionService::class);
+        $this->app->singleton(SoloEndorsementService::class);
     }
 
     /**
