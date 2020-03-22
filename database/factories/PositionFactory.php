@@ -16,6 +16,8 @@ $factory->define(Position::class, function (Faker $faker) {
             ]),
         'frequency' => $faker->randomFloat(3, 0, 130),
         'type' => $faker->numberBetween(1, 8),
-        'airfield' => factory(Airfield::class)
+        'airfield' => function () {
+            return (string) factory(Airfield::class)->create()->icao;
+        }
     ];
 });

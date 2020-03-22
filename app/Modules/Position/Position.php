@@ -2,6 +2,7 @@
 
 namespace App\Modules\Position;
 
+use App\Modules\Airfield\Airfield;
 use App\Modules\Bookings\Booking;
 use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
@@ -37,9 +38,9 @@ class Position extends Model
         return $this->hasMany(Booking::class);
     }
 
-    public function airfield(): BelongsTo
+    public function parent(): BelongsTo
     {
-        return $this->belongsTo(Position::class);
+        return $this->belongsTo(Airfield::class, 'airfield', 'icao');
     }
 
     public function specialEndorsements(): BelongsToMany

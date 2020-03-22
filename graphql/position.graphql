@@ -8,7 +8,8 @@ input PositionInput {
     name: String! @rules(apply: ["required"]),
     callsign: String! @rules(apply: ["required", "min:4", "unique:positions,callsign"]),
     frequency: String! @rules(apply: ["required", "min:7"]),
-    type: Int! @rules(apply: ["required"])
+    type: Int! @rules(apply: ["required"]),
+    airfield: String! @rules(apply: ["exists:airfields,icao"])
 }
 
 
@@ -40,10 +41,18 @@ type Position {
     type_human: String!
     created_at: DateTime!
     updated_at: DateTime!
+    parent: Airfield! @belongsTo
 }
 
 type TrainingPositionAssignment {
     id: ID!
     position: Position!
     deleted_at: DateTime!
+}
+
+type Airfield {
+    icao: String!
+    iata: String!
+    display_name: String!
+    positions: [Position!]! @hasMany
 }

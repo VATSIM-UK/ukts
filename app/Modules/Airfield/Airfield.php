@@ -11,8 +11,10 @@ class Airfield extends Model
     protected $keyType = 'string';
     protected $primaryKey = 'icao';
     public $timestamps = false;
+    public $incrementing = false;
 
     protected $fillable = ['icao', 'display_name', 'iata'];
+    protected $casts = ['icao' => 'string'];
 
     public function positions(): HasMany
     {

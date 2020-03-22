@@ -22,7 +22,7 @@ class CreateAirfieldsTable extends Migration
 
         Schema::table('positions', function (Blueprint $table) {
             $table->string('airfield')->nullable();
-            $table->foreign('airfield')->references('icao')->on('positions');
+            $table->foreign('airfield')->references('icao')->on('airfields');
         });
     }
 
