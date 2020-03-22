@@ -2,6 +2,8 @@ extend type Query {
     positions: [Position!]! @all
     position(id: ID @eq, callsign: String @eq): Position @find
     positionsAvailableForTraining: [TrainingPositionAssignment!]! @all
+    airfields: [Airfield!]! @all(model: "App\\Modules\\Airfield\\Airfield")
+    airfield(icao: String! @eq): Airfield @find(model: "App\\Modules\\Airfield\\Airfield")
 }
 
 input PositionInput {
