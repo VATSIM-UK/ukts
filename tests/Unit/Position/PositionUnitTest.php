@@ -66,5 +66,4 @@ class PositionUnitTest extends TestCase
         $this->position->airfield = factory(Airfield::class)->create();
         $this->assertInstanceOf(Airfield::class, $this->position->airfield);
     }
-
 }

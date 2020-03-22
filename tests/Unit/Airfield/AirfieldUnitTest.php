@@ -38,5 +38,4 @@ class AirfieldUnitTest extends TestCase
 
         $this->assertEquals($icao, Airfield::findOrFail($icao)->icao);
     }
-
 }
