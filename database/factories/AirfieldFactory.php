@@ -9,6 +9,6 @@ $factory->define(Airfield::class, function (Faker $faker) {
     return [
         'icao' => $faker->lexify('????'),
         'iata' => $faker->lexify('???'),
-        'display_name' => $faker->city
+        'display_name' => $faker->city,
     ];
 });

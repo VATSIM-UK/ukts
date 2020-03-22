@@ -39,7 +39,7 @@ class Position extends Model
 
     public function airfield(): BelongsTo
     {
-        return $this->belongsTo(Position::class);
+        return $this->belongsTo(self::class);
     }
 
     public function specialEndorsements(): BelongsToMany
