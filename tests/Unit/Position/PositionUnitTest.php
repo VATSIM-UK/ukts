@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Position;
 
+use App\Modules\Airfield\Airfield;
 use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Modules\Position\Position;
@@ -58,4 +59,12 @@ class PositionUnitTest extends TestCase
 
         $this->assertCount(3, $this->position->soloEndorsements);
     }
+
+    /** @test */
+    public function itCanBeRelatedToAnAirfield()
+    {
+        $this->position->airfield = factory(Airfield::class)->create();
+        $this->assertInstanceOf(Airfield::class, $this->position->airfield);
+    }
+
 }

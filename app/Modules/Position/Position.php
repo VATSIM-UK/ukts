@@ -6,6 +6,7 @@ use App\Modules\Bookings\Booking;
 use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -29,11 +30,16 @@ class Position extends Model
         self::TYPE_TERMINAL => ['TMA', 'Terminal'],
         self::TYPE_FSS => ['FSS', 'Flight Service Station'],
     ];
-    protected $fillable = ['callsign', 'name', 'frequency', 'type'];
+    protected $fillable = ['callsign', 'name', 'frequency', 'type', 'airfield'];
 
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function airfield(): BelongsTo
+    {
+        return $this->belongsTo(Position::class);
     }
 
     public function specialEndorsements(): BelongsToMany
