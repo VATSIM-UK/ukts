@@ -103,7 +103,6 @@ class PositionTest extends TestCase
     /** @test */
     public function testValidPositionCanBeCreated()
     {
-        $this->withoutExceptionHandling();
         $this->graphQL("
           mutation {
             createPosition(
