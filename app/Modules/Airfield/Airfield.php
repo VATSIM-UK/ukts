@@ -18,6 +18,6 @@ class Airfield extends Model
 
     public function positions(): HasMany
     {
-        return $this->hasMany(Position::class, 'airfield', 'icao');
+        return $this->hasMany(Position::class, 'airfield_icao', 'icao');
     }
 }

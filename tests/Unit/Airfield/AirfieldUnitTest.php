@@ -23,7 +23,7 @@ class AirfieldUnitTest extends TestCase
     /** @test */
     public function itCanBeAssociatedWithOneOrManyPositions()
     {
-        factory(Position::class, 3)->create(['airfield' => $this->airfield->icao]);
+        factory(Position::class, 3)->create(['airfield_icao' => $this->airfield->icao]);
 
         $this->airfield->positions->each(function ($position) {
             $this->assertInstanceOf(Position::class, $position);

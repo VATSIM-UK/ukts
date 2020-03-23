@@ -111,7 +111,7 @@ class PositionTest extends TestCase
                     callsign: \"EGGD_TWR\",
                     frequency: \"133.850\",
                     type: 4,
-                    airfield: \"{$this->airfield->icao}\"
+                    airfield_icao: \"{$this->airfield->icao}\"
                 }
             ) {
                 id
@@ -150,7 +150,7 @@ class PositionTest extends TestCase
                         callsign: \"EGGD_TWR\",
                         frequency: \"133.850\",
                         type: 4,
-                        airfield: \"{$this->airfield->icao}\"
+                        airfield_icao: \"{$this->airfield->icao}\"
                     }
                 ) {
                     id
@@ -192,7 +192,7 @@ class PositionTest extends TestCase
                         callsign: \"EGLL_TWR\",
                         frequency: \"133.850\",
                         type: 4,
-                        airfield: \"{$this->airfield->icao}\"
+                        airfield_icao: \"{$this->airfield->icao}\"
     }
                 ) {
                     id

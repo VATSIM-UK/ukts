@@ -21,8 +21,8 @@ class CreateAirfieldsTable extends Migration
         });
 
         Schema::table('positions', function (Blueprint $table) {
-            $table->string('airfield')->nullable();
-            $table->foreign('airfield')->references('icao')->on('airfields');
+            $table->string('airfield_icao')->nullable();
+            $table->foreign('airfield_icao')->references('icao')->on('airfields');
         });
     }
 
@@ -34,5 +34,9 @@ class CreateAirfieldsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('airfields');
+        Schema::table('positions', function (Blueprint $table) {
+            $table->dropForeign('aircraft_icao');
+            $table->dropColumn('aircraft_icao');
+        });
     }
 }

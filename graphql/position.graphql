@@ -11,7 +11,7 @@ input PositionInput {
     callsign: String! @rules(apply: ["required", "min:4", "unique:positions,callsign"]),
     frequency: String! @rules(apply: ["required", "min:7"]),
     type: Int! @rules(apply: ["required"]),
-    airfield: String! @rules(apply: ["exists:airfields,icao"])
+    airfield_icao: String! @rules(apply: ["exists:airfields,icao"])
 }
 
 
@@ -43,7 +43,7 @@ type Position {
     type_human: String!
     created_at: DateTime!
     updated_at: DateTime!
-    parent: Airfield! @belongsTo
+    airfield: Airfield! @belongsTo
 }
 
 type TrainingPositionAssignment {

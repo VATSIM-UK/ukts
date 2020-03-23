@@ -31,16 +31,16 @@ class Position extends Model
         self::TYPE_TERMINAL => ['TMA', 'Terminal'],
         self::TYPE_FSS => ['FSS', 'Flight Service Station'],
     ];
-    protected $fillable = ['callsign', 'name', 'frequency', 'type', 'airfield'];
+    protected $fillable = ['callsign', 'name', 'frequency', 'type', 'airfield_icao'];
 
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
     }
 
-    public function parent(): BelongsTo
+    public function airfield(): BelongsTo
     {
-        return $this->belongsTo(Airfield::class, 'airfield', 'icao');
+        return $this->belongsTo(Airfield::class, 'airfield_icao', 'icao');
     }
 
     public function specialEndorsements(): BelongsToMany
