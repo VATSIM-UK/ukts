@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Modules\Airfield\Airfield;
 use App\Modules\Position\Position;
 use Faker\Generator as Faker;
 
@@ -15,5 +16,6 @@ $factory->define(Position::class, function (Faker $faker) {
         ]),
         'frequency' => $faker->randomFloat(3, 0, 130),
         'type' => $faker->numberBetween(1, 8),
+        'airfield_icao' => factory(Airfield::class),
     ];
 });

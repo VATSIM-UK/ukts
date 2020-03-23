@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Position;
 
+use App\Modules\Airfield\Airfield;
 use App\Modules\Position\Position;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
@@ -10,6 +11,15 @@ use Tests\TestCase;
 class PositionTest extends TestCase
 {
     use RefreshDatabase, MakesGraphQLRequests;
+
+    private $airfield;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->airfield = factory(Airfield::class)->create(['icao' => 'EGGD']);
+    }
 
     /* @test */
     public function testItReturnsPositions()
@@ -93,20 +103,21 @@ class PositionTest extends TestCase
     /** @test */
     public function testValidPositionCanBeCreated()
     {
-        $this->graphQL('
+        $this->graphQL("
           mutation {
             createPosition(
                 input: {
-                    name: "Bristol Tower",
-                    callsign: "EGGD_TWR",
-                    frequency: "133.850",
-                    type: 4
+                    name: \"Bristol Tower\",
+                    callsign: \"EGGD_TWR\",
+                    frequency: \"133.850\",
+                    type: 4,
+                    airfield_icao: \"{$this->airfield->icao}\"
                 }
             ) {
                 id
                 name
             }
-          }')->assertJsonStructure([
+          }")->assertJsonStructure([
             'data' => [
                 'createPosition' => [
                     'id',
@@ -131,20 +142,21 @@ class PositionTest extends TestCase
             'frequency' => '133.850',
         ]);
 
-        $this->graphQL('
+        $this->graphQL("
             mutation {
                 createPosition(
                     input: {
-                        name: "Bristol Tower",
-                        callsign: "EGGD_TWR",
-                        frequency: "133.850",
-                        type: 4
+                        name: \"Bristol Tower\",
+                        callsign: \"EGGD_TWR\",
+                        frequency: \"133.850\",
+                        type: 4,
+                        airfield_icao: \"{$this->airfield->icao}\"
                     }
                 ) {
                     id
                     name
                 }
-            }')->assertJson([
+            }")->assertJson([
             'errors' => [
                 [
                     'extensions' => [
@@ -171,21 +183,23 @@ class PositionTest extends TestCase
             'frequency' => '133.850',
         ]);
 
-        $this->graphQL('
+        $this->graphQL("
             mutation {
                 updatePosition(
                     id: 1,
                     input: {
-                        name: "Slough Tower",
-                        callsign: "EGLL_TWR",
-                        frequency: "133.850",
-                        type: 4
-                    }
+                        name: \"Slough Tower\",
+                        callsign: \"EGLL_TWR\",
+                        frequency: \"133.850\",
+                        type: 4,
+                        airfield_icao: \"{$this->airfield->icao}\"
+    }
                 ) {
                     id
                     name
                 }
-            }')->assertJson([
+}
+")->assertJson([
             'data' => [
                 'updatePosition' => [
                     'id' => 1,
