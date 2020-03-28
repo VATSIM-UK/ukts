@@ -115,7 +115,6 @@ class AirfieldGroupQueryTest extends TestCase
 
         $this->assertDatabaseHas('airfields',
             array_merge($airfield->toArray(), ['airfield_group_id' => null]));
-
     }
 
     /** @test */

@@ -49,5 +49,4 @@ class AirfieldUnitTest extends TestCase
 
         $this->assertInstanceOf(AirfieldGroup::class, $this->airfield->airfieldGroup);
     }
-
 }
