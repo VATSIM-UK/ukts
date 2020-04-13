@@ -144,7 +144,7 @@ class SpecialEndorsementRequestTest extends TestCase
             'requested_by' => 1300005,
         ]);
 
-        $data = $this->graphQL("
+        $this->graphQL("
         mutation {
             grantSpecialEndorsement(request_id: {$request->id}, actioner_id: 1300005) {
                 user {
@@ -153,7 +153,6 @@ class SpecialEndorsementRequestTest extends TestCase
                 endorsement_id
             }
         }
-        ");
-            $data->assertJsonPath('data.grantSpecialEndorsement.user.name_first', 'Callum');
+        ")->assertJsonPath('data.grantSpecialEndorsement.user.name_first', 'Callum');
     }
 }
