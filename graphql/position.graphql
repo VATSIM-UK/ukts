@@ -14,7 +14,6 @@ input PositionInput {
     airfield_icao: String! @rules(apply: ["exists:airfields,icao"])
 }
 
-
 extend type Mutation {
     createPosition(input: PositionInput! @spread): Position! @create
 
@@ -57,4 +56,5 @@ type Airfield {
     iata: String!
     display_name: String!
     positions: [Position!]! @hasMany
+    airfieldGroup: AirfieldGroup! @belongsTo
 }

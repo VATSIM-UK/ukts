@@ -10,5 +10,6 @@ $factory->define(Airfield::class, function (Faker $faker) {
         'icao' => (string) $faker->lexify('????'),
         'iata' => $faker->lexify('???'),
         'display_name' => $faker->city,
+        'airfield_group_id' => null,
     ];
 });
