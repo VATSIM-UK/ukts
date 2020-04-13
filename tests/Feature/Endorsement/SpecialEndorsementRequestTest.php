@@ -30,7 +30,7 @@ class SpecialEndorsementRequestTest extends TestCase
         $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('find')
                 ->andReturn(
-                    new User([
+                    User::initModelWithData([
                         'id' => 1300005,
                         'name_first' => 'Callum',
                     ])
@@ -38,17 +38,12 @@ class SpecialEndorsementRequestTest extends TestCase
             $mock->shouldReceive('findMany')
                 ->andReturn(
                     collect([
-                        new User([
+                        User::initModelWithData([
                             'id' => 1300005,
                             'name_first' => 'Callum',
                         ]),
                     ])
                 );
-            $mock->shouldReceive('initModelWithData')
-                ->andReturn(new User([
-                    'id' => 1300005,
-                    'name_first' => 'Callum',
-                ]));
         })->makePartial();
 
         $this->graphQL("
@@ -80,7 +75,7 @@ class SpecialEndorsementRequestTest extends TestCase
         $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('find')
                 ->andReturn(
-                    new User([
+                    User::initModelWithData([
                         'id' => 1300005,
                         'name_first' => 'Callum',
                     ])
@@ -119,7 +114,7 @@ class SpecialEndorsementRequestTest extends TestCase
         $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('find')
                 ->andReturn(
-                    new User([
+                    User::initModelWithData([
                         'id' => 1300005,
                         'name_first' => 'Callum',
                     ])
@@ -128,7 +123,7 @@ class SpecialEndorsementRequestTest extends TestCase
             $mock->shouldReceive('findMany')
                 ->andReturn(
                     collect([
-                        new User([
+                        User::initModelWithData([
                             'id' => 1300005,
                             'name_first' => 'Callum',
                         ]),
@@ -137,17 +132,11 @@ class SpecialEndorsementRequestTest extends TestCase
 
             $mock->shouldReceive('findOrFail')
                 ->andReturn(
-                    new User([
+                    User::initModelWithData([
                         'id' => 1300005,
                         'name_first' => 'Callum',
                     ])
                 );
-
-            $mock->shouldReceive('initModelWithData')
-                ->andReturn(new User([
-                    'id' => 1300005,
-                    'name_first' => 'Callum',
-                ]));
         })->makePartial();
 
         $request = $this->endorsement->requests()->create([
@@ -155,7 +144,7 @@ class SpecialEndorsementRequestTest extends TestCase
             'requested_by' => 1300005,
         ]);
 
-        $this->graphQL("
+        $data = $this->graphQL("
         mutation {
             grantSpecialEndorsement(request_id: {$request->id}, actioner_id: 1300005) {
                 user {
@@ -164,6 +153,7 @@ class SpecialEndorsementRequestTest extends TestCase
                 endorsement_id
             }
         }
-        ")->assertJsonPath('data.grantSpecialEndorsement.user.name_first', 'Callum');
+        ");
+            $data->assertJsonPath('data.grantSpecialEndorsement.user.name_first', 'Callum');
     }
 }

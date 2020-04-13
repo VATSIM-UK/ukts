@@ -6,11 +6,11 @@ use App\Modules\Position\Position;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use VATSIMUK\Support\Auth\Models\Concerns\HasRemoteRelationships;
+use VATSIMUK\Auth\Remote\RemoteEloquent\HasCustomInstanceCreation;
 
 class Booking extends Model
 {
-    use HasRemoteRelationships;
+    use HasCustomInstanceCreation;
 
     protected $fillable = ['user_id', 'position_id', 'from', 'to'];
     protected $dates = ['from', 'to'];

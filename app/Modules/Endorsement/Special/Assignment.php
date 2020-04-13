@@ -5,11 +5,11 @@ namespace App\Modules\Endorsement\Special;
 use App\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use VATSIMUK\Support\Auth\Models\Concerns\HasRemoteRelationships;
+use VATSIMUK\Auth\Remote\RemoteEloquent\HasCustomInstanceCreation;
 
 class Assignment extends Pivot
 {
-    use HasRemoteRelationships;
+    use HasCustomInstanceCreation;
 
     protected $table = 'special_endorsement_assignments';
 
