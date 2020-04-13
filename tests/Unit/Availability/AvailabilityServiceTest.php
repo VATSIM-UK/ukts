@@ -68,7 +68,7 @@ class AvailabilityServiceTest extends TestCase
         factory(Availability::class)->create([
             'from' => $from,
             'to' => $to,
-            'user_id' => $this->mockUserModel->id
+            'user_id' => $this->mockUserModel->id,
         ]);
 
         $overlappingFrom = $to->copy()->addMinutes(20);
