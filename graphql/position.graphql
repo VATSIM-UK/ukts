@@ -2,15 +2,17 @@ extend type Query {
     positions: [Position!]! @all
     position(id: ID @eq, callsign: String @eq): Position @find
     positionsAvailableForTraining: [TrainingPositionAssignment!]! @all
+    airfields: [Airfield!]! @all(model: "App\\Modules\\Airfield\\Airfield")
+    airfield(icao: String! @eq): Airfield @find(model: "App\\Modules\\Airfield\\Airfield")
 }
 
 input PositionInput {
     name: String! @rules(apply: ["required"]),
     callsign: String! @rules(apply: ["required", "min:4", "unique:positions,callsign"]),
     frequency: String! @rules(apply: ["required", "min:7"]),
-    type: Int! @rules(apply: ["required"])
+    type: Int! @rules(apply: ["required"]),
+    airfield_icao: String! @rules(apply: ["exists:airfields,icao"])
 }
-
 
 extend type Mutation {
     createPosition(input: PositionInput! @spread): Position! @create
@@ -40,10 +42,19 @@ type Position {
     type_human: String!
     created_at: DateTime!
     updated_at: DateTime!
+    airfield: Airfield! @belongsTo
 }
 
 type TrainingPositionAssignment {
     id: ID!
     position: Position!
     deleted_at: DateTime!
+}
+
+type Airfield {
+    icao: String!
+    iata: String!
+    display_name: String!
+    positions: [Position!]! @hasMany
+    airfieldGroup: AirfieldGroup! @belongsTo
 }

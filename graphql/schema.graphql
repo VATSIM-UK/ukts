@@ -42,3 +42,4 @@ type Query {
 #import bookings.graphql
 #import endorsement.graphql
 #import availability.graphql
+#import airfieldGroup.graphql

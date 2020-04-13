@@ -3,6 +3,7 @@
 namespace Tests\Feature\Booking;
 
 use App\Modules\Bookings\Booking;
+use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Modules\Position\Position;
@@ -360,6 +361,68 @@ class BookingCreateTest extends TestCase
             }
         }")->assertJsonPath('errors.0.message',
             'You do not have the required Special Endorsement to book this position.');
+    }
+
+    /** @test */
+    public function testAllowsBookingWhenRatingRequirementNotMetButSoloEndorsementIsActive()
+    {
+        // mocked user has an S2 rating
+        $this->mockedUser();
+
+        // lets set the position to require an S3
+        $this->position->callsign = 'EGGD_APP';
+        $this->position->save();
+
+        // create the endorsement on our position...
+        factory(SoloEndorsement::class)->create([
+            'position_id' => $this->position->id, 'user_id' => $this->mockUserId,
+        ]);
+
+        $this->graphQL("
+          mutation {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:\"2019-01-10 14:00:00\",
+                    to:\"2019-01-10 15:00:00\"
+                }
+            )
+            {
+                id
+            }
+        }")->assertJsonStructure(['data' => ['createBooking' => ['id']]]);
+    }
+
+    /** @test */
+    public function testDoesntAllowBookingWhenSoloEndorsementOnPositionHasExpired()
+    {
+        // mocked user has an S2 rating
+        $this->mockedUser();
+
+        // lets set the position to require an S3
+        $this->position->callsign = 'EGGD_APP';
+        $this->position->save();
+
+        // create the endorsement on our position which has expired ...
+        factory(SoloEndorsement::class)->create([
+            'position_id' => $this->position->id,
+            'user_id' => $this->mockUserId,
+            'expiry_date' => Carbon::now()->subDay(),
+        ]);
+
+        $this->graphQL("
+          mutation {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    from:\"2019-01-10 14:00:00\",
+                    to:\"2019-01-10 15:00:00\"
+                }
+            )
+            {
+                id
+            }
+        }")->assertJsonPath('errors.0.message', 'Your rating is not high enough to book that position.');
     }
 
     /** @test */

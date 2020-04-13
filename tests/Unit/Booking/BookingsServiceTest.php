@@ -6,6 +6,7 @@ use App\Exceptions\OverlappingBookingException;
 use App\Modules\Bookings\Booking;
 use App\Modules\Bookings\BookingsService;
 use App\Modules\Bookings\RatingRequirementNotMetException;
+use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Modules\Position\Position;
@@ -327,6 +328,36 @@ class BookingsServiceTest extends TestCase
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
+    }
+
+    /** @test */
+    public function itShouldReturnTrueIfUserHasActiveSpecialEndorsementOnPosition()
+    {
+        SoloEndorsement::create([
+            'position_id' => $this->position->id,
+            'user_id' => $this->mockUserId,
+            'expiry_date' => Carbon::now()->addDays(2),
+        ]);
+
+        $this->assertTrue($this->service->validateSoloEndorsementEligibility($this->mockUserModel, $this->position));
+    }
+
+    /** @test */
+    public function itShouldReturnFalseIfUserHasNeverHadSoloEndorsementOnPosition()
+    {
+        $this->assertFalse($this->service->validateSoloEndorsementEligibility($this->mockUserModel, $this->position));
+    }
+
+    /** @test */
+    public function itShouldReturnFalseIfUserHasExpiredSoloEndorsementOnPosition()
+    {
+        SoloEndorsement::create([
+            'position_id' => $this->position->id,
+            'user_id' => $this->mockUserId,
+            'expiry_date' => Carbon::now()->subDay(),
+        ]);
+
+        $this->assertFalse($this->service->validateSoloEndorsementEligibility($this->mockUserModel, $this->position));
     }
 
     private function grantEndorsementHelper($user_id, $endorsement_id)

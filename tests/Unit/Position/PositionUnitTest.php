@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Position;
 
+use App\Modules\Airfield\Airfield;
+use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Modules\Position\Position;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,5 +47,23 @@ class PositionUnitTest extends TestCase
 
         $this->assertEquals(1, $this->position->specialEndorsements()->count());
         $this->assertEquals($endorsements->last()->name, $this->position->specialEndorsements()->first()->name);
+    }
+
+    /** @test */
+    public function itCanBeRelatedToSoloEndorsements()
+    {
+        factory(SoloEndorsement::class, 3)->create([
+            'position_id' => $this->position->id,
+            'user_id' => 134566,
+        ]);
+
+        $this->assertCount(3, $this->position->soloEndorsements);
+    }
+
+    /** @test */
+    public function itCanBeRelatedToAnAirfield()
+    {
+        $this->position->airfield = factory(Airfield::class)->create();
+        $this->assertInstanceOf(Airfield::class, $this->position->airfield);
     }
 }
