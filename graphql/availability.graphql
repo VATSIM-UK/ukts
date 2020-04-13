@@ -1,7 +1,4 @@
 extend type Query {
-    availabilities: [Availability!]! @paginate
-    availabilityByDate(from: Date! @where(clause: "whereDate")): [Availability!]! @all
-    availabilityBetweenDates(from: DateRange @whereBetweenDate): [Availability!]! @all
     availability(id: ID @eq): Availability @find
 }
 
