@@ -7,12 +7,12 @@ use App\Modules\Position\Position;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
+use Tests\Helpers\UserHelper;
 use Tests\TestCase;
-use Tests\Unit\Booking\BookingsTestHelper;
 
 class BookingUpdateTest extends TestCase
 {
-    use RefreshDatabase, MakesGraphQLRequests, BookingsTestHelper;
+    use RefreshDatabase, MakesGraphQLRequests, UserHelper;
 
     private $position;
 

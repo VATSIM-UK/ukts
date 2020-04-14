@@ -80,8 +80,12 @@ return [
 
     'namespaces' => [
         'models' => [
-            'App', 'App\\Models', 'App\\Modules\\Endorsement\\Special', 'App\\Modules\\Bookings',
+            'App',
+            'App\\Models',
+            'App\\Modules\\Endorsement\\Special',
+            'App\\Modules\\Bookings',
             'App\\Modules\\Position',
+            'App\\Modules\\Availability',
         ],
         'queries' => 'App\\GraphQL\\Queries',
         'mutations' => 'App\\GraphQL\\Mutations',
