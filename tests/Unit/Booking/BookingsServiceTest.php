@@ -15,11 +15,12 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Tests\Helpers\UserHelper;
 use Tests\TestCase;
 
 class BookingsServiceTest extends TestCase
 {
-    use RefreshDatabase, BookingsTestHelper;
+    use RefreshDatabase, UserHelper;
 
     protected $position;
     protected $service;
@@ -35,9 +36,9 @@ class BookingsServiceTest extends TestCase
 
         $this->service = $this->app->make(BookingsService::class);
 
-        $this->mockUserModel = User::initModelWithData([
+        $this->mockUserModel = new User([
             'id' => 1234567,
-            'name_fist' => 'First',
+            'name_first' => 'First',
             'name_last' => 'Last',
             'atcRating' => (object) ['code' => 'S2', 'vatsim_id' => 3],
         ]);

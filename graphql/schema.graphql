@@ -19,6 +19,8 @@ type User {
     name_last: String!
     id: ID!
     atcRating: Rating!
+    availability: [Availability]!
+    bookings: [Booking]!
 }
 
 type Rating {
@@ -39,4 +41,5 @@ type Query {
 #import position.graphql
 #import bookings.graphql
 #import endorsement.graphql
+#import availability.graphql
 #import airfieldGroup.graphql
