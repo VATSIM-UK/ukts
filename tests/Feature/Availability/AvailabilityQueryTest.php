@@ -5,8 +5,8 @@ namespace Tests\Feature\Availability;
 use App\Modules\Availability\Availability;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
-use Tests\TestCase;
 use Tests\Helpers\UserHelper;
+use Tests\TestCase;
 
 class AvailabilityQueryTest extends TestCase
 {

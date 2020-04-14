@@ -11,8 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
 use Tests\Helpers\UserHelper;
+use Tests\TestCase;
 
 class AvailabilityServiceTest extends TestCase
 {
@@ -36,7 +36,6 @@ class AvailabilityServiceTest extends TestCase
         $this->mockUserFind();
 
         $this->service = $this->app->make(AvailabilityService::class);
-
     }
 
     /** @test */
@@ -58,7 +57,6 @@ class AvailabilityServiceTest extends TestCase
     /** @test */
     public function itDetectsWhenAvailabilityOverlapsOnEndTime()
     {
-
         $from = new Carbon();
         $from->addHours(2);
         $to = new Carbon();
@@ -88,7 +86,7 @@ class AvailabilityServiceTest extends TestCase
         factory(Availability::class)->create([
             'from' => $from,
             'to' => $to,
-            'user_id' => $this->mockUserModel->id
+            'user_id' => $this->mockUserModel->id,
         ]);
 
         $this->assertFalse($this->service->validateAvailabilityTimes($from, $to, $this->mockUserModel));
@@ -102,17 +100,15 @@ class AvailabilityServiceTest extends TestCase
     /** @test */
     public function itAllowsAvailabilityWhenNoOverlapDetected()
     {
-
         $from = new Carbon();
         $from->addHours(2);
         $to = new Carbon();
         $to->addHours(3);
 
-
         factory(Availability::class)->create([
             'from' => $from,
             'to' => $to,
-            'user_id' => $this->mockUserModel->id
+            'user_id' => $this->mockUserModel->id,
         ]);
 
         $this->assertTrue($this->service->validateAvailabilityTimes(
@@ -132,7 +128,7 @@ class AvailabilityServiceTest extends TestCase
         $availability = factory(Availability::class)->create([
             'from' => $from,
             'to' => $to,
-            'user_id' => $this->mockUserModel->id
+            'user_id' => $this->mockUserModel->id,
         ]);
 
         $this->assertTrue($this->service->validateAvailabilityTimes(
@@ -146,7 +142,6 @@ class AvailabilityServiceTest extends TestCase
     /** @test */
     public function itDoesntAllowAvailabilityWhichWhenUpdatedOverlapWithAnotherAvailability()
     {
-
         $from = new Carbon();
         $from->addHours(2);
         $to = new Carbon();
@@ -158,13 +153,13 @@ class AvailabilityServiceTest extends TestCase
         $availability = factory(Availability::class)->create([
             'from' => $from,
             'to' => $to,
-            'user_id' => $this->mockUserModel->id
+            'user_id' => $this->mockUserModel->id,
         ]);
 
         $availability2 = factory(Availability::class)->create([
             'from' => $from1,
             'to' => $to1,
-            'user_id' => $this->mockUserModel->id
+            'user_id' => $this->mockUserModel->id,
         ]);
 
         $this->assertFalse($this->service->validateAvailabilityTimes(
@@ -178,7 +173,6 @@ class AvailabilityServiceTest extends TestCase
     /** @test */
     public function itCreatesTheAvailabilityGivenAllValidParameters()
     {
-
         $from = new Carbon();
         $from->addHours(2);
         $to = $from->copy()->addHours(1);
@@ -235,7 +229,7 @@ class AvailabilityServiceTest extends TestCase
         $this->service->createAvailability([
             'user_id' => $this->invalidUserId,
             'from' => $from,
-            'to' => $to ,
+            'to' => $to,
         ]);
     }
 
@@ -263,7 +257,6 @@ class AvailabilityServiceTest extends TestCase
     /** @test */
     public function itRemovesTheCorrectAvailability()
     {
-
         $from = new Carbon();
         $from->addHours(2);
         $to = $from->copy()->addHours(1);
@@ -272,21 +265,21 @@ class AvailabilityServiceTest extends TestCase
             'user_id' => $this->mockUserModel->id,
             'from' => $from,
             'to' => $to,
-            'id' => 1
+            'id' => 1,
         ]);
 
         factory(Availability::class)->create([
             'user_id' => $this->mockUserModel->id,
             'from' => $from->clone()->addDay(),
             'to' => $to->clone()->addDay(),
-            'id' => 2
+            'id' => 2,
         ]);
 
         factory(Availability::class)->create([
             'user_id' => $this->mockUserModel->id,
             'from' => $from->clone()->addDays(2),
             'to' => $to->clone()->addDays(2),
-            'id' => 3
+            'id' => 3,
         ]);
 
         $this->service->removeAvailabilityRange([
@@ -296,15 +289,15 @@ class AvailabilityServiceTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('availability', [
-            'id' => 1
+            'id' => 1,
         ]);
 
         $this->assertDatabaseMissing('availability', [
-            'id' => 2
+            'id' => 2,
         ]);
 
         $this->assertDatabaseHas('availability', [
-            'id' => 3
+            'id' => 3,
         ]);
     }
 }

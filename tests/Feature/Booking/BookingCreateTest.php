@@ -11,8 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
-use Tests\TestCase;
 use Tests\Helpers\UserHelper;
+use Tests\TestCase;
 
 class BookingCreateTest extends TestCase
 {

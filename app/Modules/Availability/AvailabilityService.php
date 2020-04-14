@@ -4,7 +4,6 @@ namespace App\Modules\Availability;
 
 use App\Exceptions\OverlappingAvailabilityException;
 use App\Exceptions\PrivilegeException;
-use App\Modules\Availability\AvailabilityInPastException;
 use App\User;
 use Carbon\Carbon;
 
@@ -33,7 +32,7 @@ class AvailabilityService
      * @throws AvailabilityInPastException
      * @throws \Throwable
      */
-    public function validateAvailabilityTimes(Carbon $from, Carbon $to, User $user, int $doNotCheck =  null): bool
+    public function validateAvailabilityTimes(Carbon $from, Carbon $to, User $user, int $doNotCheck = null): bool
     {
         if ($from->isAfter($to)) {
             return false;
@@ -80,10 +79,10 @@ class AvailabilityService
             }
         }
 
-        if (!$passesTimeChecks) {
+        if (! $passesTimeChecks) {
             throw new OverlappingAvailabilityException();
-
         }
+
         return $availabilityUser->availability()->create([
             'user_id' => $availabilityUser->id,
             'from' => $from,
@@ -100,7 +99,7 @@ class AvailabilityService
 
         $availabilityUser = $this->user::findOrFail($userId);
 
-        if (!$adminOverride && ($userId != $existingAvailability['user_id'])) {
+        if (! $adminOverride && ($userId != $existingAvailability['user_id'])) {
             throw new PrivilegeException('update this availability');
         }
 
@@ -117,7 +116,7 @@ class AvailabilityService
             throw new AvailabilityMinimumTimeException(self::MIN_BLOCK_TIME);
         }
 
-        if (!$passesTimeChecks) {
+        if (! $passesTimeChecks) {
             throw new OverlappingAvailabilityException();
         }
 
@@ -149,10 +148,9 @@ class AvailabilityService
                     ->where('to', '<', $to);
                 // Or where the times are the same
             })->orWhere(['from' => $from, 'to' => $to]);
-
         });
 
-        if (!$adminOverride) {
+        if (! $adminOverride) {
             $avail->where(['user_id' => $availabilityUser->id]);
         }
 

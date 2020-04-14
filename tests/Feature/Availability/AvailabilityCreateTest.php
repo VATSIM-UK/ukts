@@ -6,13 +6,12 @@ use App\Modules\Availability\Availability;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
-use Tests\TestCase;
 use Tests\Helpers\UserHelper;
+use Tests\TestCase;
 
 class AvailabilityCreateTest extends TestCase
 {
     use RefreshDatabase, MakesGraphQLRequests, UserHelper;
-
 
     public $expectedExceptions = [
         'errors' => [
@@ -30,7 +29,6 @@ class AvailabilityCreateTest extends TestCase
 
         $this->actingAs($this->mockedUser());
         $this->mockUserFind();
-
     }
 
     private function sendCreateCall(Carbon $from, Carbon $to)
@@ -65,13 +63,11 @@ class AvailabilityCreateTest extends TestCase
             'from' => $from->toDateTimeString(),
             'to' => $to->toDateTimeString(),
         ]);
-
     }
 
     /** @test */
     public function fromDateCannotBeInThePast()
     {
-
         $from = new Carbon();
         $from->subHour();
         $to = new Carbon();
@@ -83,7 +79,6 @@ class AvailabilityCreateTest extends TestCase
     /** @test */
     public function toDateCannotBeBeforeFromDate()
     {
-
         $from = new Carbon();
         $from->addHours(2);
         $to = new Carbon();
@@ -95,7 +90,6 @@ class AvailabilityCreateTest extends TestCase
     /** @test */
     public function toFromDateCannotBeEqual()
     {
-
         $from = new Carbon();
         $from->addHours(2);
         $to = new Carbon();
@@ -127,7 +121,6 @@ class AvailabilityCreateTest extends TestCase
     /** @test */
     public function testOverlappingAvailabilitysCannotBeCreatedOverlappingOnEnd()
     {
-
         $from = new Carbon();
         $from->addHour();
         $to = $from->clone()->addHour();
@@ -157,7 +150,6 @@ class AvailabilityCreateTest extends TestCase
     /** @test */
     public function testMustBeOverMinTime()
     {
-
         $from = new Carbon();
         $from->addHour();
         $to = $from->clone()->addMinutes(29);
@@ -173,12 +165,12 @@ class AvailabilityCreateTest extends TestCase
             {
                 id
             }
-          }")->assertJsonPath('errors.0.message', "The minimum availability time is 30 minutes");
+          }")->assertJsonPath('errors.0.message', 'The minimum availability time is 30 minutes');
     }
+
     /** @test */
     public function testOverlappingAvailabilitysCannotBeCreatedOverlappingOnStart()
     {
-
         $from = new Carbon();
         $from->addHour();
         $to = $from->clone()->addHour();
@@ -225,5 +217,4 @@ class AvailabilityCreateTest extends TestCase
 
         $this->assertEquals(0, Availability::count());
     }
-
 }
