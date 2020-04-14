@@ -56,7 +56,7 @@ class AvailabilityHandler
     }
 
     /**
-     * Remove date range
+     * Remove date range.
      *
      * @param null $rootValue Usually contains the result returned from the parent field. In this case,
      * it is always `null`.

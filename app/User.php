@@ -31,5 +31,4 @@ class User extends RemoteUser implements Authenticatable
     {
         return $this->hasMany(Availability::class);
     }
-
 }
