@@ -20,8 +20,8 @@ input UpdateBookingInput {
 }
 
 extend type Mutation @middleware(checks: ["auth"]) {
-    createBooking(input: CreateBookingInput! @spread): Booking! @field(resolver: "App\\Modules\\Booking\\Mutations\\CreateBookingHandler")
-    updateBooking(input: UpdateBookingInput! @spread): Booking! @field(resolver: "App\\Modules\\Booking\\Mutations\\UpdateBookingHandler")
+    createBooking(input: CreateBookingInput! @spread): Booking! @field(resolver: "App\\Modules\\Bookings\\Mutations\\CreateBookingHandler")
+    updateBooking(input: UpdateBookingInput! @spread): Booking! @field(resolver: "App\\Modules\\Bookings\\Mutations\\UpdateBookingHandler")
     deleteBooking(id: ID!): Booking! @delete
 }
 

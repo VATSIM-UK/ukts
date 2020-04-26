@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Modules\Booking\Mutations;
+namespace App\Modules\Bookings\Mutations;
 
-use App\Modules\Booking\Booking;
-use App\Modules\Booking\Services\BookingsService;
-use App\Modules\Booking\Exceptions\OverlappingBookingException;
+use App\Modules\Bookings\Services\BookingsService;
+use App\Modules\Bookings\Exceptions\OverlappingBookingException;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Support\Facades\Auth;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class UpdateBookingHandler
+class CreateBookingHandler
 {
     /**
      * Return a value for the field.
@@ -17,14 +18,18 @@ class UpdateBookingHandler
      * @param  mixed[]  $args  The arguments that were passed into the field.
      * @param  GraphQLContext  $context  Arbitrary data that is shared between all fields of a single query.
      * @param  ResolveInfo  $resolveInfo  Information about the query itself, such as the execution state, the field name, path to the field from the root, and more.
+     * @return mixed
+     * @throws RatingRequirementNotMetException
+     * @throws SpecialEndorsementNotAttainedException
      * @throws OverlappingBookingException
+     * @throws BindingResolutionException
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $service = app()->make(BookingsService::class);
 
-        $service->updateExistingBooking($args);
+        $args['user_id'] = Auth::user()->id;
 
-        return Booking::findOrFail($args['id']);
+        return $service->createBooking($args);
     }
 }

@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Modules\Availability\Availability;
-use App\Modules\Booking\Booking;
+use App\Modules\Bookings\Booking;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -32,5 +32,4 @@ class User extends RemoteUser implements Authenticatable
     {
         return $this->hasMany(Availability::class);
     }
-
 }

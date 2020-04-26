@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Availability;
 
-use App\Exceptions\OverlappingAvailabilityException;
 use App\Modules\Availability\Availability;
-use App\Modules\Availability\AvailabilityMinimumTimeException;
-use App\Modules\Availability\AvailabilityService;
+use App\Modules\Availability\Exceptions\OverlappingAvailabilityException;
+use App\Modules\Availability\Exceptions\AvailabilityMinimumTimeException;
+use App\Modules\Availability\Services\AvailabilityService;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

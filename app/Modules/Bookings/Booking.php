@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Booking;
+namespace App\Modules\Bookings;
 
 use App\Modules\Position\Position;
 use App\User;

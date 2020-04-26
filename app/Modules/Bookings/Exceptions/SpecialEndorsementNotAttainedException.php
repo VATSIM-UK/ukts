@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Booking\Exceptions;
+namespace App\Modules\Bookings\Exceptions;
 
-use DomainException;
+use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
-class OverlappingBookingException extends DomainException implements RendersErrorsExtensions
+class SpecialEndorsementNotAttainedException extends Exception implements RendersErrorsExtensions
 {
-    protected $message = "Can't have overlapping bookings for the same position!";
+    protected $message = 'You do not have the required Special Endorsement to book this position.';
 
     /**
      * Returns true when exception message is safe to be displayed to a client.

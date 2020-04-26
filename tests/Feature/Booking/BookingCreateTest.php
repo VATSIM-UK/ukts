@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Booking;
 
-use App\Modules\Booking\Booking;
+use App\Modules\Bookings\Booking;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Modules\Position\Position;
@@ -423,6 +423,8 @@ class BookingCreateTest extends TestCase
     /** @test */
     public function testDoesntAllowBookingOfInvalidNetworkType()
     {
+
+        $this->withoutExceptionHandling();
         $this->bypassRatingChecks();
         $this->position->callsign = 'EGFF_TWR';
         $this->position->save();

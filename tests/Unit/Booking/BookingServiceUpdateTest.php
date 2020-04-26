@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Booking;
 
-use App\Modules\Booking\Exceptions\OverlappingBookingException;
-use App\Modules\Booking\Booking;
-use App\Modules\Booking\Services\BookingsService;
+use App\Modules\Bookings\Exceptions\OverlappingBookingException;
+use App\Modules\Bookings\Booking;
+use App\Modules\Bookings\Services\BookingsService;
 use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;

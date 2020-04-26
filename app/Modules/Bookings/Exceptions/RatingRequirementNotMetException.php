@@ -1,18 +1,13 @@
 <?php
 
-namespace App\Modules\Availability;
+namespace App\Modules\Bookings\Exceptions;
 
 use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
-class AvailabilityMinimumTimeException extends Exception implements RendersErrorsExtensions
+class RatingRequirementNotMetException extends Exception implements RendersErrorsExtensions
 {
-    protected $defaultMessage = "The minimum availability time is ";
-
-    public function __construct($msg = "", $code = 0, Throwable $previous = null)
-    {
-        parent::__construct($this->defaultMessage.=($msg.=" minutes"), $code, $previous);
-    }
+    protected $message = 'Your rating is not high enough to book that position.';
 
     /**
      * Returns true when exception message is safe to be displayed to a client.
@@ -49,7 +44,7 @@ class AvailabilityMinimumTimeException extends Exception implements RendersError
     public function extensionsContent(): array
     {
         return [
-            'code' => 404,
+            'code' => 422,
         ];
     }
 }

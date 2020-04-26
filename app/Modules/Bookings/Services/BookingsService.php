@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\Booking\Services;
+namespace App\Modules\Bookings\Services;
 
 use Error;
-use App\Modules\Booking\Booking;
-use App\Modules\Booking\Exceptions\OverlappingBookingException;
-use App\Modules\Booking\Exceptions\RatingRequirementNotMetException;
-use App\Modules\Booking\Exceptions\SpecialEndorsementNotAttainedException;
+use App\Modules\Bookings\Booking;
+use App\Modules\Bookings\Exceptions\OverlappingBookingException;
+use App\Modules\Bookings\Exceptions\RatingRequirementNotMetException;
+use App\Modules\Bookings\Exceptions\SpecialEndorsementNotAttainedException;
 use App\Constants\ControllerRating;
 use App\Modules\Position\Position;
 use App\User;
