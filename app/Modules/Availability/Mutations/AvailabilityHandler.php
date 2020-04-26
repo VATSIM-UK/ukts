@@ -4,7 +4,7 @@ namespace App\Modules\Availability\Mutations;
 
 use App\Modules\Availability\Availability;
 use App\Modules\Availability\Services\AvailabilityService;
-use App\Exceptions\OverlappingAvailabilityException;
+use App\Modules\Availability\Exceptions\OverlappingAvailabilityException;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Auth;
@@ -58,7 +58,7 @@ class AvailabilityHandler
     }
 
     /**
-     * Remove date range
+     * Remove date range.
      *
      * @param null $rootValue Usually contains the result returned from the parent field. In this case,
      * it is always `null`.

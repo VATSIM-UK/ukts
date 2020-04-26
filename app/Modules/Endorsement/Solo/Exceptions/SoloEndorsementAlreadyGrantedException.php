@@ -1,19 +1,13 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Modules\Endorsement\Solo\Exceptions;
 
-use DomainException;
+use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
-use Throwable;
 
-class PrivilegeException extends DomainException implements RendersErrorsExtensions
+class SoloEndorsementAlreadyGrantedException extends Exception implements RendersErrorsExtensions
 {
-    protected $defaultMessage = 'You do not have permission to ';
-
-    public function __construct($message = '', $code = 0, Throwable $previous = null)
-    {
-        parent::__construct($this->defaultMessage .= $message, $code, $previous);
-    }
+    protected $message = 'A solo endorsement is already assigned to that user on the given position';
 
     /**
      * Returns true when exception message is safe to be displayed to a client.
@@ -38,7 +32,7 @@ class PrivilegeException extends DomainException implements RendersErrorsExtensi
      */
     public function getCategory()
     {
-        return 'auth';
+        return 'validation';
     }
 
     /**
@@ -50,7 +44,7 @@ class PrivilegeException extends DomainException implements RendersErrorsExtensi
     public function extensionsContent(): array
     {
         return [
-            'code' => 401,
+            'code' => 422,
         ];
     }
 }

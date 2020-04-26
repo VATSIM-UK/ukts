@@ -7,8 +7,8 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
-use Tests\TestCase;
 use Tests\Helpers\UserHelper;
+use Tests\TestCase;
 
 class AvailabilityUpdateTest extends TestCase
 {
@@ -26,13 +26,11 @@ class AvailabilityUpdateTest extends TestCase
             'name_first' => 'First',
             'name_last' => 'Last',
         ]);
-
     }
 
     /** @test */
     public function testItCanUpdateAvailability()
     {
-
         $from = new Carbon();
         $from->addHours(2);
         $to = new Carbon();
@@ -139,7 +137,7 @@ class AvailabilityUpdateTest extends TestCase
                 ) {
                     id
                 }
-            }")->assertJsonPath('errors.0.message', "The minimum availability time is 30 minutes");
+            }")->assertJsonPath('errors.0.message', 'The minimum availability time is 30 minutes');
     }
 
     /** @test */
@@ -196,7 +194,7 @@ class AvailabilityUpdateTest extends TestCase
             'from' => $from1,
             'to' => $to1,
             'user_id' => 999110,
-            'id' => 118839
+            'id' => 118839,
         ]);
 
         // start
@@ -211,20 +209,19 @@ class AvailabilityUpdateTest extends TestCase
                 ) {
                     id
                 }
-            }")->assertJsonPath('errors.0.message', "You do not have permission to update this availability");
+            }")->assertJsonPath('errors.0.message', 'You do not have permission to update this availability');
     }
 
     /** @test */
     public function canRemoveAvailabilityFromRangeOfDates()
     {
-
         [$from, $to] = $this->addMockRangeData();
 
         factory(Availability::class)->create([
             'user_id' => $this->mockUserModel->id,
             'from' => $from,
             'to' => $to,
-            'id' => 1
+            'id' => 1,
         ]);
 
         $this->graphQL("
@@ -237,20 +234,20 @@ class AvailabilityUpdateTest extends TestCase
                 )
             }")->assertJson([
             'data' => [
-                'removeAvailabilityRange' => 2
-            ]
+                'removeAvailabilityRange' => 2,
+            ],
         ]);
 
         $this->assertDatabaseMissing('availability', [
-            'id' => 1
+            'id' => 1,
         ]);
 
         $this->assertDatabaseMissing('availability', [
-            'id' => 2
+            'id' => 2,
         ]);
 
         $this->assertDatabaseHas('availability', [
-            'id' => 3
+            'id' => 3,
         ]);
     }
 
@@ -263,9 +260,8 @@ class AvailabilityUpdateTest extends TestCase
             'user_id' => 9993338,
             'from' => $from,
             'to' => $to,
-            'id' => 1
+            'id' => 1,
         ]);
-
 
         $this->graphQL("
             mutation {
@@ -277,20 +273,20 @@ class AvailabilityUpdateTest extends TestCase
                 )
             }")->assertJson([
             'data' => [
-                'removeAvailabilityRange' => 1
-            ]
+                'removeAvailabilityRange' => 1,
+            ],
         ]);
 
         $this->assertDatabaseHas('availability', [
-            'id' => 1
+            'id' => 1,
         ]);
 
         $this->assertDatabaseMissing('availability', [
-            'id' => 2
+            'id' => 2,
         ]);
 
         $this->assertDatabaseHas('availability', [
-            'id' => 3
+            'id' => 3,
         ]);
     }
 
@@ -304,17 +300,16 @@ class AvailabilityUpdateTest extends TestCase
             'user_id' => $this->mockUserModel->id,
             'from' => $from->copy()->addDay(),
             'to' => $to->copy()->addDay(),
-            'id' => 2
+            'id' => 2,
         ]);
 
         factory(Availability::class)->create([
             'user_id' => $this->mockUserModel->id,
             'from' => $from->copy()->addDays(2),
             'to' => $to->copy()->addDays(2),
-            'id' => 3
+            'id' => 3,
         ]);
 
         return [$from, $to];
     }
-
 }

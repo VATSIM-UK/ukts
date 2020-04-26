@@ -6,11 +6,11 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use VATSIMUK\Support\Auth\Models\Concerns\HasRemoteRelationships;
+use VATSIMUK\Support\Auth\Models\Concerns\HasCustomInstanceCreation;
 
 class Availability extends Model
 {
-    use HasRemoteRelationships;
+    use HasCustomInstanceCreation;
 
     protected $table = 'availability';
     protected $fillable = ['user_id', 'from', 'to'];
@@ -18,7 +18,7 @@ class Availability extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(resolve(User::class));
     }
 
     /**

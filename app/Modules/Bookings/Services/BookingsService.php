@@ -13,7 +13,6 @@ use App\User;
 use Carbon\Carbon;
 
 /** TODO: Users can view/amend other users bookings. We need to make sure we fix this. */
-
 class BookingsService
 {
     /** @var mixed App\User */
@@ -104,6 +103,30 @@ class BookingsService
         });
     }
 
+    /**
+     * Validate if the user is allowed to book on the position on the premise of them having a solo endorsement.
+     * Should be used in conjunction with a rating check.
+     *
+     * @param  User  $user
+     * @param  Position  $position
+     * @return bool
+     */
+    public function validateSoloEndorsementEligibility(User $user, Position $position): bool
+    {
+        $soloEndorsements = $position->load('soloEndorsements')->soloEndorsements()->where(function ($query) {
+            return $query->active();
+        })->get();
+
+        // exit if no active endorsements on position to save later queries.
+        if ($soloEndorsements->isEmpty()) {
+            return false;
+        }
+
+        $userAssignedSoloEndorsements = $soloEndorsements->where('user_id', '==', $user->id);
+
+        return ! $userAssignedSoloEndorsements->isEmpty();
+    }
+
     public function createBooking(array $bookingData): Booking
     {
         ['from' => $from, 'to' => $to] = $bookingData;
@@ -112,8 +135,10 @@ class BookingsService
 
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
-        if (!$this->validateRatingRequirement($bookingUser, $position)) {
-            throw new RatingRequirementNotMetException();
+        if (! $this->validateRatingRequirement($bookingUser, $position)) {
+            if (! $this->validateSoloEndorsementEligibility($bookingUser, $position)) {
+                throw new RatingRequirementNotMetException();
+            }
         }
 
         if (!$this->validateSpecialEndorsementRequirement($bookingUser, $position)) {

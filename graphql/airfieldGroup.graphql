@@ -1,0 +1,20 @@
+extend type Query {
+    airfieldGroups: [AirfieldGroup!]! @all(model: "App\\Modules\\AirfieldGroup\\AirfieldGroup")
+    airfieldGroup(id: ID @eq): AirfieldGroup @find(model: "App\\Modules\\AirfieldGroup\\AirfieldGroup")
+}
+
+extend type Mutation {
+    addAirfieldToGroup(input: AddAirfieldToGroupInput! @spread): Airfield!
+    @field(resolver: "App\\Modules\\AirfieldGroup\\Mutations\\AddAirfieldToGroupHandler")
+}
+
+input AddAirfieldToGroupInput {
+    icao: String! @rules(apply: ["exists:airfields,icao"])
+    airfieldGroup: Int! @rules(apply: ["exists:airfield_groups,id"])
+}
+
+type AirfieldGroup {
+    name: String!
+    airfields: [Airfield!]! @hasMany
+    positions: [Position!]! @hasMany
+}

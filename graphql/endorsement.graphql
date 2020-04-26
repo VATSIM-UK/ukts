@@ -2,6 +2,7 @@ extend type Query {
     specialEndorsements: [SpecialEndorsement!]! @all
     specialEndorsement(id: ID @eq): SpecialEndorsement @find
     specialEndorsementsForUser(user_id: ID): [SpecialEndorsement]! @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\SpecialEndorsementsForUser")
+    activeSoloEndorsements: [SoloEndorsement!]! @all(model: "App\\Modules\\Endorsement\\Solo\\SoloEndorsement", scopes: ["active"])
 }
 
 input SpecialEndorsementInput {
@@ -12,6 +13,11 @@ input SpecialEndorsementRequestInput {
     user_id: ID!
     endorsement_id: Int! @rules(apply: ["exists:special_endorsements,id"])
     requested_by: Int!
+}
+
+input SoloEndorsementRequestInput {
+    user_id: ID!
+    position_id: Int! @rules(apply: ["exists:positions,id"])
 }
 
 extend type Mutation {
@@ -28,13 +34,16 @@ extend type Mutation {
 
     requestSpecialEndorsement(input: SpecialEndorsementRequestInput! @spread): EndorsementRequest!
     @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\RequestSpecialEndorsementHandler")
+
+    grantSoloEndorsement(input: SoloEndorsementRequestInput! @spread): SoloEndorsement!
+    @field(resolver: "App\\Modules\\Endorsement\\Solo\\Mutations\\GrantSoloEndorsementHandler")
 }
 interface Endorsement {
     id: ID!
     name: String!
     users: [User!]
 }
-type SpecialEndorsement implements Endorsement{
+type SpecialEndorsement implements Endorsement {
     id: ID!
     name: String!
     deleted_at: DateTime
@@ -42,6 +51,12 @@ type SpecialEndorsement implements Endorsement{
     updated_at: DateTime!
     pivot: Assignment!
     users: [User!]
+}
+
+type SoloEndorsement {
+    id: ID!
+    position: Position!
+    user: User!
 }
 
 type EndorsementRequest {

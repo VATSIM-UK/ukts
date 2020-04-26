@@ -85,7 +85,7 @@ return [
             'App\\Modules\\Endorsement\\Special',
             'App\\Modules\\Bookings',
             'App\\Modules\\Position',
-            'App\\Modules\\Availability'
+            'App\\Modules\\Availability',
         ],
         'queries' => 'App\\GraphQL\\Queries',
         'mutations' => 'App\\GraphQL\\Mutations',

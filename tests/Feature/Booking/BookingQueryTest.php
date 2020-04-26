@@ -5,8 +5,8 @@ namespace Tests\Feature\Booking;
 use App\Modules\Bookings\Booking;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
-use Tests\TestCase;
 use Tests\Helpers\UserHelper;
+use Tests\TestCase;
 
 class BookingQueryTest extends TestCase
 {
