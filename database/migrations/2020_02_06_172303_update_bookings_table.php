@@ -14,7 +14,7 @@ class UpdateBookingsTable extends Migration
     public function up()
     {
         Schema::table('bookings', function (Blueprint $table) {
-            $table->tinyInteger('network_type')->default(0)->after("position_id");
+            $table->tinyInteger('network_type')->default(0)->after('position_id');
         });
     }
 
@@ -26,7 +26,7 @@ class UpdateBookingsTable extends Migration
     public function down()
     {
         Schema::table('bookings', function (Blueprint $table) {
-            $table->dropColumn("network_type");
+            $table->dropColumn('network_type');
         });
     }
 }

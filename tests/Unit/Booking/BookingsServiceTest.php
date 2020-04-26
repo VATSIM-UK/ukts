@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Booking;
 
-use App\Modules\Bookings\Exceptions\OverlappingBookingException;
 use App\Modules\Bookings\Booking;
-use App\Modules\Bookings\Services\BookingsService;
+use App\Modules\Bookings\Exceptions\OverlappingBookingException;
 use App\Modules\Bookings\Exceptions\RatingRequirementNotMetException;
+use App\Modules\Bookings\Services\BookingsService;
 use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;

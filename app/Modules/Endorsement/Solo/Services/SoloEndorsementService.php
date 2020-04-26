@@ -2,8 +2,8 @@
 
 namespace App\Modules\Endorsement\Solo\Services;
 
-use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Solo\Exceptions\SoloEndorsementAlreadyGrantedException;
+use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;

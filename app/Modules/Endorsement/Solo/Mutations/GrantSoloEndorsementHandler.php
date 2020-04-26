@@ -2,8 +2,8 @@
 
 namespace App\Modules\Endorsement\Solo\Mutations;
 
-use App\Modules\Endorsement\Solo\Services\SoloEndorsementService;
 use App\Modules\Bookings\Exceptions\OverlappingBookingException;
+use App\Modules\Endorsement\Solo\Services\SoloEndorsementService;
 use App\Modules\Position\Position;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
