@@ -70,8 +70,7 @@ class BookingsService
         Position $position,
         int $network_type = 0,
         int $excluded = null
-    ): bool
-    {
+    ): bool {
         $bookings = Booking::where([
             ['position_id', $position->getKey()],
             ['network_type', $network_type],
