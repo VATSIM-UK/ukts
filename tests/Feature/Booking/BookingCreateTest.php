@@ -423,7 +423,6 @@ class BookingCreateTest extends TestCase
     /** @test */
     public function testDoesntAllowBookingOfInvalidNetworkType()
     {
-
         $this->withoutExceptionHandling();
         $this->bypassRatingChecks();
         $this->position->callsign = 'EGFF_TWR';

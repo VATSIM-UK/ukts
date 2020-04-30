@@ -152,7 +152,7 @@ class BookingsService
         }
 
         if (! $this->validateNetworkType($network_type)) {
-            throw new Error("Invalid network type!");
+            throw new Error('Invalid network type!');
         }
 
         return $bookingUser->bookings()->create([
@@ -178,7 +178,7 @@ class BookingsService
         }
 
         if (! $this->validateNetworkType($network_type)) {
-            throw new Error("Invalid network type!");
+            throw new Error('Invalid network type!');
         }
 
         return $existingBooking->update([
