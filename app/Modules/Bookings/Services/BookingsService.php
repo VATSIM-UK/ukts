@@ -2,15 +2,15 @@
 
 namespace App\Modules\Bookings\Services;
 
-use Error;
+use App\Constants\ControllerRating;
 use App\Modules\Bookings\Booking;
 use App\Modules\Bookings\Exceptions\OverlappingBookingException;
 use App\Modules\Bookings\Exceptions\RatingRequirementNotMetException;
 use App\Modules\Bookings\Exceptions\SpecialEndorsementNotAttainedException;
-use App\Constants\ControllerRating;
 use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
+use Error;
 
 /** TODO: Users can view/amend other users bookings. We need to make sure we fix this. */
 class BookingsService
@@ -32,7 +32,9 @@ class BookingsService
     public function validateNetworkType(int $type): bool
     {
         // 0 = live network, 1 = sweatbox
-        if ($type == 0 || $type == 1) return true;
+        if ($type == 0 || $type == 1) {
+            return true;
+        }
 
         return false;
     }
@@ -141,15 +143,15 @@ class BookingsService
             }
         }
 
-        if (!$this->validateSpecialEndorsementRequirement($bookingUser, $position)) {
+        if (! $this->validateSpecialEndorsementRequirement($bookingUser, $position)) {
             throw new SpecialEndorsementNotAttainedException();
         }
 
-        if (!$this->validateBookingTimes($from, $to, $position, $network_type)) {
+        if (! $this->validateBookingTimes($from, $to, $position, $network_type)) {
             throw new OverlappingBookingException();
         }
 
-        if (!$this->validateNetworkType($network_type)) {
+        if (! $this->validateNetworkType($network_type)) {
             throw new Error("Invalid network type!");
         }
 
@@ -171,11 +173,11 @@ class BookingsService
         $position = $existingBooking->position;
         $network_type = $existingBooking->network_type;
 
-        if (!$this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
+        if (! $this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
             throw new OverlappingBookingException();
         }
 
-        if (!$this->validateNetworkType($network_type)) {
+        if (! $this->validateNetworkType($network_type)) {
             throw new Error("Invalid network type!");
         }
 

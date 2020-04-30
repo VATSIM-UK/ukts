@@ -2,8 +2,8 @@
 
 namespace App\Modules\Bookings\Mutations;
 
-use App\Modules\Bookings\Services\BookingsService;
 use App\Modules\Bookings\Exceptions\OverlappingBookingException;
+use App\Modules\Bookings\Services\BookingsService;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Auth;

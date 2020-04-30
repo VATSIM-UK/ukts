@@ -3,8 +3,8 @@
 namespace App\Modules\Bookings\Mutations;
 
 use App\Modules\Bookings\Booking;
-use App\Modules\Bookings\Services\BookingsService;
 use App\Modules\Bookings\Exceptions\OverlappingBookingException;
+use App\Modules\Bookings\Services\BookingsService;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 

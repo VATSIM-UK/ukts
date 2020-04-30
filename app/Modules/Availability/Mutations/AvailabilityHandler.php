@@ -3,8 +3,8 @@
 namespace App\Modules\Availability\Mutations;
 
 use App\Modules\Availability\Availability;
-use App\Modules\Availability\Services\AvailabilityService;
 use App\Modules\Availability\Exceptions\OverlappingAvailabilityException;
+use App\Modules\Availability\Services\AvailabilityService;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Auth;

@@ -3,8 +3,8 @@
 namespace App\Modules\Availability\Exceptions;
 
 use Exception;
-use Throwable;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
+use Throwable;
 
 class AvailabilityMinimumTimeException extends Exception implements RendersErrorsExtensions
 {

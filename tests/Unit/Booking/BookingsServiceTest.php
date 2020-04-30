@@ -161,7 +161,6 @@ class BookingsServiceTest extends TestCase
     /** @test */
     public function itDoesntAllowBookingsWhichWhenUpdatedOverlapWithAnotherBooking()
     {
-
         $this->withoutExceptionHandling();
         $booking = factory(Booking::class)->create([
             'from' => new Carbon('10th January 2019 13:00:00'),

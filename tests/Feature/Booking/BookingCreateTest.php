@@ -3,7 +3,6 @@
 namespace Tests\Feature\Booking;
 
 use App\Modules\Bookings\Booking;
-use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Modules\Position\Position;

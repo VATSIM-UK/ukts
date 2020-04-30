@@ -32,7 +32,6 @@ class BookingUnitTest extends TestCase
     /** @test */
     public function itReturnsTheUserRelation()
     {
-
         $this->assertInstanceOf(User::class, $this->booking->user);
     }
 }
