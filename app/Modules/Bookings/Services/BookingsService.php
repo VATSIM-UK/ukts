@@ -64,9 +64,18 @@ class BookingsService
      * @param  int|null  $excluded  - Booking ID to be excluded from the check.
      * @return bool
      */
-    public function validateBookingTimes(Carbon $from, Carbon $to, Position $position, int $network_type = 0, int $excluded = null): bool
+    public function validateBookingTimes(
+        Carbon $from,
+        Carbon $to,
+        Position $position,
+        int $network_type = 0,
+        int $excluded = null): bool
     {
-        $bookings = Booking::where([['position_id', $position->getKey()], ['network_type', $network_type], ['id', '!=', $excluded]]);
+        $bookings = Booking::where([
+            ['position_id', $position->getKey()],
+            ['network_type', $network_type],
+            ['id', '!=', $excluded]
+        ]);
 
         // Find between the times being booked for
         $bookings->where(function ($query) use (&$from, &$to) {

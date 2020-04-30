@@ -17,16 +17,20 @@ class TrainingPositionService
 
     public function createAssignment(Position $position): TrainingPositionAssignment
     {
-        throw_if($this->checkHasExistingActivePositionAssignments($position),
-            PositionAlreadyAssignedForTrainingException::class);
+        throw_if(
+            $this->checkHasExistingActivePositionAssignments($position),
+            PositionAlreadyAssignedForTrainingException::class
+        );
 
         return TrainingPositionAssignment::create(['position_id' => $position->id]);
     }
 
     public function removeAssignment(Position $position): bool
     {
-        throw_if(! $this->checkHasExistingActivePositionAssignments($position),
-            PositionNotAssignedForTrainingException::class);
+        throw_if(
+            ! $this->checkHasExistingActivePositionAssignments($position),
+            PositionNotAssignedForTrainingException::class
+        );
 
         return $this->findAssignmentByPosition($position)->delete();
     }
