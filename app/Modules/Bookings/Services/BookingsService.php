@@ -69,12 +69,13 @@ class BookingsService
         Carbon $to,
         Position $position,
         int $network_type = 0,
-        int $excluded = null): bool
+        int $excluded = null
+    ): bool
     {
         $bookings = Booking::where([
             ['position_id', $position->getKey()],
             ['network_type', $network_type],
-            ['id', '!=', $excluded]
+            ['id', '!=', $excluded],
         ]);
 
         // Find between the times being booked for
