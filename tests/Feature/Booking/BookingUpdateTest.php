@@ -96,14 +96,7 @@ class BookingUpdateTest extends TestCase
                 ) {
                     id
                 }
-            }");
-
-        $this->assertDatabaseHas('bookings', [
-            'id' => $bookingToUpdate->id,
-            'from' => new Carbon('2019-08-20 16:15:00'),
-            'to' => new Carbon('2019-08-20 17:00:00'),
-            'network_type' => 0,
-        ]);
+            }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
     }
 
     /** @test */
@@ -136,7 +129,14 @@ class BookingUpdateTest extends TestCase
                 ) {
                     id
                 }
-            }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
+            }");
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToUpdate->id,
+            'from' => new Carbon('2019-08-20 16:15:00'),
+            'to' => new Carbon('2019-08-20 17:00:00'),
+            'network_type' => 0,
+        ]);
     }
 
     /** @test */

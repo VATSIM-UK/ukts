@@ -82,7 +82,7 @@ class BookingsServiceTest extends TestCase
             $overlappingFrom,
             $overlappingTo,
             $this->position,
-            0
+            0,
         ));
     }
 
@@ -105,7 +105,7 @@ class BookingsServiceTest extends TestCase
             $overlappingFrom,
             $overlappingTo,
             $this->position,
-            0
+            0,
         ));
     }
 
@@ -127,14 +127,14 @@ class BookingsServiceTest extends TestCase
             $from,
             $to,
             $this->position,
-            0
+            0,
         ));
 
         $this->assertFalse($this->service->validateBookingTimes(
             $from->subHour(),
             $to->addHour(),
             $this->position,
-            0
+            0,
         ));
     }
 
@@ -152,7 +152,7 @@ class BookingsServiceTest extends TestCase
             new Carbon('10th January 2019 13:00:00'),
             new Carbon('10th January 2019 14:00:00'),
             $this->position,
-            0
+            0,
         ));
     }
 
@@ -170,7 +170,7 @@ class BookingsServiceTest extends TestCase
             new Carbon('10th January 2019 15:00:00'),
             new Carbon('10th January 2019 16:00:00'),
             $this->position,
-            0
+            0,
         ));
     }
 
@@ -181,13 +181,15 @@ class BookingsServiceTest extends TestCase
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 15:00:00'),
             'position_id' => $this->position->id,
+            'network_type' => 0,
         ]);
 
         $this->assertTrue($this->service->validateBookingTimes(
             new Carbon('10th January 2019 13:00:00'),
             new Carbon('10th January 2019 14:00:00'),
             $this->position,
-            $booking->id
+            0,
+            $booking->id,
         ));
     }
 
@@ -213,8 +215,8 @@ class BookingsServiceTest extends TestCase
             new Carbon('10th January 2019 15:30:00'),
             new Carbon('10th January 2019 17:00:00'),
             $this->position,
-            $booking->id,
             0,
+            $booking->id,
         ));
     }
 

@@ -156,12 +156,12 @@ class BookingsService
             throw new SpecialEndorsementNotAttainedException();
         }
 
-        if (! $this->validateBookingTimes($from, $to, $position, $network_type)) {
-            throw new OverlappingBookingException();
+        if (!$this->validateNetworkType($network_type)) {
+            throw new Error('Invalid network type!');
         }
 
-        if (! $this->validateNetworkType($network_type)) {
-            throw new Error('Invalid network type!');
+        if (! $this->validateBookingTimes($from, $to, $position, $network_type)) {
+            throw new OverlappingBookingException();
         }
 
         return $bookingUser->bookings()->create([
