@@ -182,7 +182,7 @@ class BookingsService
         $position = $existingBooking->position;
         $network_type = $existingBooking->network_type;
 
-        if (! $this->validateBookingTimes($from, $to, $position, $existingBooking->getKey(), $network_type)) {
+        if (! $this->validateBookingTimes($from, $to, $position, $network_type, $existingBooking->getKey())) {
             throw new OverlappingBookingException();
         }
 

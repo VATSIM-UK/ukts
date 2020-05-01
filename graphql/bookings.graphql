@@ -7,7 +7,7 @@ extend type Query {
 
 input CreateBookingInput {
     position_id: Int!,
-    network_type: Int,
+    network_type: Int!,
     from: DateTime! @rules(apply: ["before:input.to"]),
     to: DateTime! @rules(apply: ["after:input.from"]),
 }
@@ -16,7 +16,7 @@ input UpdateBookingInput {
     id: ID! @rules(apply: ["exists:bookings,id"])
     from: DateTime! @rules(apply: ["before:input.to"]),
     to: DateTime! @rules(apply: ["after:input.from"]),
-    network_type: Int
+    network_type: Int!
 }
 
 extend type Mutation @middleware(checks: ["auth"]) {
@@ -29,7 +29,7 @@ type Booking implements Node {
     id: ID!
     user_id: ID!
     position: Position! @belongsTo
-    network_type: Int
+    network_type: Int!
     from: DateTime!
     to: DateTime!
     created_at: DateTimeZulu!
