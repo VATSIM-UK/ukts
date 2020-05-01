@@ -100,7 +100,7 @@ class BookingUpdateTest extends TestCase
     }
 
     /** @test */
-    public function testBookingUpdatedWhenOverlapsTypesWithRelevantMessage()
+    public function testBookingUpdatedTypesWhenOverlapsWithRelevantMessage()
     {
         factory(Booking::class)->create([
             'position_id' => $this->position->id,
@@ -124,7 +124,7 @@ class BookingUpdateTest extends TestCase
                         id: {$bookingToUpdate->id},
                         from: \"2019-08-20 16:15:00\",
                         to: \"2019-08-20 17:00:00\",
-                        network_type: 1
+                        network_type: 0
                     }
                 ) {
                     id

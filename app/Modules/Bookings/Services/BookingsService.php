@@ -156,7 +156,7 @@ class BookingsService
             throw new SpecialEndorsementNotAttainedException();
         }
 
-        if (!$this->validateNetworkType($network_type)) {
+        if (! $this->validateNetworkType($network_type)) {
             throw new Error('Invalid network type!');
         }
 

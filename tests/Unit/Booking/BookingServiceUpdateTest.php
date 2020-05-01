@@ -141,13 +141,6 @@ class BookingServiceUpdateTest extends TestCase
 
         $this->assertDatabaseHas('bookings', [
             'id' => $this->existingBooking->id,
-            'from' => new Carbon('10th January 2019 16:30:00'),
-            'to' => new Carbon('10th January 2019 18:30:00'),
-            'network_type' => 0,
-        ]);
-
-        $this->assertDatabaseHas('bookings', [
-            'id' => $this->existingBooking->id,
             'from' => new Carbon('10th January 2019 16:45:00'),
             'to' => new Carbon('10th January 2019 18:45:00'),
             'network_type' => 1,
