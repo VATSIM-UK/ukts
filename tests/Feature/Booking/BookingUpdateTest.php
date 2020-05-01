@@ -129,13 +129,13 @@ class BookingUpdateTest extends TestCase
                 ) {
                     id
                 }
-            }");
-
-        $this->assertDatabaseHas('bookings', [
-            'id' => $bookingToUpdate->id,
-            'from' => new Carbon('2019-08-20 16:15:00'),
-            'to' => new Carbon('2019-08-20 17:00:00'),
-            'network_type' => 0,
+            }")->assertJson([
+            'data' => [
+                'updateBooking' => [
+                    'id' => $bookingToUpdate->id,
+                    'network_type' => 0,
+                ],
+            ],
         ]);
     }
 
