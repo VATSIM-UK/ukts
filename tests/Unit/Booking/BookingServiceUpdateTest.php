@@ -116,7 +116,6 @@ class BookingServiceUpdateTest extends TestCase
         ]));
     }
 
-
     /** @test */
     public function itDoesntCheckForOverlappingBookingsOfDifferentTypesOnUpdate()
     {
