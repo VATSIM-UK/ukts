@@ -12,8 +12,7 @@ class Booking extends Model
 {
     use HasRemoteRelationships;
 
-    protected $fillable = ['user_id', 'position_id', 'from', 'to'];
-    protected $attributes = ['network_type'];
+    protected $fillable = ['user_id', 'position_id', 'from', 'to', 'network_type'];
     protected $dates = ['from', 'to'];
 
     public function position(): BelongsTo
