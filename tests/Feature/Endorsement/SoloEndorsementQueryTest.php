@@ -59,8 +59,12 @@ class SoloEndorsementQueryTest extends TestCase
                 }
             ) {
                 id
-                user_id
-                position_id
+                user {
+                    id
+                }
+                position {
+                    callsign
+                }
             }
         }");
     }

@@ -127,7 +127,8 @@ class BookingUpdateTest extends TestCase
                         network_type: 0
                     }
                 ) {
-                    id
+                    id,
+                    network_type
                 }
             }")->assertJson([
             'data' => [
