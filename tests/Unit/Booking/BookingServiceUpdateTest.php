@@ -51,6 +51,7 @@ class BookingServiceUpdateTest extends TestCase
             'position_id' => $params['position_id'],
             'from' => $params['from'],
             'to' => $params['to'],
+            'network_type' => $params['network_type'],
         ]);
     }
 
@@ -71,18 +72,72 @@ class BookingServiceUpdateTest extends TestCase
         // explicitly setting booking times to stop coincidental test pass
         $this->existingBooking->from = new Carbon('10th January 2019 13:30:00');
         $this->existingBooking->to = new Carbon('10th January 2019 15:30:00');
+        $this->existingBooking->network_type = 0;
         $this->existingBooking->save();
 
         $otherBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 16:30:00'),
             'to' => new Carbon('10th January 2019 18:30:00'),
+            'network_type' => 0,
         ]);
 
         $this->service->updateExistingBooking($this->generateUpdateMethodParameters([
             'id' => $this->existingBooking->id,
             'from' => new Carbon('10th January 2019 16:45:00'),
             'to' => new Carbon('10th January 2019 18:45:00'),
+            'network_type' => 0,
+        ]));
+    }
+
+    /** @test */
+    public function itChecksForOverlappingSweatboxBookingsOnUpdate()
+    {
+        $this->expectException(OverlappingBookingException::class);
+
+        // explicitly setting booking times to stop coincidental test pass
+        $this->existingBooking->from = new Carbon('10th January 2019 13:30:00');
+        $this->existingBooking->to = new Carbon('10th January 2019 15:30:00');
+        $this->existingBooking->network_type = 1;
+        $this->existingBooking->save();
+
+        $otherBooking = factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => new Carbon('10th January 2019 16:30:00'),
+            'to' => new Carbon('10th January 2019 18:30:00'),
+            'network_type' => 1,
+        ]);
+
+        $this->service->updateExistingBooking($this->generateUpdateMethodParameters([
+            'id' => $this->existingBooking->id,
+            'from' => new Carbon('10th January 2019 16:45:00'),
+            'to' => new Carbon('10th January 2019 18:45:00'),
+            'network_type' => 1,
+        ]));
+    }
+
+
+    /** @test */
+    public function itDoesntCheckForOverlappingBookingsOfDifferentTypesOnUpdate()
+    {
+        // explicitly setting booking times to stop coincidental test pass
+        $this->existingBooking->from = new Carbon('10th January 2019 13:30:00');
+        $this->existingBooking->to = new Carbon('10th January 2019 15:30:00');
+        $this->existingBooking->network_type = 1;
+        $this->existingBooking->save();
+
+        $otherBooking = factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => new Carbon('10th January 2019 16:30:00'),
+            'to' => new Carbon('10th January 2019 18:30:00'),
+            'network_type' => 0,
+        ]);
+
+        $this->service->updateExistingBooking($this->generateUpdateMethodParameters([
+            'id' => $this->existingBooking->id,
+            'from' => new Carbon('10th January 2019 16:45:00'),
+            'to' => new Carbon('10th January 2019 18:45:00'),
+            'network_type' => 1,
         ]));
     }
 
@@ -93,6 +148,7 @@ class BookingServiceUpdateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
+            'network_type' => 0,
         ], $overrides);
     }
 }

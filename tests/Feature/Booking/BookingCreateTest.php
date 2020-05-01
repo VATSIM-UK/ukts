@@ -79,6 +79,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('2019-08-20 16:30:00'),
             'to' => new Carbon('2019-08-20 17:30:00'),
+            'network_type' => 0,
         ]);
     }
 
@@ -92,8 +93,8 @@ class BookingCreateTest extends TestCase
                 input: {
                     position_id: {$this->position->id},
                     network_type: 0,
-                    from:'Blah',
-                    to:'2019-08-20 16:30:00'
+                    from: 'Blah',
+                    to: '2019-08-20 16:30:00'
                 }
             )
             {
@@ -120,7 +121,7 @@ class BookingCreateTest extends TestCase
                     position_id: {$unknownPositionId},
                     network_type: 0,
                     from: '2019-08-20 15:00:00',
-                    to:'2019-08-20 16:30:00'
+                    to: '2019-08-20 16:30:00'
                 }
             )
             {
@@ -145,8 +146,8 @@ class BookingCreateTest extends TestCase
                 input: {
                     position_id: 1,
                     network_type: 0,
-                    from:"2019-08-20 15:00:00",
-                    to:"2019-08-20 15:00:00"
+                    from: "2019-08-20 15:00:00",
+                    to: "2019-08-20 15:00:00"
                 }
             )
             {
@@ -193,6 +194,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => '2019-08-10 14:00:00',
             'to' => '2019-08-10 15:00:00',
+            'network_type' => 0,
         ]);
 
         // Test 1: Doesn't allow to book inside of booking
@@ -221,6 +223,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => '2019-08-10 19:00:00',
             'to' => '2019-08-10 20:00:00',
+            'network_type' => 0,
         ]);
 
         $this->graphQL("
@@ -288,12 +291,14 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
+            'network_type' => 0,
         ]);
 
         $secondBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 15:00:00'),
             'to' => new Carbon('10th January 2019 16:00:00'),
+            'network_type' => 0,
         ]);
 
         $this->graphQL("
@@ -458,6 +463,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => '2019-08-10 19:00:00',
             'to' => '2019-08-10 20:00:00',
+            'network_type' => 0,
         ]);
 
         $this->graphQL("

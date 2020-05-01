@@ -7,7 +7,7 @@ extend type Query {
 
 input CreateBookingInput {
     position_id: Int!,
-    network_type: Int = 0,
+    network_type: Int,
     from: DateTime! @rules(apply: ["before:input.to"]),
     to: DateTime! @rules(apply: ["after:input.from"]),
 }

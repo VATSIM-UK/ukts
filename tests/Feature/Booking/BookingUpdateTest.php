@@ -35,6 +35,7 @@ class BookingUpdateTest extends TestCase
             'position_id' => 1,
             'from' => new Carbon('2019-08-20 15:00:00'),
             'to' => new Carbon('2019-08-20 16:30:00'),
+            'network_type' => 0,
         ]);
 
         $this->graphQL('
@@ -61,6 +62,7 @@ class BookingUpdateTest extends TestCase
             'id' => 1,
             'from' => new Carbon('2019-08-20 17:00:00'),
             'to' => new Carbon('2019-08-20 18:00:00'),
+            'network_type' => 0,
         ]);
     }
 
@@ -71,12 +73,14 @@ class BookingUpdateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('2019-08-20 15:00:00'),
             'to' => new Carbon('2019-08-20 16:30:00'),
+            'network_type' => 0,
         ]);
 
         $bookingToUpdate = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('2019-08-20 17:00:00'),
             'to' => new Carbon('2019-08-20 18:30:00'),
+            'network_type' => 0,
         ]);
 
         // start
@@ -88,6 +92,46 @@ class BookingUpdateTest extends TestCase
                         from: \"2019-08-20 16:15:00\",
                         to: \"2019-08-20 17:00:00\",
                         network_type: 0
+                    }
+                ) {
+                    id
+                }
+            }");
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToUpdate->id,
+            'from' => new Carbon('2019-08-20 16:15:00'),
+            'to' => new Carbon('2019-08-20 17:00:00'),
+            'network_type' => 0,
+        ]);
+    }
+
+    /** @test */
+    public function testBookingUpdatedWhenOverlapsTypesWithRelevantMessage()
+    {
+        factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => new Carbon('2019-08-20 15:00:00'),
+            'to' => new Carbon('2019-08-20 16:30:00'),
+            'network_type' => 0,
+        ]);
+
+        $bookingToUpdate = factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => new Carbon('2019-08-20 17:00:00'),
+            'to' => new Carbon('2019-08-20 18:30:00'),
+            'network_type' => 1,
+        ]);
+
+        // start
+        $this->graphQL("
+            mutation {
+                updateBooking(
+                    input: {
+                        id: {$bookingToUpdate->id},
+                        from: \"2019-08-20 16:15:00\",
+                        to: \"2019-08-20 17:00:00\",
+                        network_type: 1
                     }
                 ) {
                     id

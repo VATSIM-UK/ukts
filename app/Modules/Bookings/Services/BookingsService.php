@@ -68,7 +68,7 @@ class BookingsService
         Carbon $from,
         Carbon $to,
         Position $position,
-        int $network_type = 0,
+        int $network_type,
         int $excluded = null
     ): bool {
         $bookings = Booking::where([
@@ -142,7 +142,7 @@ class BookingsService
     {
         ['from' => $from, 'to' => $to] = $bookingData;
         $position = Position::findOrFail($bookingData['position_id']);
-        $network_type = $bookingData['network_type'] ? $bookingData['network_type'] : 0;
+        $network_type = $bookingData['network_type'];
 
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
@@ -182,7 +182,7 @@ class BookingsService
         $position = $existingBooking->position;
         $network_type = $existingBooking->network_type;
 
-        if (! $this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
+        if (! $this->validateBookingTimes($from, $to, $position, $existingBooking->getKey(), $network_type)) {
             throw new OverlappingBookingException();
         }
 
