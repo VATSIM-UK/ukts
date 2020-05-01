@@ -446,7 +446,7 @@ class BookingCreateTest extends TestCase
             {
                 id
             }
-          }")->assertJsonPath('errors.0', 'Invalid network type!');
+          }")->assertJsonPath('errors.0.message', 'Invalid network type!');
     }
 
     /** @test */

@@ -175,12 +175,11 @@ class BookingsService
 
     public function updateExistingBooking(array $newData): bool
     {
-        ['from' => $from, 'to' => $to] = $newData;
+        ['from' => $from, 'to' => $to, 'network_type' => $network_type] = $newData;
         /** @var Booking $existingBooking */
         $existingBooking = Booking::findOrFail($newData['id']);
 
         $position = $existingBooking->position;
-        $network_type = $existingBooking->network_type;
 
         if (! $this->validateBookingTimes($from, $to, $position, $network_type, $existingBooking->getKey())) {
             throw new OverlappingBookingException();
