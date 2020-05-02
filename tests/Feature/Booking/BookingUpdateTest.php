@@ -89,7 +89,11 @@ class BookingUpdateTest extends TestCase
                 ) {
                     id
                 }
-            }")->assertJsonPath('errors.0.debugMessage', "Invalid network type!");
+            }")->assertJson([
+            'errors' => [
+                'debugMessage' => 'Invalid network type!'
+            ],
+        ]);
     }
 
     /** @test */

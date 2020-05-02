@@ -10,7 +10,6 @@ use App\Modules\Bookings\Exceptions\SpecialEndorsementNotAttainedException;
 use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
-use Error;
 
 /** TODO: Users can view/amend other users bookings. We need to make sure we fix this. */
 class BookingsService

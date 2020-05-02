@@ -80,6 +80,12 @@ class SoloEndorsementQueryTest extends TestCase
                         'name_first' => 'Callum',
                     ])
                 );
+
+            $mock->shouldReceive('initModelWithData')
+                ->andReturn(new User([
+                    'id' => $this->userId,
+                    'name_first' => 'Callum',
+                ]));
         })->makePartial();
     }
 }
