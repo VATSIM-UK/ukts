@@ -1,7 +1,7 @@
 extend type Query {
     positions: [Position!]! @all
     position(id: ID @eq, callsign: String @eq): Position @find
-    positionsAvailableForTraining: [TrainingPositionAssignment!]! @all
+    positionsAvailableForTraining: [TrainingPosition!]! @all
     airfields: [Airfield!]! @all(model: "App\\Modules\\Airfield\\Airfield")
     airfield(icao: String! @eq): Airfield @find(model: "App\\Modules\\Airfield\\Airfield")
 }
@@ -19,9 +19,19 @@ extend type Mutation {
 
     updatePosition(id: ID!, input: PositionInput! @spread): Position @update
 
+    grantSessionRights(
+        user_id: Int!
+        training_position_id: Int!
+    ): User! @field(resolver: "App\\Modules\\Position\\Mutations\\GrantSessionRightsHandler")
+
+    revokeSessionRights(
+        user_id: Int!
+        training_position_id: Int!
+    ): User! @field(resolver: "App\\Modules\\Position\\Mutations\\RevokeSessionRightsHandler")
+
     assignPositionForTraining(
         position_id: Int!
-    ): TrainingPositionAssignment! @field(resolver: "App\\Modules\\Position\\Mutations\\CreateAssignmentHandler")
+    ): TrainingPosition! @field(resolver: "App\\Modules\\Position\\Mutations\\CreateAssignmentHandler")
 
     removePositionFromTraining(
         position_id: Int!
@@ -45,9 +55,10 @@ type Position {
     airfield: Airfield! @belongsTo
 }
 
-type TrainingPositionAssignment {
+type TrainingPosition {
     id: ID!
     position: Position!
+    users: [User!]! @hasMany
     deleted_at: DateTime!
 }
 

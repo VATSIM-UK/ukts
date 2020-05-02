@@ -3,7 +3,7 @@
 namespace Tests\Feature\Position;
 
 use App\Modules\Position\Position;
-use App\Modules\Position\TrainingPositionAssignment;
+use App\Modules\Position\TrainingPosition;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
@@ -38,7 +38,7 @@ class TrainingPositionTest extends TestCase
     /** @test */
     public function testUserCannotMarkPositionAsAvailableForTrainingWhenAlreadyAvailable()
     {
-        factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+        factory(TrainingPosition::class)->create(['position_id' => $this->position->id]);
 
         $this->graphQL("
         mutation {
@@ -54,7 +54,7 @@ class TrainingPositionTest extends TestCase
     /** @test */
     public function testTrainingPositionAssignmentsCanBeQueried()
     {
-        factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+        factory(TrainingPosition::class)->create(['position_id' => $this->position->id]);
         $this->graphQL('
         query {
             positionsAvailableForTraining {
@@ -81,7 +81,7 @@ class TrainingPositionTest extends TestCase
     /** @test */
     public function testTrainingPositionAssignmentsCanBeRevoked()
     {
-        factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+        factory(TrainingPosition::class)->create(['position_id' => $this->position->id]);
         $this->graphQL("
             mutation {
                 removePositionFromTraining(position_id: {$this->position->id})
@@ -97,8 +97,10 @@ class TrainingPositionTest extends TestCase
             mutation {
                 removePositionFromTraining(position_id: {$this->position->id})
             }
-        ")->assertJsonPath('errors.0.message',
-            'The given position has not been assigned for training so cannot be deleted.')
+        ")->assertJsonPath(
+            'errors.0.message',
+            'The given position has not been assigned for training so cannot be deleted.'
+        )
             ->assertStatus(200);
     }
 }

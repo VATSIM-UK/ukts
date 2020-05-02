@@ -2,12 +2,13 @@
 
 namespace Tests\Unit\Position;
 
+use App\User;
 use App\Modules\Position\Position;
-use App\Modules\Position\TrainingPositionAssignment;
+use App\Modules\Position\TrainingPosition;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class TrainingPositionAssignmentTest extends TestCase
+class TrainingPositionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -17,12 +18,18 @@ class TrainingPositionAssignmentTest extends TestCase
     {
         parent::setUp();
 
-        $this->trainingAssignment = factory(TrainingPositionAssignment::class)->create();
+        $this->trainingAssignment = factory(TrainingPosition::class)->create();
     }
 
     /** @test */
     public function itHasRelationToAPosition()
     {
         $this->assertInstanceOf(Position::class, $this->trainingAssignment->position);
+    }
+
+    /** @test */
+    public function itHasRelationToUsers()
+    {
+        $this->assertContainsOnlyInstancesOf(User::class, $this->trainingAssignment->users);
     }
 }

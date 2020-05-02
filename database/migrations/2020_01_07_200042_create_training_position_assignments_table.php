@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrainingPositionAssignmentsTable extends Migration
+class CreateTrainingPositionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTrainingPositionAssignmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('training_position_assignments', function (Blueprint $table) {
+        Schema::create('training_positions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('position_id');
             $table->foreign('position_id')->references('id')->on('positions')
@@ -30,6 +30,6 @@ class CreateTrainingPositionAssignmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('training_position_assignments');
+        Schema::dropIfExists('training_positions');
     }
 }

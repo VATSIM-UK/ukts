@@ -6,6 +6,7 @@ use App\Modules\Availability\Availability;
 use App\Modules\Bookings\Booking;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
+use App\Modules\Position\TrainingPosition;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,6 +22,11 @@ class User extends RemoteUser implements Authenticatable
             'user_id',
             'endorsement_id'
         )->using(Assignment::class)->withTimestamps();
+    }
+
+    public function trainingPositionAssignments(): HasMany
+    {
+        return $this->hasMany(TrainingPosition::class);
     }
 
     public function bookings(): HasMany

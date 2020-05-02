@@ -6,7 +6,7 @@ use App\Modules\Position\Exceptions\PositionAlreadyAssignedForTrainingException;
 use App\Modules\Position\Exceptions\PositionNotAssignedForTrainingException;
 use App\Modules\Position\Position;
 use App\Modules\Position\Services\TrainingPositionService;
-use App\Modules\Position\TrainingPositionAssignment;
+use App\Modules\Position\TrainingPosition;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -35,14 +35,14 @@ class TrainingPositionServiceUnitTest extends TestCase
     /** @test */
     public function itDetectsWhenActivePositionAssignmentExists()
     {
-        factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+        factory(TrainingPosition::class)->create(['position_id' => $this->position->id]);
         $this->assertTrue($this->service->checkHasExistingActivePositionAssignments($this->position));
     }
 
     /** @test */
     public function itPassesCheckIfPreviousAssignmentHasBeenSoftDeleted()
     {
-        $assignment = factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+        $assignment = factory(TrainingPosition::class)->create(['position_id' => $this->position->id]);
         $assignment->delete();
 
         $this->assertFalse($this->service->checkHasExistingActivePositionAssignments($this->position));
@@ -62,7 +62,7 @@ class TrainingPositionServiceUnitTest extends TestCase
     /** @test */
     public function itDoesntCreateAndThrowsExceptionWhenExistingAssignmentExists()
     {
-        factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+        factory(TrainingPosition::class)->create(['position_id' => $this->position->id]);
         $this->expectException(PositionAlreadyAssignedForTrainingException::class);
 
         $this->service->createAssignment($this->position);
@@ -76,7 +76,7 @@ class TrainingPositionServiceUnitTest extends TestCase
     /** @test */
     public function itRemovesPositionsFromTraining()
     {
-        factory(TrainingPositionAssignment::class)->create(['position_id' => $this->position->id]);
+        factory(TrainingPosition::class)->create(['position_id' => $this->position->id]);
 
         $this->service->removeAssignment($this->position);
 
