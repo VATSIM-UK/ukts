@@ -19,12 +19,10 @@ class TrainingPositionSessionTest extends TestCase
     {
         parent::setUp();
 
-        $this->actingAs($this->mockedUser(1457358, ['code' => 'C1', 'vatsim_id' => 4]));
+        $this->actingAs($this->mockedUser());
         $this->mockUserFind();
 
         $this->traineeUser = factory(User::class)->create();
-        $this->traineeUser->ratingCode = 'S2';
-        $this->traineeUser->save();
 
         $this->trainingPosition = factory(TrainingPosition::class)->create();
     }
