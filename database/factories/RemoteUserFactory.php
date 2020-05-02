@@ -10,7 +10,7 @@ $factory->define(User::class, function (Faker $faker) {
         'name_first' => $faker->firstName,
         'name_last' => $faker->lastName,
         'atcRating' => [
-            'code' => $faker->ratingCode ? $faker->ratingCode : 'C1',
+            'code' => 'C1',
         ],
     ];
 });
