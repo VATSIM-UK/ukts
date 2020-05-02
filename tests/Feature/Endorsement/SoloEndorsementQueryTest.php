@@ -71,7 +71,7 @@ class SoloEndorsementQueryTest extends TestCase
 
     private function mockRemoteUserCall(int $userId): void
     {
-        $userMockReturn = User::initModelWithData([
+        $userMockReturn = User::resolve(static::class)->newInstance([
             'id' => $userId,
             'name_first' => 'Callum',
         ]);
