@@ -21,7 +21,7 @@ class RevokeSessionRightsHandler
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user = User::findOrFail($args['user_id']);
+        $user = resolve(User::class)->findOrFail($args['user_id']);
         $position = TrainingPosition::findOrFail($args['training_position_id']);
 
         return app()->make(TrainingPositionSessionService::class)->revokePermissions($user, $position);

@@ -4,14 +4,14 @@ namespace Tests\Feature\Position;
 
 use App\Modules\Position\TrainingPosition;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\Helpers\UserHelper;
 use Tests\TestCase;
 
 class TrainingPositionSessionTest extends TestCase
 {
-    use DatabaseMigrations, MakesGraphQLRequests, UserHelper;
+    use RefreshDatabase, MakesGraphQLRequests, UserHelper;
 
     private $position;
 
@@ -28,45 +28,29 @@ class TrainingPositionSessionTest extends TestCase
     /** @test */
     public function testManagerCanGrantRightsToTrainee()
     {
-        $this->traineeUser = factory(User::class)->create();
-
         $this->graphQL("
         mutation {
-            grantSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
-                user {
-                    id
-                }
-            }
-        }")->assertJsonPath('data.assignPositionForTraining.user.id', $this->traineeUser->id);
+            grantSessionRights(user_id: {$this->mockUserId}, training_position_id: {$this->trainingPosition->id})
+        }")->assertJson(['data.grantSessionRights', true])
+            ->assertStatus(200);
     }
 
     /** @test */
     public function testManagerCanRevokeRightsFromTrainee()
     {
-        $this->traineeUser = factory(User::class)->create();
-
         $this->graphQL("
         mutation {
-            revokeSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
-                user {
-                    id
-                }
-            }
-        }")->assertJsonPath('data.assignPositionForTraining.user.id', $this->traineeUser->id);
+            revokeSessionRights(user_id: {$this->mockUserId}, training_position_id: {$this->trainingPosition->id})
+        }")->assertJsonPath('data.revokeSessionRights', true)
+            ->assertStatus(200);
     }
 
     /** @test */
     public function testManagerCannotGrantRightsAgain()
     {
-        $this->traineeUser = factory(User::class)->create();
-
         $this->graphQL("
         mutation {
-            grantSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
-                user {
-                    id
-                }
-            }
+            grantSessionRights(user_id: {$this->mockUserId}, training_position_id: {$this->trainingPosition->id})
         }")->assertJsonPath('errors.0.message', 'Rights have already been granted on this position to the user.')
             ->assertJsonPath('errors.0.extensions.code', 200);
     }
@@ -74,15 +58,9 @@ class TrainingPositionSessionTest extends TestCase
     /** @test */
     public function testManagerCannotRevokeRightsAgain()
     {
-        $this->traineeUser = factory(User::class)->create();
-
         $this->graphQL("
         mutation {
-            revokeSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
-                user {
-                    id
-                }
-            }
+            revokeSessionRights(user_id: {$this->mockUserId}, training_position_id: {$this->trainingPosition->id})
         }")->assertJsonPath('errors.0.message', 'This user never had any rights on this position.')
             ->assertJsonPath('errors.0.extensions.code', 200);
     }
@@ -90,16 +68,10 @@ class TrainingPositionSessionTest extends TestCase
     /** @test */
     public function testTraineeRightsCanBeQueried()
     {
-        $this->traineeUser = factory(User::class)->create();
-
         $this->graphQL("
         mutation {
-            grantSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
-                user {
-                    id
-                }
-            }
-        }")->assertJsonPath('data.assignPositionForTraining.user.id', $this->traineeUser->id);
+            grantSessionRights(user_id: {$this->mockUserId}, training_position_id: {$this->trainingPosition->id})
+        }")->assertJsonPath('data.assignPositionForTraining.user.id', $this->mockUserId);
 
         $this->graphQL('
         query {
@@ -122,7 +94,7 @@ class TrainingPositionSessionTest extends TestCase
                             ],
                             'users' => [
                                 [
-                                    'id' => $this->traineeUser->id,
+                                    'id' => $this->mockUserId,
                                 ],
                             ],
                         ],

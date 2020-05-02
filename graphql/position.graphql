@@ -22,12 +22,12 @@ extend type Mutation {
     grantSessionRights(
         user_id: Int!
         training_position_id: Int!
-    ): User! @field(resolver: "App\\Modules\\Position\\Mutations\\GrantSessionRightsHandler")
+    ): Boolean! @field(resolver: "App\\Modules\\Position\\Mutations\\GrantSessionRightsHandler")
 
     revokeSessionRights(
         user_id: Int!
         training_position_id: Int!
-    ): User! @field(resolver: "App\\Modules\\Position\\Mutations\\RevokeSessionRightsHandler")
+    ): Boolean! @field(resolver: "App\\Modules\\Position\\Mutations\\RevokeSessionRightsHandler")
 
     assignPositionForTraining(
         position_id: Int!

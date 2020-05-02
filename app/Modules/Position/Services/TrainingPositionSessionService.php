@@ -29,16 +29,14 @@ class TrainingPositionSessionService
         return ! $userAssignedPermissions->isEmpty();
     }
 
-    public function grantPermissions(User $user, TrainingPosition $position): User
+    public function grantPermissions(User $user, TrainingPosition $position): bool
     {
         throw_if(
             $this->checkHasExistingPermissions($user, $position),
             PermissionsAlreadyGrantedException::class
         );
 
-        $position->users()->attach($user->id);
-
-        return $position->fresh()->users()->find($user->id);
+        return $position->users()->save($user);
     }
 
     public function revokePermissions(User $user, TrainingPosition $position): bool
@@ -48,6 +46,6 @@ class TrainingPositionSessionService
             PermissionsAlreadyRevokedException::class
         );
 
-        return $position->users()->detach($user->id);
+        return $position->users()->save($user);
     }
 }
