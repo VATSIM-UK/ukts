@@ -140,9 +140,8 @@ class BookingsService
 
     public function createBooking(array $bookingData): Booking
     {
-        ['from' => $from, 'to' => $to] = $bookingData;
+        ['from' => $from, 'to' => $to, 'network_type' => $network_type] = $bookingData;
         $position = Position::findOrFail($bookingData['position_id']);
-        $network_type = $bookingData['network_type'];
 
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
@@ -186,7 +185,7 @@ class BookingsService
         }
 
         if (! $this->validateNetworkType($network_type)) {
-            throw new Error('Invalid network type!');
+            throw new \InvalidArgumentException('Invalid network type!');
         }
 
         return $existingBooking->update([

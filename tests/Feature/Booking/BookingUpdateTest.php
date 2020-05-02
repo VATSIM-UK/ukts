@@ -67,6 +67,32 @@ class BookingUpdateTest extends TestCase
     }
 
     /** @test */
+    public function testDoesntAllowUpdateofInvalidNetworkType()
+    {
+        $bookingToUpdate = factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => new Carbon('2019-08-20 17:00:00'),
+            'to' => new Carbon('2019-08-20 18:30:00'),
+            'network_type' => 0,
+        ]);
+
+        // start
+        $this->graphQL("
+            mutation {
+                updateBooking(
+                    input: {
+                        id: {$bookingToUpdate->id},
+                        from: \"2019-08-20 16:15:00\",
+                        to: \"2019-08-20 17:00:00\",
+                        network_type: 2
+                    }
+                ) {
+                    id
+                }
+            }")->assertJsonPath('errors.0.debugMessage', "Invalid network type!");
+    }
+
+    /** @test */
     public function testBookingNotUpdatedWhenOverlapsWithRelevantMessage()
     {
         factory(Booking::class)->create([
