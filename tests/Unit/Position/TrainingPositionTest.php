@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Position;
 
-use App\User;
 use App\Modules\Position\Position;
 use App\Modules\Position\TrainingPosition;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

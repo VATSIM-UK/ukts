@@ -2,9 +2,8 @@
 
 namespace Tests\Feature\Position;
 
-use App\User;
-use App\Modules\Position\Position;
 use App\Modules\Position\TrainingPosition;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\Helpers\UserHelper;

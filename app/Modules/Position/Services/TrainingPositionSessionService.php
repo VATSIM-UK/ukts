@@ -2,10 +2,10 @@
 
 namespace App\Modules\Position\Services;
 
-use App\User;
 use App\Modules\Position\Exceptions\PermissionsAlreadyGrantedException;
 use App\Modules\Position\Exceptions\PermissionsAlreadyRevokedException;
 use App\Modules\Position\TrainingPosition;
+use App\User;
 use Illuminate\Database\Eloquent\Collection;
 
 class TrainingPositionSessionService
@@ -26,7 +26,7 @@ class TrainingPositionSessionService
 
         $userAssignedPermissions = $traineeUsers->where('user_id', '==', $user->id);
 
-        return !$userAssignedPermissions->isEmpty();
+        return ! $userAssignedPermissions->isEmpty();
     }
 
     public function grantPermissions(User $user, TrainingPosition $position): User

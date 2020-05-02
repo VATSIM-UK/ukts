@@ -2,9 +2,9 @@
 
 namespace App\Modules\Position\Mutations;
 
-use App\User;
-use App\Modules\Position\TrainingPosition;
 use App\Modules\Position\Services\TrainingPositionSessionService;
+use App\Modules\Position\TrainingPosition;
+use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
