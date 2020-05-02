@@ -171,14 +171,7 @@ class BookingUpdateTest extends TestCase
                     id,
                     network_type
                 }
-            }")->assertJson([
-            'data' => [
-                'updateBooking' => [
-                    'id' => $bookingToUpdate->id,
-                    'network_type' => 0,
-                ],
-            ],
-        ]);
+            }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
     }
 
     /** @test */
