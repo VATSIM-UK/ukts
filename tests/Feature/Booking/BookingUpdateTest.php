@@ -100,7 +100,48 @@ class BookingUpdateTest extends TestCase
     }
 
     /** @test */
-    public function testBookingUpdatedTypesWhenOverlapsWithRelevantMessage()
+    public function testBookingUpdatedWhenTypesOverlapWithRelevantMessage()
+    {
+        factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => new Carbon('2019-08-20 15:00:00'),
+            'to' => new Carbon('2019-08-20 16:30:00'),
+            'network_type' => 1,
+        ]);
+
+        $bookingToUpdate = factory(Booking::class)->create([
+            'position_id' => $this->position->id,
+            'from' => new Carbon('2019-08-20 17:00:00'),
+            'to' => new Carbon('2019-08-20 18:30:00'),
+            'network_type' => 1,
+        ]);
+
+        // start
+        $this->graphQL("
+            mutation {
+                updateBooking(
+                    input: {
+                        id: {$bookingToUpdate->id},
+                        from: \"2019-08-20 16:15:00\",
+                        to: \"2019-08-20 17:00:00\",
+                        network_type: 0
+                    }
+                ) {
+                    id,
+                    network_type
+                }
+            }")->assertJson([
+            'data' => [
+                'updateBooking' => [
+                    'id' => $bookingToUpdate->id,
+                    'network_type' => 0,
+                ],
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function testBookingNotUpdatedWhenUpdatedTypeWithRelevantMessage()
     {
         factory(Booking::class)->create([
             'position_id' => $this->position->id,
