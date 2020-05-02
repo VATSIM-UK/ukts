@@ -32,7 +32,7 @@ class SoloEndorsementQueryTest extends TestCase
         $this->mockRemoteUserCall($this->mockUserId);
 
         $this->grantSoloEndorsementQuery()
-            ->assertJson(['data.grantSoloEndorsement.user.id', $this->mockUserId])
+            ->assertJsonPath('data.grantSoloEndorsement.user.id', $this->mockUserId)
             ->assertJsonPath('data.grantSoloEndorsement.position.callsign', $this->position->callsign);
     }
 
