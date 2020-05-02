@@ -157,7 +157,7 @@ class BookingsService
         }
 
         if (! $this->validateNetworkType($network_type)) {
-            throw new Error('Invalid network type!');
+            throw new \InvalidArgumentException('Invalid network type!');
         }
 
         if (! $this->validateBookingTimes($from, $to, $position, $network_type)) {
