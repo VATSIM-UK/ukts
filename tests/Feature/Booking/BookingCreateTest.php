@@ -450,7 +450,7 @@ class BookingCreateTest extends TestCase
             'errors' => [
                 [
                     'debugMessage' => 'Invalid network type!',
-                ]
+                ],
             ],
         ]);
     }

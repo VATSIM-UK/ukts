@@ -93,7 +93,7 @@ class BookingUpdateTest extends TestCase
             'errors' => [
                 [
                     'debugMessage' => 'Invalid network type!',
-                ]
+                ],
             ],
         ]);
     }
