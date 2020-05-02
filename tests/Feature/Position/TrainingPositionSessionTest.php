@@ -4,14 +4,14 @@ namespace Tests\Feature\Position;
 
 use App\Modules\Position\TrainingPosition;
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\Helpers\UserHelper;
 use Tests\TestCase;
 
 class TrainingPositionSessionTest extends TestCase
 {
-    use RefreshDatabase, MakesGraphQLRequests, UserHelper;
+    use DatabaseMigrations, MakesGraphQLRequests, UserHelper;
 
     private $position;
 
@@ -22,14 +22,14 @@ class TrainingPositionSessionTest extends TestCase
         $this->actingAs($this->mockedUser());
         $this->mockUserFind();
 
-        $this->traineeUser = factory(User::class)->create();
-
         $this->trainingPosition = factory(TrainingPosition::class)->create();
     }
 
     /** @test */
     public function testManagerCanGrantRightsToTrainee()
     {
+        $this->traineeUser = factory(User::class)->create();
+
         $this->graphQL("
         mutation {
             grantSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
@@ -43,6 +43,8 @@ class TrainingPositionSessionTest extends TestCase
     /** @test */
     public function testManagerCanRevokeRightsFromTrainee()
     {
+        $this->traineeUser = factory(User::class)->create();
+
         $this->graphQL("
         mutation {
             revokeSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
@@ -56,6 +58,8 @@ class TrainingPositionSessionTest extends TestCase
     /** @test */
     public function testManagerCannotGrantRightsAgain()
     {
+        $this->traineeUser = factory(User::class)->create();
+
         $this->graphQL("
         mutation {
             grantSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
@@ -70,6 +74,8 @@ class TrainingPositionSessionTest extends TestCase
     /** @test */
     public function testManagerCannotRevokeRightsAgain()
     {
+        $this->traineeUser = factory(User::class)->create();
+
         $this->graphQL("
         mutation {
             revokeSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
@@ -84,6 +90,8 @@ class TrainingPositionSessionTest extends TestCase
     /** @test */
     public function testTraineeRightsCanBeQueried()
     {
+        $this->traineeUser = factory(User::class)->create();
+
         $this->graphQL("
         mutation {
             grantSessionRights(user_id: {$this->traineeUser->id}, training_position_id: {$this->trainingPosition->id}) {
