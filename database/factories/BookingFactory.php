@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(Booking::class, function (Faker $faker) {
     $from = $faker->dateTimeThisYear;
     $to = $faker->dateTimeInInterval($from, '+1 day');
-    $network_type = 0;
+    $network_type = Booking::NETWORK_TYPE_LIVE;
 
     return [
         'user_id' => $faker->numberBetween(1000000, 9999999),

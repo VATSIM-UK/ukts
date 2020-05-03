@@ -30,12 +30,7 @@ class BookingsService
      */
     public function validateNetworkType(int $type): bool
     {
-        // 0 = live network, 1 = sweatbox
-        if ($type == 0 || $type == 1) {
-            return true;
-        }
-
-        return false;
+        return in_array($type, [Booking::NETWORK_TYPE_LIVE, Booking::NETWORK_TYPE_SWEATBOX]);
     }
 
     /**

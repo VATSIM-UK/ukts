@@ -6,7 +6,7 @@ use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Position\Position;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;
 
