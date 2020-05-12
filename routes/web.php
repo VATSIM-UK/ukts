@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
-    return app()->version();
+    return \Inertia\Inertia::render('Index');
 });
