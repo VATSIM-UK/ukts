@@ -10,13 +10,14 @@
     "require": {
         "php": "^7.3",
         "fideloper/proxy": "^4.0",
+        "inertiajs/inertia-laravel": "^0.2.5",
         "laravel/framework": "^6.0",
         "laravel/horizon": "^3.2",
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
         "mll-lab/laravel-graphql-playground": "^1.1",
-        "vatsimuk/auth-package": "dev-master",
-        "nuwave/lighthouse": "^4.2"
+        "nuwave/lighthouse": "^4.2",
+        "vatsimuk/auth-package": "dev-master"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
