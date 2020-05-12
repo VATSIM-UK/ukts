@@ -11,7 +11,6 @@
 |
 */
 
-
 Route::get('/', function () {
     return \Inertia\Inertia::render('Index');
 });
