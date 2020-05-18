@@ -6,7 +6,7 @@ use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Position\Position;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\TestResponse;
+use Illuminate\Foundation\Testing\TestResponse;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Tests\TestCase;
 
@@ -75,17 +75,19 @@ class SoloEndorsementQueryTest extends TestCase
         $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('findOrFail')
                 ->andReturn(
-                    new User([
+                    User::initModelWithData([
                         'id' => $this->userId,
                         'name_first' => 'Callum',
                     ])
                 );
 
             $mock->shouldReceive('initModelWithData')
-                ->andReturn(new User([
+                ->andReturn(
+                    User::initModelWithData([
                     'id' => $this->userId,
                     'name_first' => 'Callum',
-                ]));
+                ])
+            );
         })->makePartial();
     }
 }

@@ -169,7 +169,7 @@ class SpecialEndorsementTest extends TestCase
         $this->mock(User::class, function ($mock) {
             $mock
                 ->shouldReceive('find')
-                ->andReturn(new User(['id' => 1300005]));
+                ->andReturn(User::initModelWithData(['id' => 1300005]));
         });
 
         $this->graphQL('
@@ -205,17 +205,19 @@ class SpecialEndorsementTest extends TestCase
         $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('findMany')
                 ->andReturn(collect([
-                    new User([
+                    User::initModelWithData([
                         'id' => $this->user->id,
                         'name_first' => $this->user->name_first,
-                    ]),
+                    ])
                 ]));
 
             $mock->shouldReceive('initModelWithData')
-                ->andReturn(new User([
-                    'id' => $this->user->id,
-                    'name_first' => $this->user->name_first,
-                ]));
+                ->andReturn(
+                    User::initModelWithData([
+                        'id' => $this->user->id,
+                        'name_first' => $this->user->name_first,
+                    ])
+            );
         })->makePartial();
 
         $assignment = Assignment::create([

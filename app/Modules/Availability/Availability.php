@@ -6,7 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use VATSIMUK\Support\Auth\Models\Concerns\HasCustomInstanceCreation;
+use VATSIMUK\Auth\Remote\RemoteEloquent\HasCustomInstanceCreation;
 
 class Availability extends Model
 {

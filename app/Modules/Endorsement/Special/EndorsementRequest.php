@@ -4,7 +4,7 @@ namespace App\Modules\Endorsement\Special;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
-use VATSIMUK\Support\Auth\Models\Concerns\HasRemoteRelationships;
+use VATSIMUK\Auth\Remote\RemoteEloquent\HasRemoteRelationships;
 
 class EndorsementRequest extends Model
 {

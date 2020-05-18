@@ -438,7 +438,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 2,
+                    network_type: DJAEHfk,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -446,13 +446,17 @@ class BookingCreateTest extends TestCase
             {
                 id
             }
-          }")->assertJson([
-            'errors' => [
-                [
-                    'debugMessage' => 'Invalid network type!',
+          }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
     }
 
     /** @test */
