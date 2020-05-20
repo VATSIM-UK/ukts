@@ -27,6 +27,9 @@ class AvailabilityUnitTest extends TestCase
         $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('find')
                 ->andReturn($this->mockedUser());
+
+            $mock->shouldReceive('initModelWithData')
+                ->andReturn($this->mockedUser());
         })->makePartial();
 
         $this->assertInstanceOf(User::class, $this->availability->user);

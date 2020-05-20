@@ -6,7 +6,7 @@ use App\Modules\Position\Position;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use VATSIMUK\Auth\Remote\RemoteEloquent\HasRemoteRelationships;
+use VATSIMUK\Support\Auth\Models\Concerns\HasRemoteRelationships;
 
 class Booking extends Model
 {

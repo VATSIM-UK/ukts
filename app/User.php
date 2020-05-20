@@ -9,7 +9,7 @@ use App\Modules\Endorsement\Special\SpecialEndorsement;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use VATSIMUK\Auth\Remote\Models\RemoteUser;
+use VATSIMUK\Support\Auth\Models\RemoteUser;
 
 class User extends RemoteUser implements Authenticatable
 {

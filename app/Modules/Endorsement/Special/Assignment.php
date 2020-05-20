@@ -5,7 +5,7 @@ namespace App\Modules\Endorsement\Special;
 use App\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use VATSIMUK\Auth\Remote\RemoteEloquent\HasRemoteRelationships;
+use VATSIMUK\Support\Auth\Models\Concerns\HasRemoteRelationships;
 
 class Assignment extends Pivot
 {
