@@ -35,7 +35,7 @@ class BookingUpdateTest extends TestCase
             'position_id' => 1,
             'from' => new Carbon('2019-08-20 15:00:00'),
             'to' => new Carbon('2019-08-20 16:30:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->graphQL('
@@ -45,7 +45,7 @@ class BookingUpdateTest extends TestCase
                         id: 1,
                         from: "2019-08-20 17:00:00",
                         to: "2019-08-20 18:00:00",
-                        network_type: 0
+                        network_type: LIVE
                     }
                 ) {
                     id
@@ -62,7 +62,7 @@ class BookingUpdateTest extends TestCase
             'id' => 1,
             'from' => new Carbon('2019-08-20 17:00:00'),
             'to' => new Carbon('2019-08-20 18:00:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
     }
 
@@ -73,7 +73,7 @@ class BookingUpdateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('2019-08-20 17:00:00'),
             'to' => new Carbon('2019-08-20 18:30:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         // start
@@ -84,18 +84,22 @@ class BookingUpdateTest extends TestCase
                         id: {$bookingToUpdate->id},
                         from: \"2019-08-20 16:15:00\",
                         to: \"2019-08-20 17:00:00\",
-                        network_type: 2
+                        network_type: DJAEHfk
                     }
                 ) {
                     id
                 }
-            }")->assertJson([
-            'errors' => [
-                [
-                    'debugMessage' => 'Invalid network type!',
+            }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
     }
 
     /** @test */
@@ -105,14 +109,14 @@ class BookingUpdateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('2019-08-20 15:00:00'),
             'to' => new Carbon('2019-08-20 16:30:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $bookingToUpdate = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('2019-08-20 17:00:00'),
             'to' => new Carbon('2019-08-20 18:30:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         // start
@@ -123,7 +127,7 @@ class BookingUpdateTest extends TestCase
                         id: {$bookingToUpdate->id},
                         from: \"2019-08-20 16:15:00\",
                         to: \"2019-08-20 17:00:00\",
-                        network_type: 0
+                        network_type: LIVE
                     }
                 ) {
                     id
@@ -156,7 +160,7 @@ class BookingUpdateTest extends TestCase
                         id: {$bookingToUpdate->id},
                         from: \"2019-08-20 16:15:00\",
                         to: \"2019-08-20 17:00:00\",
-                        network_type: 0
+                        network_type: LIVE
                     }
                 ) {
                     id,
@@ -166,7 +170,7 @@ class BookingUpdateTest extends TestCase
             'data' => [
                 'updateBooking' => [
                     'id' => $bookingToUpdate->id,
-                    'network_type' => 0,
+                    'network_type' => Booking::NETWORK_TYPE_LIVE,
                 ],
             ],
         ]);
@@ -179,7 +183,7 @@ class BookingUpdateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('2019-08-20 15:00:00'),
             'to' => new Carbon('2019-08-20 16:30:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $bookingToUpdate = factory(Booking::class)->create([
@@ -197,7 +201,7 @@ class BookingUpdateTest extends TestCase
                         id: {$bookingToUpdate->id},
                         from: \"2019-08-20 16:15:00\",
                         to: \"2019-08-20 17:00:00\",
-                        network_type: 0
+                        network_type: LIVE
                     }
                 ) {
                     id,
@@ -218,7 +222,7 @@ class BookingUpdateTest extends TestCase
                         id: {$invalidBookingId},
                         from: \"2019-08-20 17:00:00\",
                         to: \"2019-08-20 18:00:00\",
-                        network_type: 0
+                        network_type: LIVE
                     }
                 ) {
                     id

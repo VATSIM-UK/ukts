@@ -72,21 +72,21 @@ class BookingServiceUpdateTest extends TestCase
         // explicitly setting booking times to stop coincidental test pass
         $this->existingBooking->from = new Carbon('10th January 2019 13:30:00');
         $this->existingBooking->to = new Carbon('10th January 2019 15:30:00');
-        $this->existingBooking->network_type = 0;
+        $this->existingBooking->network_type = Booking::NETWORK_TYPE_LIVE;
         $this->existingBooking->save();
 
         $otherBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 16:30:00'),
             'to' => new Carbon('10th January 2019 18:30:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->service->updateExistingBooking($this->generateUpdateMethodParameters([
             'id' => $this->existingBooking->id,
             'from' => new Carbon('10th January 2019 16:45:00'),
             'to' => new Carbon('10th January 2019 18:45:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]));
     }
 
@@ -98,7 +98,7 @@ class BookingServiceUpdateTest extends TestCase
         // explicitly setting booking times to stop coincidental test pass
         $this->existingBooking->from = new Carbon('10th January 2019 13:30:00');
         $this->existingBooking->to = new Carbon('10th January 2019 15:30:00');
-        $this->existingBooking->network_type = 1;
+        $this->existingBooking->network_type = Booking::NETWORK_TYPE_SWEATBOX;
         $this->existingBooking->save();
 
         $otherBooking = factory(Booking::class)->create([
@@ -122,14 +122,14 @@ class BookingServiceUpdateTest extends TestCase
         // explicitly setting booking times to stop coincidental test pass
         $this->existingBooking->from = new Carbon('10th January 2019 13:30:00');
         $this->existingBooking->to = new Carbon('10th January 2019 15:30:00');
-        $this->existingBooking->network_type = 1;
+        $this->existingBooking->network_type = Booking::NETWORK_TYPE_SWEATBOX;
         $this->existingBooking->save();
 
         $otherBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 16:30:00'),
             'to' => new Carbon('10th January 2019 18:30:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->service->updateExistingBooking($this->generateUpdateMethodParameters([
@@ -154,7 +154,7 @@ class BookingServiceUpdateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ], $overrides);
     }
 }

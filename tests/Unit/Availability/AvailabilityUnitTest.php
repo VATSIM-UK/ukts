@@ -24,6 +24,14 @@ class AvailabilityUnitTest extends TestCase
     /** @test */
     public function itReturnsTheUserRelation()
     {
+        $this->mock(User::class, function ($mock) {
+            $mock->shouldReceive('find')
+                ->andReturn($this->mockedUser());
+
+            $mock->shouldReceive('initModelWithData')
+                ->andReturn($this->mockedUser());
+        })->makePartial();
+
         $this->assertInstanceOf(User::class, $this->availability->user);
     }
 }

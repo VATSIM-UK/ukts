@@ -42,7 +42,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-08-20 15:00:00\",
                     to:\"2019-08-20 16:30:00\"
                 }
@@ -64,7 +64,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from: \"2019-08-20 16:30:00\",
                     to:\"2019-08-20 17:30:00\"
                 }
@@ -79,7 +79,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('2019-08-20 16:30:00'),
             'to' => new Carbon('2019-08-20 17:30:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
     }
 
@@ -92,7 +92,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from: 'Blah',
                     to: '2019-08-20 16:30:00'
                 }
@@ -119,7 +119,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$unknownPositionId},
-                    network_type: 0,
+                    network_type: LIVE,
                     from: '2019-08-20 15:00:00',
                     to: '2019-08-20 16:30:00'
                 }
@@ -145,7 +145,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: 1,
-                    network_type: 0,
+                    network_type: LIVE,
                     from: "2019-08-20 15:00:00",
                     to: "2019-08-20 15:00:00"
                 }
@@ -168,7 +168,7 @@ class BookingCreateTest extends TestCase
         // "From" after "To"
         $this->graphQL("
           mutation {
-            createBooking(user_id: 1300001, position_id: {$this->position->id}, network_type: 0, from:\"2019-08-20 15:30:00\", to:\"2019-08-20 15:00:00\") {
+            createBooking(user_id: 1300001, position_id: {$this->position->id}, network_type: LIVE, from:\"2019-08-20 15:30:00\", to:\"2019-08-20 15:00:00\") {
                 id
             }
           }")->assertJsonStructure(
@@ -194,7 +194,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => '2019-08-10 14:00:00',
             'to' => '2019-08-10 15:00:00',
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         // Test 1: Doesn't allow to book inside of booking
@@ -203,7 +203,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-08-10 14:30:00\",
                     to:\"2019-08-10 15:30:00\"
                 }
@@ -223,7 +223,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => '2019-08-10 19:00:00',
             'to' => '2019-08-10 20:00:00',
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->graphQL("
@@ -231,7 +231,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -256,7 +256,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -271,7 +271,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$differentPosition->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -291,14 +291,14 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $secondBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 15:00:00'),
             'to' => new Carbon('10th January 2019 16:00:00'),
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->graphQL("
@@ -306,7 +306,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-01-10 14:00:00\",
                     to:\"2019-01-10 15:00:00\"
                 }
@@ -342,7 +342,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-01-10 14:00:00\",
                     to:\"2019-01-10 15:00:00\"
                 }
@@ -371,7 +371,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-01-10 14:00:00\",
                     to:\"2019-01-10 15:00:00\"
                 }
@@ -399,7 +399,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -414,7 +414,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 1,
+                    network_type: SWEATBOX,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -438,7 +438,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 2,
+                    network_type: DJAEHfk,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -446,13 +446,17 @@ class BookingCreateTest extends TestCase
             {
                 id
             }
-          }")->assertJson([
-            'errors' => [
-                [
-                    'debugMessage' => 'Invalid network type!',
+          }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
     }
 
     /** @test */
@@ -466,7 +470,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => '2019-08-10 19:00:00',
             'to' => '2019-08-10 20:00:00',
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->graphQL("
@@ -474,7 +478,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    network_type: 0,
+                    network_type: LIVE,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }

@@ -73,7 +73,7 @@ class BookingsServiceTest extends TestCase
         $to = new Carbon('10th January 2019 16:30:00');
 
         // create existing booking
-        factory(Booking::class)->create(['from' => $from, 'to' => $to, 'position_id' => $this->position->id, 'network_type' => 0]);
+        factory(Booking::class)->create(['from' => $from, 'to' => $to, 'position_id' => $this->position->id, 'network_type' => Booking::NETWORK_TYPE_LIVE]);
 
         $overlappingFrom = new Carbon('10th January 2019 14:45:00');
         $overlappingTo = new Carbon('10th January 2019 16:00:00');
@@ -95,7 +95,7 @@ class BookingsServiceTest extends TestCase
             'from' => new Carbon('10th January 2019 15:00:00'),
             'to' => new Carbon('10th January 2019 16:30:00'),
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $overlappingFrom = new Carbon('10th January 2019 16:00:00');
@@ -120,7 +120,7 @@ class BookingsServiceTest extends TestCase
             'from' => $from,
             'to' => $to,
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->assertFalse($this->service->validateBookingTimes(
@@ -145,7 +145,7 @@ class BookingsServiceTest extends TestCase
             'from' => new Carbon('10th January 2019 15:00:00'),
             'to' => new Carbon('10th January 2019 16:30:00'),
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->assertTrue($this->service->validateBookingTimes(
@@ -163,7 +163,7 @@ class BookingsServiceTest extends TestCase
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 15:00:00'),
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->assertTrue($this->service->validateBookingTimes(
@@ -181,7 +181,7 @@ class BookingsServiceTest extends TestCase
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 15:00:00'),
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->assertTrue($this->service->validateBookingTimes(
@@ -201,14 +201,14 @@ class BookingsServiceTest extends TestCase
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 15:00:00'),
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $booking2 = factory(Booking::class)->create([
             'from' => new Carbon('10th January 2019 16:00:00'),
             'to' => new Carbon('10th January 2019 17:00:00'),
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->assertFalse($this->service->validateBookingTimes(
@@ -289,7 +289,7 @@ class BookingsServiceTest extends TestCase
         $this->service->createBooking([
             'position_id' => $this->position->id,
             'user_id' => 1234567,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
@@ -297,7 +297,7 @@ class BookingsServiceTest extends TestCase
         $this->assertDatabaseHas('bookings', [
             'position_id' => $this->position->id,
             'user_id' => 1234567,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
@@ -312,7 +312,7 @@ class BookingsServiceTest extends TestCase
 
         factory(Booking::class)->create([
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:30:00'),
         ]);
@@ -320,14 +320,14 @@ class BookingsServiceTest extends TestCase
         $this->service->createBooking([
             'position_id' => $this->position->id,
             'user_id' => 1234567,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
 
         $this->assertDatabaseMissing('bookings', [
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:30:00'),
         ]);
@@ -341,7 +341,7 @@ class BookingsServiceTest extends TestCase
 
         factory(Booking::class)->create([
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:30:00'),
         ]);
@@ -356,7 +356,7 @@ class BookingsServiceTest extends TestCase
 
         $this->assertDatabaseHas('bookings', [
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:30:00'),
         ]);
@@ -372,14 +372,14 @@ class BookingsServiceTest extends TestCase
         $this->service->createBooking([
             'position_id' => $this->position->id,
             'user_id' => $this->mockUserId,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
 
         $this->assertDatabaseMissing('bookings', [
             'position_id' => $this->position->id,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:30:00'),
         ]);
@@ -393,7 +393,7 @@ class BookingsServiceTest extends TestCase
         $this->service->createBooking([
             'position_id' => $this->position->id,
             'user_id' => $this->invalidUserId,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
@@ -407,7 +407,7 @@ class BookingsServiceTest extends TestCase
         $this->service->createBooking([
             'position_id' => 9999,
             'user_id' => 1234567,
-            'network_type' => 0,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);

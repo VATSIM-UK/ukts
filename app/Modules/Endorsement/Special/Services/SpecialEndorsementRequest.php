@@ -24,7 +24,7 @@ class SpecialEndorsementRequest implements BaseService
     public function handle()
     {
         // check if the endorsement has already been granted.
-        if ($this->specialEndorsement->users()->contains($this->user->id)) {
+        if ($this->specialEndorsement->users()->contains($this->user)) {
             throw new EndorsementAlreadyGrantedException();
         }
 

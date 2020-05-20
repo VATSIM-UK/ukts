@@ -12,6 +12,9 @@ class Booking extends Model
 {
     use HasRemoteRelationships;
 
+    const NETWORK_TYPE_LIVE = 0;
+    const NETWORK_TYPE_SWEATBOX = 1;
+
     protected $fillable = ['user_id', 'position_id', 'from', 'to', 'network_type'];
     protected $dates = ['from', 'to'];
 
