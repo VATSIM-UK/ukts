@@ -216,11 +216,11 @@ class SpecialEndorsementTest extends TestCase
                     User::initModelWithData([
                         'id' => $this->user->id,
                         'name_first' => $this->user->name_first,
-                    ])
+                    ]),
             );
         })->makePartial();
 
-        $assignment = Assignment::create([
+        Assignment::create([
             'user_id' => $this->user->id,
             'granted_by' => $this->user->id,
             'endorsement_id' => $this->endorsement->id,

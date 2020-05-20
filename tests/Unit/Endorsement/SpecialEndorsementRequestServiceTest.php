@@ -91,6 +91,7 @@ class SpecialEndorsementRequestServiceTest extends TestCase
                         'name_first' => 'Callum',
                     ])
                 );
+
             $mock->shouldReceive('initModelWithData')
                 ->andReturn(
                     User::initModelWithData([
@@ -98,13 +99,14 @@ class SpecialEndorsementRequestServiceTest extends TestCase
                         'name_first' => 'Callum',
                     ])
                 );
+
             $mock->shouldReceive('findMany')
                 ->andReturn(
                     collect([
                         User::initModelWithData([
                             'id' => 1300005,
                             'name_first' => 'Callum',
-                        ])
+                        ]),
                     ])
                 );
         })->makePartial();
