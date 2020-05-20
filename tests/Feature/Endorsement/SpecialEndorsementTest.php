@@ -204,12 +204,14 @@ class SpecialEndorsementTest extends TestCase
     {
         $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('findMany')
-                ->andReturn(collect([
-                    User::initModelWithData([
-                        'id' => $this->user->id,
-                        'name_first' => $this->user->name_first,
+                ->andReturn(
+                    collect([
+                        User::initModelWithData([
+                            'id' => $this->user->id,
+                            'name_first' => $this->user->name_first,
+                        ]),
                     ])
-                ]));
+                );
 
             $mock->shouldReceive('initModelWithData')
                 ->andReturn(
@@ -217,7 +219,7 @@ class SpecialEndorsementTest extends TestCase
                         'id' => $this->user->id,
                         'name_first' => $this->user->name_first,
                     ]),
-            );
+                );
         })->makePartial();
 
         Assignment::create([
