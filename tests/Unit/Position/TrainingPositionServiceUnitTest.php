@@ -80,9 +80,8 @@ class TrainingPositionServiceUnitTest extends TestCase
 
         $this->service->removeAssignment($this->position);
 
-        $this->assertDatabaseHas('training_position_assignments', [
+        $this->assertSoftDeleted('training_position_assignments', [
             'position_id' => $this->position->id,
-            'deleted_at' => now(),
         ]);
     }
 
