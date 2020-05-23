@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Bookings;
+namespace App\Modules\Bookings\Exceptions;
 
 use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;

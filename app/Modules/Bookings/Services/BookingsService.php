@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Modules\Bookings;
+namespace App\Modules\Bookings\Services;
 
 use App\Constants\ControllerRating;
-use App\Exceptions\OverlappingBookingException;
+use App\Modules\Bookings\Booking;
+use App\Modules\Bookings\Exceptions\OverlappingBookingException;
+use App\Modules\Bookings\Exceptions\RatingRequirementNotMetException;
+use App\Modules\Bookings\Exceptions\SpecialEndorsementNotAttainedException;
 use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;
@@ -17,6 +20,17 @@ class BookingsService
     public function __construct(User $user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * Check whether we've got a valid network type on our hands.
+     *
+     * @param  string  $type
+     * @return bool
+     */
+    public function validateNetworkType(int $type): bool
+    {
+        return in_array($type, [Booking::NETWORK_TYPE_LIVE, Booking::NETWORK_TYPE_SWEATBOX]);
     }
 
     /**
@@ -44,9 +58,18 @@ class BookingsService
      * @param  int|null  $excluded  - Booking ID to be excluded from the check.
      * @return bool
      */
-    public function validateBookingTimes(Carbon $from, Carbon $to, Position $position, int $excluded = null): bool
-    {
-        $bookings = Booking::where([['position_id', $position->getKey()], ['id', '!=', $excluded]]);
+    public function validateBookingTimes(
+        Carbon $from,
+        Carbon $to,
+        Position $position,
+        int $network_type,
+        int $excluded = null
+    ): bool {
+        $bookings = Booking::where([
+            ['position_id', $position->getKey()],
+            ['network_type', $network_type],
+            ['id', '!=', $excluded],
+        ]);
 
         // Find between the times being booked for
         $bookings->where(function ($query) use (&$from, &$to) {
@@ -111,7 +134,7 @@ class BookingsService
 
     public function createBooking(array $bookingData): Booking
     {
-        ['from' => $from, 'to' => $to] = $bookingData;
+        ['from' => $from, 'to' => $to, 'network_type' => $network_type] = $bookingData;
         $position = Position::findOrFail($bookingData['position_id']);
 
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
@@ -126,13 +149,18 @@ class BookingsService
             throw new SpecialEndorsementNotAttainedException();
         }
 
-        if (! $this->validateBookingTimes($from, $to, $position)) {
+        if (! $this->validateNetworkType($network_type)) {
+            throw new \InvalidArgumentException('Invalid network type!');
+        }
+
+        if (! $this->validateBookingTimes($from, $to, $position, $network_type)) {
             throw new OverlappingBookingException();
         }
 
         return $bookingUser->bookings()->create([
             'user_id' => $bookingUser->id,
             'position_id' => $position->id,
+            'network_type' => $network_type,
             'from' => $from,
             'to' => $to,
         ]);
@@ -140,19 +168,24 @@ class BookingsService
 
     public function updateExistingBooking(array $newData): bool
     {
-        ['from' => $from, 'to' => $to] = $newData;
+        ['from' => $from, 'to' => $to, 'network_type' => $network_type] = $newData;
         /** @var Booking $existingBooking */
         $existingBooking = Booking::findOrFail($newData['id']);
 
         $position = $existingBooking->position;
 
-        if (! $this->validateBookingTimes($from, $to, $position, $existingBooking->getKey())) {
+        if (! $this->validateBookingTimes($from, $to, $position, $network_type, $existingBooking->getKey())) {
             throw new OverlappingBookingException();
+        }
+
+        if (! $this->validateNetworkType($network_type)) {
+            throw new \InvalidArgumentException('Invalid network type!');
         }
 
         return $existingBooking->update([
             'from' => $from,
             'to' => $to,
+            'network_type' => $network_type,
         ]);
     }
 }

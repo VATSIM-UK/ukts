@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Position;
 
+use App\Modules\Position\Exceptions\PositionAlreadyAssignedForTrainingException;
+use App\Modules\Position\Exceptions\PositionNotAssignedForTrainingException;
 use App\Modules\Position\Position;
-use App\Modules\Position\PositionAlreadyAssignedForTrainingException;
-use App\Modules\Position\PositionNotAssignedForTrainingException;
+use App\Modules\Position\Services\TrainingPositionService;
 use App\Modules\Position\TrainingPositionAssignment;
-use App\Modules\Position\TrainingPositionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -80,9 +80,8 @@ class TrainingPositionServiceUnitTest extends TestCase
 
         $this->service->removeAssignment($this->position);
 
-        $this->assertDatabaseHas('training_position_assignments', [
+        $this->assertSoftDeleted('training_position_assignments', [
             'position_id' => $this->position->id,
-            'deleted_at' => now(),
         ]);
     }
 

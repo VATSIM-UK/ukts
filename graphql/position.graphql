@@ -21,11 +21,11 @@ extend type Mutation {
 
     assignPositionForTraining(
         position_id: Int!
-    ): TrainingPositionAssignment! @field(resolver: "App\\Modules\\Position\\CreateAssignmentHandler")
+    ): TrainingPositionAssignment! @field(resolver: "App\\Modules\\Position\\Mutations\\CreateAssignmentHandler")
 
     removePositionFromTraining(
         position_id: Int!
-    ): Boolean! @field(resolver: "App\\Modules\\Position\\RemoveAssignmentHandler" )
+    ): Boolean! @field(resolver: "App\\Modules\\Position\\Mutations\\RemoveAssignmentHandler" )
 
 }
 

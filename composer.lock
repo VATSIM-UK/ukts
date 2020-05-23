@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b18b2b39e783b2693cd12b0bd5d0b4f",
+    "content-hash": "9080dc64af83683bdbc03e641bc01b50",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -3727,21 +3727,22 @@
         },
         {
             "name": "vatsimuk/auth-package",
-            "version": "dev-master",
+            "version": "v0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VATSIM-UK/auth-package.git",
-                "reference": "70738e3dff4f4f34c55d0b13d7e7f8115ff0e284"
+                "reference": "28760d6824e29daf5a02053647fbd9b0b34aabe1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VATSIM-UK/auth-package/zipball/70738e3dff4f4f34c55d0b13d7e7f8115ff0e284",
-                "reference": "70738e3dff4f4f34c55d0b13d7e7f8115ff0e284",
+                "url": "https://api.github.com/repos/VATSIM-UK/auth-package/zipball/28760d6824e29daf5a02053647fbd9b0b34aabe1",
+                "reference": "28760d6824e29daf5a02053647fbd9b0b34aabe1",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "^6.3",
+                "illuminate/auth": "^6.0",
                 "illuminate/database": "^6.0",
                 "illuminate/http": "^6.0",
                 "illuminate/routing": "^6.0",
@@ -3757,29 +3758,38 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "VATSIMUK\\Auth\\Remote\\UKAuthServiceProvider"
+                        "VATSIMUK\\Support\\Auth\\UKAuthServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "VATSIMUK\\Auth\\Remote\\": "src/"
-                }
+                    "VATSIMUK\\Support\\Auth\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
             },
             "autoload-dev": {
                 "psr-4": {
-                    "VATSIMUK\\Auth\\Remote\\Tests\\": "tests/"
+                    "VATSIMUK\\Support\\Auth\\Tests\\": "tests/"
                 }
             },
             "license": [
                 "MIT"
             ],
+            "authors": [
+                {
+                    "name": "Alex Toff",
+                    "homepage": "https://github.com/atoff"
+                }
+            ],
             "description": "A Laravel Library for interfacing with the VATSIM UK Central Authentication Service",
             "support": {
-                "source": "https://github.com/VATSIM-UK/auth-package/tree/master",
+                "source": "https://github.com/VATSIM-UK/auth-package/tree/v0.1.1",
                 "issues": "https://github.com/VATSIM-UK/auth-package/issues"
             },
-            "time": "2019-12-30T16:59:21+00:00"
+            "time": "2020-02-16T16:22:43+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -5904,13 +5914,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "vatsimuk/auth-package": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^7.3"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

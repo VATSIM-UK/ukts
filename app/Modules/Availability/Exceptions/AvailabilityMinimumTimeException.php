@@ -1,13 +1,19 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Modules\Availability\Exceptions;
 
-use DomainException;
+use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
+use Throwable;
 
-class OverlappingBookingException extends DomainException implements RendersErrorsExtensions
+class AvailabilityMinimumTimeException extends Exception implements RendersErrorsExtensions
 {
-    protected $message = "Can't have overlapping bookings for the same position!";
+    protected $defaultMessage = 'The minimum availability time is ';
+
+    public function __construct($msg = '', $code = 0, Throwable $previous = null)
+    {
+        parent::__construct($this->defaultMessage .= ($msg .= ' minutes'), $code, $previous);
+    }
 
     /**
      * Returns true when exception message is safe to be displayed to a client.
@@ -44,7 +50,7 @@ class OverlappingBookingException extends DomainException implements RendersErro
     public function extensionsContent(): array
     {
         return [
-            'code' => 422,
+            'code' => 404,
         ];
     }
 }

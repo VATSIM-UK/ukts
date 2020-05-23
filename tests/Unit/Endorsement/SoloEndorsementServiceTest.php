@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Modules\Endorsement\Solo\Exceptions\SoloEndorsementAlreadyGrantedException;
+use App\Modules\Endorsement\Solo\Services\SoloEndorsementService;
 use App\Modules\Endorsement\Solo\SoloEndorsement;
-use App\Modules\Endorsement\Solo\SoloEndorsementAlreadyGrantedException;
-use App\Modules\Endorsement\Solo\SoloEndorsementService;
 use App\Modules\Position\Position;
 use App\User;
 use Carbon\Carbon;

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Endorsement\Solo;
+namespace App\Modules\AirfieldGroup\Exceptions;
 
 use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
-class SoloEndorsementAlreadyGrantedException extends Exception implements RendersErrorsExtensions
+class AirfieldGroupAlreadyAssignedException extends Exception implements RendersErrorsExtensions
 {
-    protected $message = 'A solo endorsement is already assigned to that user on the given position';
+    protected $message = 'The given airfield already has an AirfieldGroup assigned.';
 
     /**
      * Returns true when exception message is safe to be displayed to a client.
