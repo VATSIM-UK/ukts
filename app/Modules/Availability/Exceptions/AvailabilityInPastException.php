@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Bookings;
+namespace App\Modules\Availability\Exceptions;
 
 use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
-class SpecialEndorsementNotAttainedException extends Exception implements RendersErrorsExtensions
+class AvailabilityInPastException extends Exception implements RendersErrorsExtensions
 {
-    protected $message = 'You do not have the required Special Endorsement to book this position.';
+    protected $message = 'The availability must be in the future.';
 
     /**
      * Returns true when exception message is safe to be displayed to a client.

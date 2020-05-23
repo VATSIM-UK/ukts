@@ -5,7 +5,7 @@ extend type Query {
 
 extend type Mutation {
     addAirfieldToGroup(input: AddAirfieldToGroupInput! @spread): Airfield!
-    @field(resolver: "App\\Modules\\AirfieldGroup\\AddAirfieldToGroupHandler")
+    @field(resolver: "App\\Modules\\AirfieldGroup\\Mutations\\AddAirfieldToGroupHandler")
 }
 
 input AddAirfieldToGroupInput {

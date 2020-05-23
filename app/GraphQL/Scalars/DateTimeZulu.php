@@ -3,6 +3,7 @@
 namespace App\GraphQL\Scalars;
 
 use Carbon\Carbon;
+use Exception;
 use GraphQL\Error\Error;
 use GraphQL\Error\InvariantViolation;
 use GraphQL\Language\AST\StringValueNode;

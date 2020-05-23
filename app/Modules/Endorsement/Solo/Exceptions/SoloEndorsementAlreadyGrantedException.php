@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Position;
+namespace App\Modules\Endorsement\Solo\Exceptions;
 
 use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
-class PositionNotAssignedForTrainingException extends Exception implements RendersErrorsExtensions
+class SoloEndorsementAlreadyGrantedException extends Exception implements RendersErrorsExtensions
 {
-    protected $message = 'The given position has not been assigned for training so cannot be deleted.';
+    protected $message = 'A solo endorsement is already assigned to that user on the given position';
 
     /**
      * Returns true when exception message is safe to be displayed to a client.
@@ -44,7 +44,7 @@ class PositionNotAssignedForTrainingException extends Exception implements Rende
     public function extensionsContent(): array
     {
         return [
-            'code' => 404,
+            'code' => 422,
         ];
     }
 }

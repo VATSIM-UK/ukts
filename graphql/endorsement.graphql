@@ -36,7 +36,7 @@ extend type Mutation {
     @field(resolver: "App\\Modules\\Endorsement\\Special\\Mutations\\RequestSpecialEndorsementHandler")
 
     grantSoloEndorsement(input: SoloEndorsementRequestInput! @spread): SoloEndorsement!
-    @field(resolver: "App\\Modules\\Endorsement\\Solo\\GrantSoloEndorsementHandler")
+    @field(resolver: "App\\Modules\\Endorsement\\Solo\\Mutations\\GrantSoloEndorsementHandler")
 }
 interface Endorsement {
     id: ID!

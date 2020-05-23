@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Position;
+namespace App\Modules\Position\Exceptions;
 
 use Exception;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
-class PositionAlreadyAssignedForTrainingException extends Exception implements RendersErrorsExtensions
+class PositionNotAssignedForTrainingException extends Exception implements RendersErrorsExtensions
 {
-    protected $message = 'The given position is already assigned for training.';
+    protected $message = 'The given position has not been assigned for training so cannot be deleted.';
 
     /**
      * Returns true when exception message is safe to be displayed to a client.
@@ -44,7 +44,7 @@ class PositionAlreadyAssignedForTrainingException extends Exception implements R
     public function extensionsContent(): array
     {
         return [
-            'code' => 422,
+            'code' => 404,
         ];
     }
 }

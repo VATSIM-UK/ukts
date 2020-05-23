@@ -71,17 +71,23 @@ class SoloEndorsementQueryTest extends TestCase
 
     private function mockRemoteUserCall(int $userId): void
     {
-        $userMockReturn = User::initModelWithData([
-            'id' => $userId,
-            'name_first' => 'Callum',
-        ]);
-
-        $this->mock(User::class, function ($mock) use ($userId, $userMockReturn) {
+        $this->userId = $userId;
+        $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('findOrFail')
-                ->andReturn($userMockReturn);
+                ->andReturn(
+                    User::initModelWithData([
+                        'id' => $this->userId,
+                        'name_first' => 'Callum',
+                    ])
+                );
 
-            $mock->shouldReceive('find')
-                ->andReturn($userMockReturn);
+            $mock->shouldReceive('initModelWithData')
+                ->andReturn(
+                    User::initModelWithData([
+                        'id' => $this->userId,
+                        'name_first' => 'Callum',
+                    ])
+                );
         })->makePartial();
     }
 }

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Booking;
 
 use App\Modules\Bookings\Booking;
-use App\Modules\Endorsement\Solo\SoloEndorsement;
 use App\Modules\Endorsement\Special\Assignment;
 use App\Modules\Endorsement\Special\SpecialEndorsement;
 use App\Modules\Position\Position;
@@ -43,6 +42,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: LIVE,
                     from:\"2019-08-20 15:00:00\",
                     to:\"2019-08-20 16:30:00\"
                 }
@@ -64,6 +64,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: LIVE,
                     from: \"2019-08-20 16:30:00\",
                     to:\"2019-08-20 17:30:00\"
                 }
@@ -78,6 +79,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('2019-08-20 16:30:00'),
             'to' => new Carbon('2019-08-20 17:30:00'),
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
     }
 
@@ -90,22 +92,24 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    from:'Blah',
-                    to:'2019-08-20 16:30:00'
+                    network_type: LIVE,
+                    from: 'Blah',
+                    to: '2019-08-20 16:30:00'
                 }
             )
             {
                 id
             }
-          }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+          }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         $unknownPositionId = 2;
@@ -115,22 +119,24 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$unknownPositionId},
+                    network_type: LIVE,
                     from: '2019-08-20 15:00:00',
-                    to:'2019-08-20 16:30:00'
+                    to: '2019-08-20 16:30:00'
                 }
             )
             {
                 id
             }
-          }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+          }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         // "From" and "To" the same
@@ -139,39 +145,42 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: 1,
-                    from:"2019-08-20 15:00:00",
-                    to:"2019-08-20 15:00:00"
+                    network_type: LIVE,
+                    from: "2019-08-20 15:00:00",
+                    to: "2019-08-20 15:00:00"
                 }
             )
             {
                 id
             }
-          }')->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+          }')->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
 
         // "From" after "To"
         $this->graphQL("
           mutation {
-            createBooking(user_id: 1300001, position_id: {$this->position->id}, from:\"2019-08-20 15:30:00\", to:\"2019-08-20 15:00:00\") {
+            createBooking(user_id: 1300001, position_id: {$this->position->id}, network_type: LIVE, from:\"2019-08-20 15:30:00\", to:\"2019-08-20 15:00:00\") {
                 id
             }
-          }")->assertJsonStructure([
-            'errors' => [
-                [
-                    'message',
-                    'extensions',
-                    'locations',
+          }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
                 ],
-            ],
-        ]
+            ]
         );
     }
 
@@ -185,6 +194,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => '2019-08-10 14:00:00',
             'to' => '2019-08-10 15:00:00',
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         // Test 1: Doesn't allow to book inside of booking
@@ -193,6 +203,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: LIVE,
                     from:\"2019-08-10 14:30:00\",
                     to:\"2019-08-10 15:30:00\"
                 }
@@ -212,6 +223,7 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => '2019-08-10 19:00:00',
             'to' => '2019-08-10 20:00:00',
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->graphQL("
@@ -219,6 +231,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: LIVE,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -243,6 +256,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: LIVE,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -257,6 +271,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$differentPosition->id},
+                    network_type: LIVE,
                     from:\"2019-08-10 18:30:00\",
                     to:\"2019-08-10 19:30:00\"
                 }
@@ -276,12 +291,14 @@ class BookingCreateTest extends TestCase
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $secondBooking = factory(Booking::class)->create([
             'position_id' => $this->position->id,
             'from' => new Carbon('10th January 2019 15:00:00'),
             'to' => new Carbon('10th January 2019 16:00:00'),
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->graphQL("
@@ -289,6 +306,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: LIVE,
                     from:\"2019-01-10 14:00:00\",
                     to:\"2019-01-10 15:00:00\"
                 }
@@ -324,6 +342,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: LIVE,
                     from:\"2019-01-10 14:00:00\",
                     to:\"2019-01-10 15:00:00\"
                 }
@@ -352,6 +371,7 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
+                    network_type: LIVE,
                     from:\"2019-01-10 14:00:00\",
                     to:\"2019-01-10 15:00:00\"
                 }
@@ -359,55 +379,98 @@ class BookingCreateTest extends TestCase
             {
                 id
             }
-        }")->assertJsonPath('errors.0.message',
-            'You do not have the required Special Endorsement to book this position.');
+        }")->assertJsonPath(
+            'errors.0.message',
+            'You do not have the required Special Endorsement to book this position.'
+        );
     }
 
     /** @test */
-    public function testAllowsBookingWhenRatingRequirementNotMetButSoloEndorsementIsActive()
+    public function testAllowsOverlappingBookingsOfDifferentNetworkTypes()
     {
-        // mocked user has an S2 rating
-        $this->mockedUser();
-
-        // lets set the position to require an S3
-        $this->position->callsign = 'EGGD_APP';
+        $this->bypassRatingChecks();
+        $this->position->callsign = 'EGFF_TWR';
         $this->position->save();
 
-        // create the endorsement on our position...
-        factory(SoloEndorsement::class)->create([
-            'position_id' => $this->position->id, 'user_id' => $this->mockUserId,
-        ]);
+        $creationJsonFormat = ['data' => ['createBooking' => ['id']]];
 
         $this->graphQL("
           mutation {
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    from:\"2019-01-10 14:00:00\",
-                    to:\"2019-01-10 15:00:00\"
+                    network_type: LIVE,
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
                 }
             )
             {
                 id
             }
-        }")->assertJsonStructure(['data' => ['createBooking' => ['id']]]);
+          }")->assertJsonStructure($creationJsonFormat);
+
+        $this->graphQL("
+          mutation {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    network_type: SWEATBOX,
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
+                }
+            )
+            {
+                id
+            }
+          }")->assertJsonStructure($creationJsonFormat);
     }
 
     /** @test */
-    public function testDoesntAllowBookingWhenSoloEndorsementOnPositionHasExpired()
+    public function testDoesntAllowBookingOfInvalidNetworkType()
     {
-        // mocked user has an S2 rating
-        $this->mockedUser();
-
-        // lets set the position to require an S3
-        $this->position->callsign = 'EGGD_APP';
+        $this->withoutExceptionHandling();
+        $this->bypassRatingChecks();
+        $this->position->callsign = 'EGFF_TWR';
         $this->position->save();
 
-        // create the endorsement on our position which has expired ...
-        factory(SoloEndorsement::class)->create([
+        $this->graphQL("
+          mutation {
+            createBooking(
+                input: {
+                    position_id: {$this->position->id},
+                    network_type: DJAEHfk,
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
+                }
+            )
+            {
+                id
+            }
+          }")->assertJsonStructure(
+            [
+                'errors' => [
+                    [
+                        'message',
+                        'extensions',
+                        'locations',
+                    ],
+                ],
+            ]
+        );
+    }
+
+    /** @test */
+    public function testDoesntAllowBookingNetworkTypeOverlap()
+    {
+        $this->bypassRatingChecks();
+        $this->position->callsign = 'EGFF_TWR';
+        $this->position->save();
+
+        factory(Booking::class)->create([
             'position_id' => $this->position->id,
-            'user_id' => $this->mockUserId,
-            'expiry_date' => Carbon::now()->subDay(),
+            'from' => '2019-08-10 19:00:00',
+            'to' => '2019-08-10 20:00:00',
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $this->graphQL("
@@ -415,14 +478,15 @@ class BookingCreateTest extends TestCase
             createBooking(
                 input: {
                     position_id: {$this->position->id},
-                    from:\"2019-01-10 14:00:00\",
-                    to:\"2019-01-10 15:00:00\"
+                    network_type: LIVE,
+                    from:\"2019-08-10 18:30:00\",
+                    to:\"2019-08-10 19:30:00\"
                 }
             )
             {
                 id
             }
-        }")->assertJsonPath('errors.0.message', 'Your rating is not high enough to book that position.');
+          }")->assertJsonPath('errors.0.message', "Can't have overlapping bookings for the same position!");
     }
 
     /** @test */

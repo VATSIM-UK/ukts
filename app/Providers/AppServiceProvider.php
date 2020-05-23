@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Modules\Bookings\BookingsService;
-use App\Modules\Endorsement\Solo\SoloEndorsementService;
-use App\Modules\Position\TrainingPositionService;
+use App\Modules\Bookings\Services\BookingsService;
+use App\Modules\Endorsement\Solo\Services\SoloEndorsementService;
+use App\Modules\Position\Services\TrainingPositionService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

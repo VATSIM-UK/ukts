@@ -21,8 +21,8 @@ class SpecialEndorsementsForUser
      *
      * @param  null  $rootValue  Usually contains the result returned from the parent field.
      * @param  mixed[]  $args  The arguments that were passed into the field.
-     * @param  \Nuwave\Lighthouse\Support\Contracts\GraphQLContext  $context  Arbitrary data that is shared between all fields of a single query.
-     * @param  \GraphQL\Type\Definition\ResolveInfo  $resolveInfo  Information about the query itself, such as the execution state, the field name, path to the field from the root, and more.
+     * @param  GraphQLContext  $context  Arbitrary data that is shared between all fields of a single query.
+     * @param  ResolveInfo  $resolveInfo  Information about the query itself.
      * @return mixed
      * @throws \InvalidArgumentException
      */
