@@ -35,7 +35,7 @@ class TrainingPositionService
         return $this->findAssignmentByPosition($position)->delete();
     }
 
-    public function findAssignmentByPosition(Position $position): ?TrainingPosition
+    private function findAssignmentByPosition(Position $position): ?TrainingPosition
     {
         return TrainingPosition::whereHas('position', function (Builder $builder) use (&$position) {
             $builder->where('id', $position->id);
