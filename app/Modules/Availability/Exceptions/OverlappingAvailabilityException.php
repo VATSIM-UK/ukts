@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Availability;
+namespace App\Modules\Availability\Exceptions;
 
-use Exception;
+use DomainException;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
-class AvailabilityInPastException extends Exception implements RendersErrorsExtensions
+class OverlappingAvailabilityException extends DomainException implements RendersErrorsExtensions
 {
-    protected $message = 'The availability must be in the future.';
+    protected $message = "Can't have overlapping availability!";
 
     /**
      * Returns true when exception message is safe to be displayed to a client.

@@ -44,6 +44,13 @@ class SpecialEndorsementRequestTest extends TestCase
                         ]),
                     ])
                 );
+            $mock->shouldReceive('initModelWithData')
+                ->andReturn(
+                    User::initModelWithData([
+                        'id' => 1300005,
+                        'name_first' => 'Callum',
+                    ])
+                );
         })->makePartial();
 
         $this->graphQL("
@@ -131,6 +138,14 @@ class SpecialEndorsementRequestTest extends TestCase
                 );
 
             $mock->shouldReceive('findOrFail')
+                ->andReturn(
+                    User::initModelWithData([
+                        'id' => 1300005,
+                        'name_first' => 'Callum',
+                    ])
+                );
+
+            $mock->shouldReceive('initModelWithData')
                 ->andReturn(
                     User::initModelWithData([
                         'id' => 1300005,

@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Modules\Availability;
+namespace App\Modules\Availability\Services;
 
-use App\Exceptions\OverlappingAvailabilityException;
 use App\Exceptions\PrivilegeException;
+use App\Modules\Availability\Availability;
+use App\Modules\Availability\Exceptions\AvailabilityInPastException;
+use App\Modules\Availability\Exceptions\AvailabilityMinimumTimeException;
+use App\Modules\Availability\Exceptions\OverlappingAvailabilityException;
 use App\User;
 use Carbon\Carbon;
+use Exception;
 
 class AvailabilityService
 {
