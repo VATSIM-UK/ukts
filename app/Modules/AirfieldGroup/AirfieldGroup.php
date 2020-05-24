@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class AirfieldGroup extends Model
 {
     public $timestamps = false;
+    protected $fillable = ['name'];
 
     public function airfields(): HasMany
     {
