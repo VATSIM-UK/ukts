@@ -19,7 +19,7 @@ class CreateAvailabilityTable extends Migration
             $table->timestamp('from')->nullable()
                 ->comment('Nullable to enforce compatibility with MYSQL strict mode.');
             $table->timestamp('to')->nullable()
-                ->nullable('Nullable to enforce compatibility with MYSQL strict mode.');
+                ->comment('Nullable to enforce compatibility with MYSQL strict mode.');
             $table->timestamps();
         });
     }
