@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.3",
         "fideloper/proxy": "^4.0",
+        "inertiajs/inertia-laravel": "^0.2.5",
         "laravel/framework": "^6.0",
         "laravel/horizon": "^3.2",
         "laravel/telescope": "^2.0",

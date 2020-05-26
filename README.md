@@ -1,4 +1,19 @@
-# UK Training System Core API
+# VATSIM UK Training System (UKTS)
+
+## Front End Development
+To install the VATSIM UK UI kit [consilio](https://github.com/VATSIM-UK/consilio), you need to ensure you are authenticated against the package registry here on GitHub.
+
+To do this, you don't need any additional permissions, but you do need a personal access token to authenticate against
+the VATSIM UK npm/yarn [registry](https://github.com/orgs/VATSIM-UK/packages).
+
+1. Generate Token from GitHub -> Settings -> Developer Settings -> Personal Access Tokens. Scope to `repo.*` & `read:packages` permissions.
+2. Run `yarn login --registry=https://npm.pkg.github.com`. When prompted, insert your GitHub username and the token you 
+have just generated.
+3. Run `yarn` to install all packages.
+
+For more information, visit 
+[this](https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-npm-for-use-with-github-packages#authenticating-to-github-packages) guide
+for more information.
 
 ## Docker Development Environment
 A [docker-compose](https://docs.docker.com/compose/) file is provided to facilitate the use of a docker container for an integrated development environment.
