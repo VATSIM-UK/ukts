@@ -2,7 +2,7 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ## Git Workflow
-As the banner above indicates, this repo is commitizen friendly. To activate this you can run `git commit` or `git cz`.
+As the banner above indicates, this repo is commitizen friendly. To activate this you can run `git cz`.
 This allows us to generate an automatic changelog and bring greater clarity to the intentions of a commit.
 
 ## Front End Development
