@@ -16,8 +16,10 @@ class CreateAvailabilityTable extends Migration
         Schema::create('availability', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
-            $table->timestamp('from');
-            $table->timestamp('to');
+            $table->timestamp('from')->nullable()
+                ->comment('Nullable to enforce compatibility with MYSQL strict mode.');
+            $table->timestamp('to')->nullable()
+                ->comment('Nullable to enforce compatibility with MYSQL strict mode.');
             $table->timestamps();
         });
     }
