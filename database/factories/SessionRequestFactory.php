@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use Faker\Generator as Faker;
 use App\Modules\Bookings\Booking;
 use App\Modules\Position\Position;
 use App\Modules\SessionRequest\SessionRequest;
+use Faker\Generator as Faker;
 
 $factory->define(SessionRequest::class, function (Faker $faker) {
     return [

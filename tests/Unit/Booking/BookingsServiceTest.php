@@ -75,7 +75,7 @@ class BookingsServiceTest extends TestCase
         // create existing booking
         factory(Booking::class)->create([
             'from' => $from, 'to' => $to, 'position_id' => $this->position->id,
-            'network_type' => Booking::NETWORK_TYPE_LIVE
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
         ]);
 
         $overlappingFrom = new Carbon('10th January 2019 14:45:00');
@@ -428,7 +428,7 @@ class BookingsServiceTest extends TestCase
             'user_id' => $this->mockUserId,
             'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => Carbon::now()->subHours(1),
-            'to' => Carbon::now()
+            'to' => Carbon::now(),
         ], true);
 
         $this->assertDatabaseHas('bookings', [
@@ -449,7 +449,7 @@ class BookingsServiceTest extends TestCase
             'user_id' => $this->mockUserId,
             'network_type' => Booking::NETWORK_TYPE_LIVE,
             'from' => Carbon::now()->subHours(1),
-            'to' => Carbon::now()
+            'to' => Carbon::now(),
         ], true);
 
         $this->assertDatabaseHas('bookings', ['position_id' => $specificPosition->id]);
