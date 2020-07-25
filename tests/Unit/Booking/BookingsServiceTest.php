@@ -73,7 +73,10 @@ class BookingsServiceTest extends TestCase
         $to = new Carbon('10th January 2019 16:30:00');
 
         // create existing booking
-        factory(Booking::class)->create(['from' => $from, 'to' => $to, 'position_id' => $this->position->id, 'network_type' => Booking::NETWORK_TYPE_LIVE]);
+        factory(Booking::class)->create([
+            'from' => $from, 'to' => $to, 'position_id' => $this->position->id,
+            'network_type' => Booking::NETWORK_TYPE_LIVE
+        ]);
 
         $overlappingFrom = new Carbon('10th January 2019 14:45:00');
         $overlappingTo = new Carbon('10th January 2019 16:00:00');
@@ -411,6 +414,45 @@ class BookingsServiceTest extends TestCase
             'from' => new Carbon('10th January 2019 13:00:00'),
             'to' => new Carbon('10th January 2019 14:00:00'),
         ]);
+    }
+
+    /** @test */
+    public function itIgnoresRatingRequirementCheckWhenDesignatedAsMentoringSession()
+    {
+        // tests case as mock user only has a rating designated to a *_TWR position, but should be able to have a booking
+        // for a mentoring session.
+        $specificPosition = factory(Position::class)->create(['callsign' => 'EGGD_APP']);
+
+        $this->service->createBooking([
+            'position_id' => $specificPosition->id,
+            'user_id' => $this->mockUserId,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
+            'from' => Carbon::now()->subHours(1),
+            'to' => Carbon::now()
+        ], true);
+
+        $this->assertDatabaseHas('bookings', [
+            'position_id' => $specificPosition->id,
+        ]);
+    }
+
+    /** @test */
+    public function itIgnoresSpecialEndorsementRequirementCheckWhenDesignatedAsMentoringSession()
+    {
+        $specificPosition = factory(Position::class)->create();
+        $endorsement = factory(SpecialEndorsement::class)->create();
+
+        $this->mandateEndorsementForPositionHelper($endorsement->id, $specificPosition->id);
+
+        $this->service->createBooking([
+            'position_id' => $specificPosition->id,
+            'user_id' => $this->mockUserId,
+            'network_type' => Booking::NETWORK_TYPE_LIVE,
+            'from' => Carbon::now()->subHours(1),
+            'to' => Carbon::now()
+        ], true);
+
+        $this->assertDatabaseHas('bookings', ['position_id' => $specificPosition->id]);
     }
 
     /** @test */
