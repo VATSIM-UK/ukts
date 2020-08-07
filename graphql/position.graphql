@@ -1,7 +1,8 @@
 extend type Query {
     positions: [Position!]! @all
     position(id: ID @eq, callsign: String @eq): Position @find
-    positionsAvailableForTraining: [TrainingPosition!]! @all
+    positionsAvailableForTraining(id: ID @eq): [TrainingPosition!]! @all
+    studentsTrainingOnPosition(id: ID): [TrainingPosition!]! @field(resolver: "App\\Modules\\Position\\Mutations\\StudentsTrainingOnPosition")
     airfields: [Airfield!]! @all(model: "App\\Modules\\Airfield\\Airfield")
     airfield(icao: String! @eq): Airfield @find(model: "App\\Modules\\Airfield\\Airfield")
 }
@@ -19,15 +20,15 @@ extend type Mutation {
 
     updatePosition(id: ID!, input: PositionInput! @spread): Position @update
 
-    grantSessionRights(
+    grantPermissions(
         user_id: Int!
         training_position_id: Int!
-    ): Boolean! @field(resolver: "App\\Modules\\Position\\Mutations\\GrantSessionRightsHandler")
+    ): Boolean! @field(resolver: "App\\Modules\\Position\\Mutations\\GrantPermissionsHandler")
 
-    revokeSessionRights(
+    revokePermissions(
         user_id: Int!
         training_position_id: Int!
-    ): Boolean! @field(resolver: "App\\Modules\\Position\\Mutations\\RevokeSessionRightsHandler")
+    ): Boolean! @field(resolver: "App\\Modules\\Position\\Mutations\\RevokePermissionsHandler")
 
     assignPositionForTraining(
         position_id: Int!
@@ -58,7 +59,8 @@ type Position {
 type TrainingPosition {
     id: ID!
     position: Position!
-    users: [User!]! @hasMany
+    students: [User!]! @hasMany
+    mentors: [User!]! @hasMany
     deleted_at: DateTime!
 }
 

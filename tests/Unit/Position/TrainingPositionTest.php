@@ -28,8 +28,14 @@ class TrainingPositionTest extends TestCase
     }
 
     /** @test */
-    public function itHasRelationToUsers()
+    public function itHasRelationToStudents()
     {
-        $this->assertContainsOnlyInstancesOf(User::class, $this->trainingAssignment->users);
+        $this->assertContainsOnlyInstancesOf(User::class, $this->trainingAssignment->students);
+    }
+
+    /** @test */
+    public function itHasRelationToMentors()
+    {
+        $this->assertContainsOnlyInstancesOf(User::class, $this->trainingAssignment->mentors);
     }
 }

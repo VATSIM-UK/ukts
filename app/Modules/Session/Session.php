@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Modules\Position;
+namespace App\Modules\Session;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TrainingPosition extends Model
+class Session extends Model
 {
     use SoftDeletes;
 
@@ -19,13 +19,13 @@ class TrainingPosition extends Model
         return $this->belongsTo(Position::class);
     }
 
-    public function students(): HasMany
+    public function student(): HasOne
     {
-        return $this->hasMany(resolve(User::class));
+        return $this->hasOne(resolve(User::class));
     }
 
-    public function mentors(): HasMany
+    public function mentors(): HasOne
     {
-        return $this->hasMany(resolve(User::class));
+        return $this->hasOne(resolve(User::class));
     }
 }

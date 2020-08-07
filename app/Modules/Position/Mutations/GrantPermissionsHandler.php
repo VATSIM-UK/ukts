@@ -2,13 +2,13 @@
 
 namespace App\Modules\Position\Mutations;
 
-use App\Modules\Position\Services\TrainingPositionSessionService;
+use App\Modules\Position\Services\TrainingPositionPermissionService;
 use App\Modules\Position\TrainingPosition;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class GrantSessionRightsHandler
+class GrantPermissionsHandler
 {
     /**
      * Return a value for the field.
@@ -22,8 +22,8 @@ class GrantSessionRightsHandler
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user = resolve(User::class)->findOrFail($args['user_id']);
-        $position = TrainingPosition::findOrFail($args['training_position_id']);
+        $position = resolve(TrainingPosition::class)->findOrFail($args['training_position_id']);
 
-        return app()->make(TrainingPositionSessionService::class)->grantPermissions($user, $position);
+        return app()->make(TrainingPositionPermissionService::class)->grantPermissions($user, $position);
     }
 }
