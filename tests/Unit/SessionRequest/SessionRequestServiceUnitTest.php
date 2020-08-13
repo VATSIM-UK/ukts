@@ -2,16 +2,17 @@
 
 namespace Tests\Unit\SessionRequest;
 
-use App\Modules\Position\Position;
-use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyAcceptedException;
-use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyExistsException;
-use App\Modules\SessionRequest\SessionRequest;
-use App\Modules\SessionRequest\SessionRequestService;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Helpers\UserHelper;
 use Tests\TestCase;
+use Tests\Helpers\UserHelper;
+use App\Modules\Position\Position;
+use App\Modules\SessionRequest\SessionRequest;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Modules\SessionRequest\SessionRequestService;
+use App\Modules\SessionRequest\Exceptions\SessionRequestNotAcceptedException;
+use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyExistsException;
+use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyAcceptedException;
 
 class SessionRequestServiceUnitTest extends TestCase
 {
@@ -63,15 +64,27 @@ class SessionRequestServiceUnitTest extends TestCase
     }
 
     /** @test */
-    public function itCanBeRevokedByTheCreator()
+    public function itCanBeRevokedByTheCreatorWhenNotAccepted()
     {
+        $sessionRequest = factory(SessionRequest::class)->create();
+
+        $this->service->revokeSessionRequest($sessionRequest);
+
+        $this->assertSoftDeleted('session_requests', ['id' => $sessionRequest->id]);
+    }
+
+    /** @test */
+    public function itCantBeRevokedByUserWhenAlreadyAccepted()
+    {
+        $this->expectException(SessionRequestAlreadyAcceptedException::class);
+
         $sessionRequest = factory(SessionRequest::class)->create([
             'taken_on' => now(), 'taken_by' => 1234567, 'booking_id' => null
         ]);
 
         $this->service->revokeSessionRequest($sessionRequest);
 
-        $this->assertSoftDeleted('session_requests', ['id' => $sessionRequest->id]);
+        $this->assertDatabaseHas('session_requests', ['deleted_at' => null]);
     }
 
     /** @test */
@@ -142,4 +155,38 @@ class SessionRequestServiceUnitTest extends TestCase
             Carbon::now());
     }
 
+    /** @test */
+    public function itAllowsCancellationByTheStudentAndPersistsReason()
+    {
+        $reason = 'Unavailable';
+        $session = factory(SessionRequest::class)->create(['taken_on' => now(), 'taken_by' => $this->mockUserId]);
+
+        $this->service->cancelSession($session, $reason);
+
+        $this->assertDatabaseHas('session_requests', [
+            'id' => $session->id,
+            'cancelled_at' => now(),
+            'cancelled_reason' => $reason
+        ]);
+
+        $this->assertSoftDeleted('bookings', [
+            'id' => $session->booking->id
+        ]);
+    }
+
+    /** @test */
+    public function itShouldThrowExceptionIfSessionHasNotAlreadyBeenAcceptedWhenCancelling()
+    {
+        $this->expectException(SessionRequestNotAcceptedException::class);
+
+        $session = factory(SessionRequest::class)->create(['taken_on' => null, 'taken_by' => null]);
+
+        $this->service->cancelSession($session, 'This is a reason');
+
+        $this->assertDatabaseHas('session_requests', [
+            'id' => $session->id,
+            'cancelled_at' => null,
+            'cancelled_reason' => null,
+        ]);
+    }
 }
