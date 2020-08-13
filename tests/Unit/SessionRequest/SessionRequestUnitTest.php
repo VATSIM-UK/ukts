@@ -26,7 +26,7 @@ class SessionRequestUnitTest extends TestCase
     public function itDetectsWhenHasBeenTakenByAUser()
     {
         $sessionRequest = factory(SessionRequest::class)->create([
-            'taken_on' => Carbon::now(), 'taken_by' => $this->mockUserId
+            'taken_on' => Carbon::now(), 'taken_by' => $this->mockUserId,
         ]);
 
         $this->assertTrue($sessionRequest->isTaken());

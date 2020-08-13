@@ -42,7 +42,7 @@ class SessionRequestServiceUnitTest extends TestCase
 
         $this->assertDatabaseHas('session_requests', [
             'user_id' => $this->user->id,
-            'position_id' => $position->id
+            'position_id' => $position->id,
         ]);
     }
 
@@ -52,7 +52,7 @@ class SessionRequestServiceUnitTest extends TestCase
         $this->expectException(SessionRequestAlreadyExistsException::class);
         $position = factory(Position::class)->create();
         factory(SessionRequest::class)->create([
-            'position_id' => $position->id, 'user_id' => $this->user->id
+            'position_id' => $position->id, 'user_id' => $this->user->id,
         ]);
 
         $this->service->createSessionRequest($this->user, $position);
@@ -79,7 +79,7 @@ class SessionRequestServiceUnitTest extends TestCase
         $this->expectException(SessionRequestAlreadyAcceptedException::class);
 
         $sessionRequest = factory(SessionRequest::class)->create([
-            'taken_on' => now(), 'taken_by' => 1234567, 'booking_id' => null
+            'taken_on' => now(), 'taken_by' => 1234567, 'booking_id' => null,
         ]);
 
         $this->service->revokeSessionRequest($sessionRequest);
@@ -103,7 +103,7 @@ class SessionRequestServiceUnitTest extends TestCase
             'end_date' => $to,
             'taken_on' => Carbon::now(),
             'taken_by' => $this->user->id,
-            'booking_id' => $sessionRequest->booking->id
+            'booking_id' => $sessionRequest->booking->id,
         ]);
 
         $this->assertDatabaseHas('bookings', [
@@ -148,7 +148,7 @@ class SessionRequestServiceUnitTest extends TestCase
         $this->expectException(SessionRequestAlreadyAcceptedException::class);
 
         $sessionRequest = factory(SessionRequest::class)->create([
-            'taken_on' => Carbon::now(), 'taken_by' => $this->mockUserId
+            'taken_on' => Carbon::now(), 'taken_by' => $this->mockUserId,
         ]);
 
         $this->service->acceptSessionRequest($sessionRequest, $this->mockedUser(), Carbon::now()->subHours(2),
