@@ -2,14 +2,14 @@
 
 namespace App\Modules\SessionRequest;
 
+use App\Modules\Bookings\Booking;
+use App\Modules\Bookings\Services\BookingsService;
+use App\Modules\Position\Position;
+use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyAcceptedException;
+use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyExistsException;
+use App\Modules\SessionRequest\Exceptions\SessionRequestNotAcceptedException;
 use App\User;
 use Carbon\Carbon;
-use App\Modules\Bookings\Booking;
-use App\Modules\Position\Position;
-use App\Modules\Bookings\Services\BookingsService;
-use App\Modules\SessionRequest\Exceptions\SessionRequestNotAcceptedException;
-use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyExistsException;
-use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyAcceptedException;
 
 class SessionRequestService
 {
@@ -78,7 +78,7 @@ class SessionRequestService
 
     public function cancelSession(SessionRequest $sessionRequest, string $reason): SessionRequest
     {
-        throw_if(!$sessionRequest->isTaken(), SessionRequestNotAcceptedException::class);
+        throw_if(! $sessionRequest->isTaken(), SessionRequestNotAcceptedException::class);
 
         $sessionRequest->update(['cancelled_at' => Carbon::now(), 'cancelled_reason' => $reason]);
 
