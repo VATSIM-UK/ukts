@@ -68,7 +68,8 @@ class SessionRequestService
                 'network_type' => $networkType,
                 'user_id' => $acceptingUser->id,
                 'position_id' => $sessionRequest->position_id,
-            ], true);
+            ],
+        true);
 
         $sessionRequest->booking()->associate($booking);
         $sessionRequest->save();
