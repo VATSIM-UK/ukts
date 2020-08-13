@@ -2,11 +2,11 @@
 
 namespace App\Modules\Bookings;
 
-use App\User;
 use App\Modules\Position\Position;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use VATSIMUK\Support\Auth\Models\Concerns\HasRemoteRelationships;
 
 class Booking extends Model

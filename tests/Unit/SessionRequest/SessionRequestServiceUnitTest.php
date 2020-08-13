@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\SessionRequest;
 
+use App\Modules\Position\Position;
+use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyAcceptedException;
+use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyExistsException;
+use App\Modules\SessionRequest\Exceptions\SessionRequestNotAcceptedException;
+use App\Modules\SessionRequest\SessionRequest;
+use App\Modules\SessionRequest\SessionRequestService;
 use App\User;
 use Carbon\Carbon;
-use Tests\TestCase;
-use Tests\Helpers\UserHelper;
-use App\Modules\Position\Position;
-use App\Modules\SessionRequest\SessionRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Modules\SessionRequest\SessionRequestService;
-use App\Modules\SessionRequest\Exceptions\SessionRequestNotAcceptedException;
-use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyExistsException;
-use App\Modules\SessionRequest\Exceptions\SessionRequestAlreadyAcceptedException;
+use Tests\Helpers\UserHelper;
+use Tests\TestCase;
 
 class SessionRequestServiceUnitTest extends TestCase
 {
@@ -166,11 +166,11 @@ class SessionRequestServiceUnitTest extends TestCase
         $this->assertDatabaseHas('session_requests', [
             'id' => $session->id,
             'cancelled_at' => now(),
-            'cancelled_reason' => $reason
+            'cancelled_reason' => $reason,
         ]);
 
         $this->assertSoftDeleted('bookings', [
-            'id' => $session->booking->id
+            'id' => $session->booking->id,
         ]);
     }
 
