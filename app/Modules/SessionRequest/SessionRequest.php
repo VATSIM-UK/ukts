@@ -20,6 +20,6 @@ class SessionRequest extends Model
 
     public function isTaken(): bool
     {
-        return $this->taken_on !== null;
+        return $this->accepted_at !== null;
     }
 }

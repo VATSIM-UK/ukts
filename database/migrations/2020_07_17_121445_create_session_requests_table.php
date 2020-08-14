@@ -20,8 +20,8 @@ class CreateSessionRequestsTable extends Migration
             $table->unsignedBigInteger('booking_id')->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
-            $table->timestamp('taken_on')->nullable();
-            $table->timestamp('taken_by')->nullable();
+            $table->timestamp('accepted_at')->nullable();
+            $table->timestamp('accepted_by')->nullable();
             $table->timestamp('cancelled_at')->nullable();
             $table->text('cancelled_reason')->nullable();
             $table->timestamp('no_show_at')->nullable();

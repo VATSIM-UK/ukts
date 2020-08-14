@@ -79,7 +79,7 @@ class SessionRequestServiceUnitTest extends TestCase
         $this->expectException(SessionRequestAlreadyAcceptedException::class);
 
         $sessionRequest = factory(SessionRequest::class)->create([
-            'taken_on' => now(), 'taken_by' => 1234567, 'booking_id' => null,
+            'accepted_at' => now(), 'accepted_by' => 1234567, 'booking_id' => null,
         ]);
 
         $this->service->revokeSessionRequest($sessionRequest);
@@ -101,8 +101,8 @@ class SessionRequestServiceUnitTest extends TestCase
             'id' => $sessionRequest->id,
             'start_date' => $from,
             'end_date' => $to,
-            'taken_on' => Carbon::now(),
-            'taken_by' => $this->user->id,
+            'accepted_at' => Carbon::now(),
+            'accepted_by' => $this->user->id,
             'booking_id' => $sessionRequest->booking->id,
         ]);
 
@@ -130,8 +130,8 @@ class SessionRequestServiceUnitTest extends TestCase
             'id' => $sessionRequest->id,
             'start_date' => $sessionFrom,
             'end_date' => $sessionTo,
-            'taken_on' => Carbon::now(),
-            'taken_by' => $this->user->id,
+            'accepted_at' => Carbon::now(),
+            'accepted_by' => $this->user->id,
             'booking_id' => $sessionRequest->booking->id,
         ]);
 
@@ -148,7 +148,7 @@ class SessionRequestServiceUnitTest extends TestCase
         $this->expectException(SessionRequestAlreadyAcceptedException::class);
 
         $sessionRequest = factory(SessionRequest::class)->create([
-            'taken_on' => Carbon::now(), 'taken_by' => $this->mockUserId,
+            'accepted_at' => Carbon::now(), 'accepted_by' => $this->mockUserId,
         ]);
 
         $this->service->acceptSessionRequest($sessionRequest, $this->mockedUser(), Carbon::now()->subHours(2),
@@ -159,7 +159,7 @@ class SessionRequestServiceUnitTest extends TestCase
     public function itAllowsCancellationByTheStudentAndPersistsReason()
     {
         $reason = 'Unavailable';
-        $session = factory(SessionRequest::class)->create(['taken_on' => now(), 'taken_by' => $this->mockUserId]);
+        $session = factory(SessionRequest::class)->create(['accepted_at' => now(), 'accepted_by' => $this->mockUserId]);
 
         $this->service->cancelSession($session, $reason);
 
@@ -179,7 +179,7 @@ class SessionRequestServiceUnitTest extends TestCase
     {
         $this->expectException(SessionRequestNotAcceptedException::class);
 
-        $session = factory(SessionRequest::class)->create(['taken_on' => null, 'taken_by' => null]);
+        $session = factory(SessionRequest::class)->create(['accepted_at' => null, 'accepted_by' => null]);
 
         $this->service->cancelSession($session, 'This is a reason');
 

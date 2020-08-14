@@ -20,7 +20,14 @@ class SessionRequestService
         $this->bookingsService = $bookingsService;
     }
 
-    public function createSessionRequest(User $user, Position $position)
+    /**
+     * Creates a session request for a given user on a particular position.
+     *
+     * @param User $user
+     * @param Position $position
+     * @return SessionRequest
+     */
+    public function createSessionRequest(User $user, Position $position): SessionRequest
     {
         $existingSessionRequests = SessionRequest::where('user_id', $user->id)->where(
             'position_id',
@@ -35,13 +42,31 @@ class SessionRequestService
         ]);
     }
 
-    public function revokeSessionRequest(SessionRequest $sessionRequest)
+    /**
+     * Revokes a session request for a given session which hasn't been accepted.
+     *
+     * @param SessionRequest $sessionRequest
+     * @return bool
+     */
+    public function revokeSessionRequest(SessionRequest $sessionRequest): bool
     {
         throw_if($sessionRequest->isTaken(), SessionRequestAlreadyAcceptedException::class);
 
         return $sessionRequest->delete();
     }
 
+    /**
+     * Accept a session request with the given times.
+     *
+     * @param SessionRequest $sessionRequest
+     * @param User $acceptingUser
+     * @param Carbon $sessionDateFrom
+     * @param Carbon $sessionDateTo
+     * @param Carbon $bookingDateFrom
+     * @param Carbon $bookingDateTo
+     * @param integer $networkType
+     * @return SessionRequest
+     */
     public function acceptSessionRequest(
         SessionRequest $sessionRequest,
         User $acceptingUser,
@@ -55,8 +80,8 @@ class SessionRequestService
 
         $sessionRequest->start_date = $sessionDateFrom;
         $sessionRequest->end_date = $sessionDateTo;
-        $sessionRequest->taken_on = Carbon::now();
-        $sessionRequest->taken_by = $acceptingUser->id;
+        $sessionRequest->accepted_at = Carbon::now();
+        $sessionRequest->accepted_by = $acceptingUser->id;
 
         $bookingStart = $bookingDateFrom ?: $sessionDateFrom;
         $bookingEnd = $bookingDateTo ?: $sessionDateTo;
@@ -78,6 +103,13 @@ class SessionRequestService
         return $sessionRequest;
     }
 
+    /**
+     * Cancel a session request which has already been accepted.
+     *
+     * @param SessionRequest $sessionRequest
+     * @param string $reason
+     * @return SessionRequest
+     */
     public function cancelSession(SessionRequest $sessionRequest, string $reason): SessionRequest
     {
         throw_if(! $sessionRequest->isTaken(), SessionRequestNotAcceptedException::class);
