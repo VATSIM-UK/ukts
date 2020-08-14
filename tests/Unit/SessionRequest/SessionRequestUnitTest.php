@@ -23,20 +23,20 @@ class SessionRequestUnitTest extends TestCase
     }
 
     /** @test */
-    public function itDetectsWhenHasBeenTakenByAUser()
+    public function itDetectsWhenHasBeenAcceptedByAUser()
     {
         $sessionRequest = factory(SessionRequest::class)->create([
             'accepted_at' => Carbon::now(), 'accepted_by' => $this->mockUserId,
         ]);
 
-        $this->assertTrue($sessionRequest->isTaken());
+        $this->assertTrue($sessionRequest->isAccepted());
     }
 
     /** @test */
-    public function itDetectsWhenHasNotBeenTakenByAUser()
+    public function itDetectsWhenHasNotBeenAcceptedByAUser()
     {
         $sessionRequest = factory(SessionRequest::class)->create(['accepted_at' => null, 'accepted_by' => null]);
 
-        $this->assertFalse($sessionRequest->isTaken());
+        $this->assertFalse($sessionRequest->isAccepted());
     }
 }

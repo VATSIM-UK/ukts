@@ -50,7 +50,7 @@ class SessionRequestService
      */
     public function revokeSessionRequest(SessionRequest $sessionRequest): bool
     {
-        throw_if($sessionRequest->isTaken(), SessionRequestAlreadyAcceptedException::class);
+        throw_if($sessionRequest->isAccepted(), SessionRequestAlreadyAcceptedException::class);
 
         return $sessionRequest->delete();
     }
@@ -76,7 +76,7 @@ class SessionRequestService
         Carbon $bookingDateTo = null,
         int $networkType = Booking::NETWORK_TYPE_LIVE
     ): SessionRequest {
-        throw_if($sessionRequest->isTaken(), SessionRequestAlreadyAcceptedException::class);
+        throw_if($sessionRequest->isAccepted(), SessionRequestAlreadyAcceptedException::class);
 
         $sessionRequest->start_date = $sessionDateFrom;
         $sessionRequest->end_date = $sessionDateTo;
@@ -112,7 +112,7 @@ class SessionRequestService
      */
     public function cancelSession(SessionRequest $sessionRequest, string $reason): SessionRequest
     {
-        throw_if(! $sessionRequest->isTaken(), SessionRequestNotAcceptedException::class);
+        throw_if(! $sessionRequest->isAccepted(), SessionRequestNotAcceptedException::class);
 
         $sessionRequest->update(['cancelled_at' => Carbon::now(), 'cancelled_reason' => $reason]);
 

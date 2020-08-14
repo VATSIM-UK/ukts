@@ -18,7 +18,7 @@ class SessionRequest extends Model
         return $this->belongsTo(Booking::class);
     }
 
-    public function isTaken(): bool
+    public function isAccepted(): bool
     {
         return $this->accepted_at !== null;
     }
