@@ -132,20 +132,20 @@ class BookingsService
         return ! $userAssignedSoloEndorsements->isEmpty();
     }
 
-    public function createBooking(array $bookingData): Booking
+    public function createBooking(array $bookingData, bool $isMentoringSession = false): Booking
     {
         ['from' => $from, 'to' => $to, 'network_type' => $network_type] = $bookingData;
         $position = Position::findOrFail($bookingData['position_id']);
 
         $bookingUser = $this->user::findOrFail($bookingData['user_id']);
 
-        if (! $this->validateRatingRequirement($bookingUser, $position)) {
+        if (! $this->validateRatingRequirement($bookingUser, $position) && ! $isMentoringSession) {
             if (! $this->validateSoloEndorsementEligibility($bookingUser, $position)) {
                 throw new RatingRequirementNotMetException();
             }
         }
 
-        if (! $this->validateSpecialEndorsementRequirement($bookingUser, $position)) {
+        if (! $this->validateSpecialEndorsementRequirement($bookingUser, $position) && ! $isMentoringSession) {
             throw new SpecialEndorsementNotAttainedException();
         }
 
