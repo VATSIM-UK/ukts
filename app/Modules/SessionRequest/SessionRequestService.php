@@ -64,7 +64,7 @@ class SessionRequestService
      * @param Carbon $sessionDateTo
      * @param Carbon $bookingDateFrom
      * @param Carbon $bookingDateTo
-     * @param integer $networkType
+     * @param int $networkType
      * @return SessionRequest
      */
     public function acceptSessionRequest(
