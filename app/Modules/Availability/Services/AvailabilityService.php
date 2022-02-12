@@ -27,11 +27,12 @@ class AvailabilityService
     /**
      * Validate that two given times are valid within the context of other availability.
      *
-     * @param Carbon $from
-     * @param Carbon $to
-     * @param User $user - User
-     * @param int $doNotCheck - Pass in an int to exclude from the search
+     * @param  Carbon  $from
+     * @param  Carbon  $to
+     * @param  User  $user  - User
+     * @param  int  $doNotCheck  - Pass in an int to exclude from the search
      * @return bool
+     *
      * @throws AvailabilityMinimumTimeException
      * @throws AvailabilityInPastException
      * @throws \Throwable
