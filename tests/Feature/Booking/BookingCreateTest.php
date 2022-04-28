@@ -514,6 +514,7 @@ class BookingCreateTest extends TestCase
 
     /**
      * Setup a test case to pass the rating check for testing overlapping.
+     *
      * @param  string  $callsign
      */
     private function bypassRatingChecks($callsign = 'EGGD_TWR')
