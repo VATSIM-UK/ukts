@@ -19,6 +19,7 @@ class CreateBookingHandler
      * @param  GraphQLContext  $context  Arbitrary data that is shared between all fields of a single query.
      * @param  ResolveInfo  $resolveInfo  Information about the query itself.
      * @return mixed
+     *
      * @throws RatingRequirementNotMetException
      * @throws SpecialEndorsementNotAttainedException
      * @throws OverlappingBookingException
