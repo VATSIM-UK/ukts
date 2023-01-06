@@ -23,8 +23,8 @@ class SessionRequestService
     /**
      * Creates a session request for a given user on a particular position.
      *
-     * @param User $user
-     * @param Position $position
+     * @param  User  $user
+     * @param  Position  $position
      * @return SessionRequest
      */
     public function createSessionRequest(User $user, Position $position): SessionRequest
@@ -45,7 +45,7 @@ class SessionRequestService
     /**
      * Revokes a session request for a given session which hasn't been accepted.
      *
-     * @param SessionRequest $sessionRequest
+     * @param  SessionRequest  $sessionRequest
      * @return bool
      */
     public function revokeSessionRequest(SessionRequest $sessionRequest): bool
@@ -58,13 +58,13 @@ class SessionRequestService
     /**
      * Accept a session request with the given times.
      *
-     * @param SessionRequest $sessionRequest
-     * @param User $acceptingUser
-     * @param Carbon $sessionDateFrom
-     * @param Carbon $sessionDateTo
-     * @param Carbon $bookingDateFrom
-     * @param Carbon $bookingDateTo
-     * @param int $networkType
+     * @param  SessionRequest  $sessionRequest
+     * @param  User  $acceptingUser
+     * @param  Carbon  $sessionDateFrom
+     * @param  Carbon  $sessionDateTo
+     * @param  Carbon  $bookingDateFrom
+     * @param  Carbon  $bookingDateTo
+     * @param  int  $networkType
      * @return SessionRequest
      */
     public function acceptSessionRequest(
@@ -106,8 +106,8 @@ class SessionRequestService
     /**
      * Cancel a session request which has already been accepted.
      *
-     * @param SessionRequest $sessionRequest
-     * @param string $reason
+     * @param  SessionRequest  $sessionRequest
+     * @param  string  $reason
      * @return SessionRequest
      */
     public function cancelSession(SessionRequest $sessionRequest, string $reason): SessionRequest
