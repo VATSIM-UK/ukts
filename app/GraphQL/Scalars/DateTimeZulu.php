@@ -15,8 +15,9 @@ class DateTimeZulu extends ScalarType
     /**
      * Serialize an internal value, ensuring it is a valid datetime string.
      *
-     * @param \Carbon\Carbon|string $value
+     * @param  \Carbon\Carbon|string  $value
      * @return string
+     *
      * @throws
      */
     public function serialize($value): string
@@ -35,6 +36,7 @@ class DateTimeZulu extends ScalarType
      *
      * @param  mixed  $value
      * @return \Carbon\Carbon
+     *
      * @throws
      */
     public function parseValue($value): Carbon

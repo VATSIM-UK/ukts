@@ -17,6 +17,7 @@ class UpdateBookingHandler
      * @param  mixed[]  $args  The arguments that were passed into the field.
      * @param  GraphQLContext  $context  Arbitrary data that is shared between all fields of a single query.
      * @param  ResolveInfo  $resolveInfo  Information about the query itself.
+     *
      * @throws OverlappingBookingException
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)

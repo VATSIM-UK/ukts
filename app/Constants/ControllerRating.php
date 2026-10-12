@@ -47,6 +47,7 @@ final class ControllerRating
 
     /**
      * Get the human readable version of a given code.
+     *
      * @param  string  $code
      * @return string
      */

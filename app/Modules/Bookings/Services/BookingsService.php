@@ -63,7 +63,7 @@ class BookingsService
         Carbon $to,
         Position $position,
         int $network_type,
-        int $excluded = null
+        ?int $excluded = null
     ): bool {
         $bookings = Booking::where([
             ['position_id', $position->getKey()],
