@@ -10,7 +10,7 @@ class PrivilegeException extends DomainException implements RendersErrorsExtensi
 {
     protected $defaultMessage = 'You do not have permission to ';
 
-    public function __construct($message = '', $code = 0, Throwable $previous = null)
+    public function __construct($message = '', $code = 0, ?Throwable $previous = null)
     {
         parent::__construct($this->defaultMessage .= $message, $code, $previous);
     }

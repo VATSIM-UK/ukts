@@ -92,7 +92,6 @@ class BookingsServiceTest extends TestCase
     /** @test */
     public function itDetectsWhenBookingOverlapsOnEndTime()
     {
-
         // create existing booking
         factory(Booking::class)->create([
             'from' => new Carbon('10th January 2019 15:00:00'),

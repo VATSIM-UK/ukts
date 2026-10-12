@@ -10,7 +10,7 @@ class AvailabilityMinimumTimeException extends Exception implements RendersError
 {
     protected $defaultMessage = 'The minimum availability time is ';
 
-    public function __construct($msg = '', $code = 0, Throwable $previous = null)
+    public function __construct($msg = '', $code = 0, ?Throwable $previous = null)
     {
         parent::__construct($this->defaultMessage .= ($msg .= ' minutes'), $code, $previous);
     }

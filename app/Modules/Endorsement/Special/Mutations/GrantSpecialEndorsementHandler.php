@@ -19,6 +19,7 @@ class GrantSpecialEndorsementHandler
      * @param  \Nuwave\Lighthouse\Support\Contracts\GraphQLContext  $context  Arbitrary data that is shared between all fields of a single query.
      * @param  \GraphQL\Type\Definition\ResolveInfo  $resolveInfo  Information about the query itself.
      * @return mixed
+     *
      * @throws EndorsementAlreadyGrantedException
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
